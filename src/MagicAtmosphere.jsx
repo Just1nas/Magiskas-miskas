@@ -4,8 +4,8 @@ import './magic.css';
 
 // Fixed positions keep hydration/layout stable; decoration never intercepts input.
 const lights = [
-  [68,24,22,-5,3], [85,56,27,-16,2], [53,73,25,-9,3],
-  [93,18,31,-20,2], [34,84,28,-3,2], [76,86,24,-13,3],
+  [68,24,8,-2,3], [85,56,10,-6,2], [53,73,9,-3,3],
+  [93,18,11,-7,2], [34,84,9,-1,2], [76,86,8,-4,3],
 ];
 export function MagicAtmosphere() {
   const root=useRef(null);

@@ -7,6 +7,7 @@ import { SocialLink } from './SocialLink';
 import { MagicAtmosphere } from './MagicAtmosphere';
 import { TicketWidget } from './TicketWidget';
 import './styles.css';
+import './headerSocials.css';
 import { useAmbientMotion } from './useAmbientMotion';
 
 const brand = __BRAND__;
@@ -29,7 +30,7 @@ function Header() {
     <button id="menu-toggle" className="menu-toggle" aria-controls="navigation" aria-expanded={open} onClick={() => setOpen(!open)}>{open ? 'Uždaryti −' : 'Meniu +'}</button>
     <nav id="navigation" aria-label="Pagrindinė navigacija" className={open ? 'navigation open' : 'navigation'} onClick={() => setOpen(false)}>
       <a href="#kelione">{c.copy.navJourney}</a><a href="#atvykimas">{c.copy.navArrival}</a><a href="#duk">{c.copy.navFaq}</a><TicketLink />
-    </nav></header>;
+    </nav><div className="header-socials" role="group" aria-label="Socialiniai tinklai"><SocialLink network="instagram" href={c.instagram.profileUrl} /><SocialLink network="facebook" href={c.socials.facebook} /><SocialLink network="tiktok" href={c.socials.tiktok} /></div></header>;
 }
 function Journey() {
   const [active, setActive] = useState(0);

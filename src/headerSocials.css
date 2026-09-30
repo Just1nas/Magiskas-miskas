@@ -1,0 +1,18 @@
+/* Social links remain outside the collapsible navigation on every viewport. */
+.header{gap:20px}
+.header>.brand{order:0}
+.header>.navigation{order:1;margin-left:auto}
+.header-socials{order:2;display:flex;align-items:center;gap:2px;flex-shrink:0}
+.header-socials .social-link{width:44px;height:44px;flex-basis:44px}
+.header-socials .social-link svg{width:20px;height:20px}
+.header>.menu-toggle{order:3}
+@media(min-width:1001px){.header>.navigation{gap:24px}}
+@media(max-width:1000px){
+ .header{gap:12px}
+ .header-socials{margin-left:auto}
+ .header>.menu-toggle{display:block;font-size:11px;padding:12px 0;min-width:48px;min-height:44px}
+ .header>.navigation{display:none;position:absolute;top:100%;left:0;right:0;margin:0;background:var(--forest);border-bottom:1px solid var(--line);padding:24px 6vw;flex-direction:column;align-items:stretch;gap:12px;max-height:calc(100svh - 160px);overflow-y:auto}
+ .header>.navigation.open{display:flex}
+ .header>.navigation>a{font-size:13px}
+}
+@media(max-width:640px){.header{padding-inline:12px;gap:8px}.header .brand-image{width:clamp(82px,24vw,110px)}.header-socials{gap:0}}

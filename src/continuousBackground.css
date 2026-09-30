@@ -1,0 +1,37 @@
+.immersive-preview{isolation:isolate}
+.continuous-background{position:fixed;inset:0;z-index:-1;overflow:hidden;pointer-events:none;background:#05091b;--veil:0;--logo-opacity:.23}
+.continuous-color{position:absolute;inset:0;background:radial-gradient(ellipse at 78% 24%,rgba(14,63,180,.62),transparent 60%),radial-gradient(ellipse at 52% 80%,rgba(5,120,125,.38),transparent 60%),radial-gradient(ellipse at 3% 70%,rgba(79,32,134,.38),transparent 55%)}
+.continuous-background>.magic-atmosphere{z-index:0}
+.continuous-veil{position:absolute;inset:0;background:#05091b;opacity:var(--veil);transition:opacity .9s ease}
+.continuous-logo-reveal{position:absolute;inset:0;animation:continuous-reveal 3s cubic-bezier(.45,0,.55,1) .65s both}
+.continuous-logo{position:absolute;right:2vw;top:12%;width:52vw;height:82%;object-fit:contain;filter:brightness(0) invert(1);opacity:var(--logo-opacity);transition:opacity .9s ease}
+.immersive-preview .hero::before,.immersive-preview .hero::after,.immersive-preview .final::before{display:none}
+.immersive-preview .hero>.magic-atmosphere,.immersive-preview .section>.watermark,.immersive-preview .hero>.watermark,.immersive-preview .hero>img.hero-photo,.immersive-preview .scene-symbol{display:none}
+.immersive-preview main>.section,.immersive-preview .journey-stage{background:transparent}
+.immersive-preview .header{background:rgba(5,9,27,.72)}
+@keyframes continuous-reveal{from{opacity:0}to{opacity:1}}
+@media(max-width:640px){.continuous-logo{width:82vw;right:2vw;top:18%;height:66%}}
+@media(prefers-reduced-motion:reduce){.continuous-logo-reveal{animation:none}.continuous-logo,.continuous-veil{transition:none}}
+
+/* Let the vendor's purchase bar remain reachable without a duplicate fixed CTA. */
+@media(max-width:640px){
+ .immersive-preview.ticket-panel-visible .mobile-ticket{visibility:hidden;pointer-events:none}
+ .immersive-preview .ticket-widget iframe{max-height:calc(100svh - 100px)!important;min-height:min(60svh,calc(100svh - 100px))!important}
+}
+
+.immersive-preview .ticket-open-controls{margin:24px 5.5vw 0;display:grid;justify-items:start;gap:16px}
+.immersive-preview .ticket-widget-panel[hidden]{display:none}
+@media(max-width:640px){.immersive-preview .ticket-open-controls{margin-inline:6vw}.immersive-preview .ticket-open-controls .button{width:100%}}
+
+.immersive-preview .ticket-widget iframe{background:transparent;color-scheme:normal}
+
+/* A quiet breath for the supplied logo; the link's hit area stays stationary. */
+.immersive-preview .header .brand-image{
+ animation:magic-brand-reveal 1.8s ease-out both,menu-logo-breathe 6s ease-in-out 1.8s infinite;
+ transform-origin:center;
+}
+@keyframes menu-logo-breathe{
+ 0%,100%{transform:translateY(0) scale(1);filter:brightness(0) invert(1) drop-shadow(0 0 0 rgba(166,194,255,0))}
+ 50%{transform:translateY(-1px) scale(1.035);filter:brightness(0) invert(1) drop-shadow(0 0 5px rgba(166,194,255,.3))}
+}
+@media(prefers-reduced-motion:reduce){.immersive-preview .header .brand-image{animation:none!important;transform:none}}

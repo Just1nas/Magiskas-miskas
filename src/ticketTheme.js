@@ -28,3 +28,17 @@ export const ticketCustomStyles = `
 .widget-embed :is(h2,h3){font-size:1.8rem!important}
 .widget-embed :is(a,button,input,select,textarea):focus-visible{outline:2px solid #FFFDF8;outline-offset:3px}
 `;
+
+// Optional local preview: transparent canvas, readable translucent content cards.
+export const transparentTicketTheme = {
+  ...ticketTheme,
+  '--widget-bg': 'transparent',
+  '--widget-card-bg': 'rgba(11,20,41,.78)',
+};
+export const transparentTicketStyles = `${ticketCustomStyles}
+html:has(body.widget-embed),body.widget-embed{background:transparent!important;color-scheme:normal}
+body.widget-embed .widget-layout{background:transparent!important}
+.widget-embed .white-rounded-block{background:rgba(11,20,41,.78)!important;box-shadow:none!important}
+.widget-embed :is(input,select,textarea){background-color:#172239;color:#FFFDF8}
+.widget-embed .slideover-content-panel,.widget-embed [role="dialog"] .bg-base-white{background:#0b1429!important}
+`;

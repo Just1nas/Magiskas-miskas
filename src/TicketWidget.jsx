@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { content as c } from './content';
 import './ticketLayout.css';
-import { ticketTheme, ticketBase, ticketFont, ticketCustomStyles } from './ticketTheme';
+import { ticketTheme, ticketBase, ticketFont, ticketCustomStyles, transparentTicketTheme, transparentTicketStyles } from './ticketTheme';
 
 const SCRIPT_URL = 'https://www.bilietai.lt/_widgets/widget.iife.js';
 let scriptReady;
@@ -19,7 +19,7 @@ function loadScript() {
   return scriptReady;
 }
 
-export function TicketWidget({ widgetId }) {
+export function TicketWidget({ widgetId, transparent = false }) {
   const host = useRef(null);
   const [state, setState] = useState('loading');
   useEffect(() => {
@@ -42,6 +42,6 @@ export function TicketWidget({ widgetId }) {
   }, []);
   return <div className="ticket-widget">
     {state !== 'ready' && <p className="widget-status" role="status">{state === 'loading' ? 'Kraunamas bilietų pasirinkimas…' : 'Bilietų pasirinkimas neįsikrovė. Atidaryk renginį Bilietai.lt žemiau esančia nuoroda.'}</p>}
-    <div ref={host} plg-widget="" data-widget-id={widgetId} data-language="lt" data-event-id={c.tickets.eventId} data-sp={c.tickets.provider} data-theme={JSON.stringify(ticketTheme)} data-base={JSON.stringify(ticketBase)} data-font={JSON.stringify(ticketFont)} data-custom-styles={ticketCustomStyles} />
+    <div ref={host} plg-widget="" data-widget-id={widgetId} data-language="lt" data-event-id={c.tickets.eventId} data-sp={c.tickets.provider} data-theme={JSON.stringify(transparent ? transparentTicketTheme : ticketTheme)} data-base={JSON.stringify(ticketBase)} data-font={JSON.stringify(ticketFont)} data-custom-styles={transparent ? transparentTicketStyles : ticketCustomStyles} />
   </div>;
 }

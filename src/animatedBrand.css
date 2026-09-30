@@ -1,0 +1,9 @@
+.animated-brand{position:relative;display:block;width:140px;height:64px}
+.animated-brand .brand-part{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;filter:brightness(0) invert(1);pointer-events:none}
+.brand-part-symbol{clip-path:inset(0 60% 0 0);transform-origin:24% 50%;animation:brand-symbol-breath 6s ease-in-out infinite}
+.brand-part-first{clip-path:inset(0 0 55% 40%);animation:brand-word-float 7s ease-in-out infinite}
+.brand-part-second{clip-path:inset(45% 0 0 40%);animation:brand-word-float 7s ease-in-out -3.5s infinite}
+@keyframes brand-symbol-breath{0%,100%{transform:scale(1);opacity:.9}50%{transform:scale(1.035);opacity:1}}
+@keyframes brand-word-float{0%,100%{transform:translateY(0)}50%{transform:translateY(-1.5px)}}
+@media(max-width:640px){.animated-brand{width:clamp(82px,24vw,110px);height:56px}.brand-part-first{clip-path:inset(0 0 52% 40%)}.brand-part-second{clip-path:inset(48% 0 0 40%)}}
+@media(prefers-reduced-motion:reduce){.animated-brand .brand-part{animation:none;transform:none;opacity:1}}

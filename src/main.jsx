@@ -5,6 +5,8 @@ import { safeHttps } from './integrations';
 import { Instagram } from './Instagram';
 import { SocialLink } from './SocialLink';
 import { MagicAtmosphere } from './MagicAtmosphere';
+import { ContinuousBackground } from './ContinuousBackground';
+import { AnimatedBrand } from './AnimatedBrand';
 import { TicketWidget } from './TicketWidget';
 import './styles.css';
 import './headerSocials.css';
@@ -17,7 +19,7 @@ const ticketFrame = safeHttps(c.tickets.iframeUrl, ['bilietai.lt']);
 function External({ href, children, ...props }) { return <a href={href} target="_blank" rel="noopener noreferrer" {...props}>{children}</a>; }
 function TicketLink({ className = '', children = c.copy.buy }) {
   if (closed) return <a className={`button ${className}`} href="#bilietai">{c.copy.closedButton} <span aria-hidden="true">↗</span></a>;
-  return ticketUrl && !c.tickets.widgetId ? <External className={`button ${className}`} href={ticketUrl}>{children}<span aria-hidden="true">↗</span></External> : <a className={`button ${className}`} href="#bilietai">{children}<span aria-hidden="true">↗</span></a>;
+  return ticketUrl && !c.tickets.widgetId ? <External className={`button ${className}`} href={ticketUrl}>{children}<span aria-hidden="true">↗</span></External> : <a className={`button ${className}`} href="#bilietai" onClick={() => window.dispatchEvent(new Event('open-ticket-selection'))}>{children}<span aria-hidden="true">↗</span></a>;
 }
 function Brand({ watermark = false }) {
   if (watermark) return brand.logo ? <img className="watermark" src="brand/symbol.png" alt="" aria-hidden="true" /> : null;
@@ -26,7 +28,7 @@ function Brand({ watermark = false }) {
 function Header() {
   const [open, setOpen] = useState(false);
   useEffect(() => { const close = e => { if (e.key === 'Escape') { setOpen(false); document.getElementById('menu-toggle')?.focus(); } }; window.addEventListener('keydown', close); return () => window.removeEventListener('keydown', close); }, []);
-  return <header className="header"><a className="brand" href="#pradzia" aria-label="Magiškas Miškas — pradžia"><Brand /></a>
+  return <header className="header"><a className="brand" href="#pradzia" aria-label="Magiškas Miškas — pradžia"><AnimatedBrand src={brand.logo} name={c.name} /></a>
     <button id="menu-toggle" className="menu-toggle" aria-controls="navigation" aria-expanded={open} onClick={() => setOpen(!open)}>{open ? 'Uždaryti −' : 'Meniu +'}</button>
     <nav id="navigation" aria-label="Pagrindinė navigacija" className={open ? 'navigation open' : 'navigation'} onClick={() => setOpen(false)}>
       <a href="#kelione">{c.copy.navJourney}</a><a href="#atvykimas">{c.copy.navArrival}</a><a href="#duk">{c.copy.navFaq}</a><TicketLink />
@@ -66,10 +68,18 @@ function Faq() {
 }
 function Tickets() {
   const [load, setLoad] = useState(false);
+  const [opened, setOpened] = useState(false);
+  const onDemand = true;
+  useEffect(() => {
+    const open = () => { setOpened(true); setLoad(true); };
+    window.addEventListener('open-ticket-selection', open);
+    return () => window.removeEventListener('open-ticket-selection', open);
+  }, []);
   if (closed) return <section id="bilietai" className="section tickets"><h2>{c.season.closedMessage}</h2><p>{c.copy.closedIntro}</p></section>;
   if (c.tickets.widgetId) return <section id="bilietai" className="section tickets tickets-integrated">
     <div className="section-heading"><span className="eyebrow">{c.copy.ticketsLabel}</span><h2 style={{whiteSpace:"pre-line"}}>{c.copy.ticketsTitle}</h2><p>{c.copy.ticketsIntro}</p></div>
-    <div className="ticket-widget-panel"><TicketWidget widgetId={c.tickets.widgetId} /></div>
+    {onDemand && <div className="ticket-open-controls"><button className="button" aria-expanded={load} aria-controls="ticket-selection" onClick={() => { setOpened(true); setLoad(!load); }}>{load ? 'Uždaryti bilietų pasirinkimą' : 'Rinktis bilietus'}<span aria-hidden="true">{load ? '−' : '↗'}</span></button>{load && <p className="small-note">Bilietų lange slenkamas jo turinys. Uždarius pasirinkimą, toliau slinks visas puslapis.</p>}</div>}
+    <div id="ticket-selection" className="ticket-widget-panel" hidden={onDemand && !load}>{(!onDemand || opened) && <TicketWidget widgetId={c.tickets.widgetId} transparent={onDemand} />}</div>
     <External className="text-link ticket-direct" href={ticketUrl}>{c.copy.ticketsDirect} ↗</External>
   </section>;
   return <section id="bilietai" className="section tickets"><div><span className="eyebrow">{c.copy.ticketsLabel}</span><h2 style={{whiteSpace:"pre-line"}}>{c.copy.ticketsTitle}</h2><p>{c.tickets.price}</p><ul className="ticket-types">{c.ticketTypes.map(type => <li key={type}>{type}</li>)}</ul></div><div className="ticket-panel"><span className="eyebrow">Magiškas Miškas × Bilietai.lt</span>
@@ -92,7 +102,7 @@ function App() {
     url.searchParams.set('fonas', value === 'photo' ? 'nuotrauka' : 'spalvos');
     window.history.replaceState(null, '', url);
   };
-  return <><a className="skip-link" href="#turinys">Pereiti prie turinio</a><Header />{preview && <div className="background-preview" role="group" aria-label="Fono variantų peržiūra"><span>Fono peržiūra</span><button aria-pressed={background === 'colors'} onClick={() => switchBackground('colors')}>Spalvos</button><button aria-pressed={background === 'photo'} onClick={() => switchBackground('photo')}>Nuotrauka</button></div>}<main id="turinys">
+  return <div className="immersive-preview"><ContinuousBackground /><a className="skip-link" href="#turinys">Pereiti prie turinio</a><Header />{preview && <div className="background-preview" role="group" aria-label="Fono variantų peržiūra"><span>Fono peržiūra</span><button aria-pressed={background === 'colors'} onClick={() => switchBackground('colors')}>Spalvos</button><button aria-pressed={background === 'photo'} onClick={() => switchBackground('photo')}>Nuotrauka</button></div>}<main id="turinys">
     <section id="pradzia" className={`hero hero-${background}`}>{background === 'photo' && <img className="hero-photo" src="images/forest-night.webp" alt="" aria-hidden="true" fetchPriority="high" />}<MagicAtmosphere /><Brand watermark /><div className="hero-meta eyebrow"><span>{c.copy.heroLabel}</span><span>{c.city} / {c.copy.heroLocation}</span></div><div className="hero-title"><span className="eyebrow">{c.tagline}</span><h1><span>{c.copy.heroFirst}</span><span>{c.copy.heroSecond}</span></h1></div><div className="hero-bottom"><p>{c.description}</p><div className="hero-date"><span>{c.city}</span><span className="small-note">{closed ? c.season.closedMessage : c.date}</span></div><a className="enter-link" href="#slenkstis">{c.copy.enter} <span aria-hidden="true">↓</span></a></div><div className="hero-ticket"><TicketLink /></div></section>
     <section id="slenkstis" className="pause section"><Brand watermark /><span className="eyebrow">{c.copy.pauseLabel}</span><h2>{c.pause}</h2><p className="pause-story">{c.story}</p><span className="pause-bottom eyebrow">{c.copy.pauseBottom}</span></section>
     <Instagram />
@@ -101,7 +111,7 @@ function App() {
     <section id="informacija" className="section practical"><div className="section-heading"><span className="eyebrow">{c.copy.practicalLabel}</span><h2 style={{whiteSpace:"pre-line"}}>{c.copy.practicalTitle}</h2></div><dl>{[[c.copy.whenLabel, `${c.date.replace(/\.$/, '')}. ${c.hours.replace(/\.$/, '')}.`], [c.copy.whereLabel, `${c.venue}. ${c.address}.`], [c.copy.durationLabel, c.duration], ...c.practical].map(([key, value]) => <div key={key}><dt>{key}</dt><dd>{value}</dd></div>)}</dl><div className="practical-cta"><TicketLink /></div></section>
     <Arrival /><Faq />
     <section className="final section"><Brand watermark /><span className="eyebrow">{c.tagline}</span><h2>{closed ? c.season.closedMessage : <>{c.final.first}<br /><span>{c.final.second}</span></>}</h2><TicketLink /><p>{c.city} · {c.date}</p></section>
-  </main><footer><a className="brand" href="#pradzia"><Brand /></a><div className="footer-links"><SocialLink network="instagram" href={c.instagram.profileUrl} /><SocialLink network="facebook" href={c.socials.facebook} /><SocialLink network="tiktok" href={c.socials.tiktok} />{c.contactEmail && <a href={`mailto:${c.contactEmail}`}>{c.copy.contact} ↗</a>}{safeHttps(c.reviewUrl) && <External href={c.reviewUrl}>{c.copy.review} ↗</External>}</div><p>© {new Date().getFullYear()} {c.name}</p><a className="text-link" href="#pradzia">{c.copy.backTop} ↑</a></footer><div className="mobile-ticket"><TicketLink /></div></>;
+  </main><footer><a className="brand" href="#pradzia"><Brand /></a><div className="footer-links"><SocialLink network="instagram" href={c.instagram.profileUrl} /><SocialLink network="facebook" href={c.socials.facebook} /><SocialLink network="tiktok" href={c.socials.tiktok} />{c.contactEmail && <a href={`mailto:${c.contactEmail}`}>{c.copy.contact} ↗</a>}{safeHttps(c.reviewUrl) && <External href={c.reviewUrl}>{c.copy.review} ↗</External>}</div><p>© {new Date().getFullYear()} {c.name}</p><a className="text-link" href="#pradzia">{c.copy.backTop} ↑</a></footer><div className="mobile-ticket"><TicketLink /></div></div>;
 }
 
 createRoot(document.getElementById('root')).render(<React.StrictMode><App /></React.StrictMode>);

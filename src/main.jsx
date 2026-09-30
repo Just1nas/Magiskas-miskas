@@ -30,15 +30,35 @@ function Header() {
 }
 function Journey() {
   const [active, setActive] = useState(0);
-  useEffect(() => {
-    const observer = new IntersectionObserver(entries => { entries.forEach(entry => { if (entry.isIntersecting) setActive(Number(entry.target.dataset.index)); }); }, { rootMargin: '-25% 0px -45% 0px', threshold: 0 });
-    document.querySelectorAll('.chapter').forEach(el => observer.observe(el));
-    return () => observer.disconnect();
-  }, []);
-  return <section id="kelione" className="journey section"><div className="section-heading"><span className="eyebrow">Kas laukia?</span><h2>Penkios erdvės.<br />Viena kelionė.</h2><p>Leisk smalsumui vesti.<br />Visa kita palik už miško ribos.</p></div>
-    <div className="journey-layout"><nav className="journey-progress" aria-label="Kelionės erdvės">{c.journey.map((zone, i) => <a href={`#${zone.id}`} key={zone.id} aria-current={active === i ? 'step' : undefined}><span className="progress-name">{zone.title}</span></a>)}</nav>
-    <div className="chapters">{c.journey.map((zone, i) => <article className={`chapter chapter-${i}`} data-index={i} id={zone.id} key={zone.id}><div className="chapter-top"><span className="eyebrow">{zone.cue}</span></div><h3>{zone.title}</h3><div className="chapter-copy"><p>{zone.text}</p><span className="small-note">{zone.detail}</span></div></article>)}</div></div>
+  const choose = index => setActive((index + c.journey.length) % c.journey.length);
+  const onKeyDown = (event, index) => {
+    const keys = { ArrowRight: index + 1, ArrowDown: index + 1, ArrowLeft: index - 1, ArrowUp: index - 1, Home: 0, End: c.journey.length - 1 };
+    if (!(event.key in keys)) return;
+    event.preventDefault();
+    const next = (keys[event.key] + c.journey.length) % c.journey.length;
+    choose(next);
+    document.getElementById(`tab-${c.journey[next].id}`)?.focus();
+  };
+  return <section id="kelione" className="journey section">
+    <div className="section-heading"><span className="eyebrow">Kas laukia?</span><h2>Penkios erdvės.<br />Viena kelionė.</h2><p>Pasirink, kur nori nuklysti.</p></div>
+    <div className="journey-explorer">
+      <div className="journey-tabs" role="tablist" aria-label="Miško erdvės">
+        {c.journey.map((zone, i) => <button key={zone.id} id={`tab-${zone.id}`} role="tab" aria-selected={active === i} aria-controls={zone.id} tabIndex={active === i ? 0 : -1} onClick={() => choose(i)} onKeyDown={event => onKeyDown(event, i)}>{zone.title}<span aria-hidden="true">↗</span></button>)}
+      </div>
+      <div className="journey-stage">
+        {c.journey.map((zone, i) => <article key={zone.id} id={zone.id} role="tabpanel" aria-labelledby={`tab-${zone.id}`} tabIndex="0" hidden={active !== i} className="journey-scene">
+          <div className="scene-content"><span className="eyebrow">{zone.cue}</span><h3>{zone.title}</h3><p>{zone.text}</p><span className="small-note">{zone.detail}</span></div>
+          <img className="scene-symbol" src="brand/symbol.png" alt="" aria-hidden="true" />
+        </article>)}
+        <div className="journey-controls"><span className="small-note">Toliau — dar viena paslaptis.</span><div><button aria-label="Ankstesnė erdvė" onClick={() => choose(active - 1)}>←</button><button aria-label="Kita erdvė" onClick={() => choose(active + 1)}>→</button></div></div>
+      </div>
+    </div>
   </section>;
+}
+function Faq() {
+  const [expanded, setExpanded] = useState(false);
+  const question = ([title, answer]) => <details key={title}><summary>{title}<span aria-hidden="true">+</span></summary><p>{answer}{title === 'Kaip įsigyti bilietą?' && <span className="faq-ticket"><TicketLink /></span>}</p></details>;
+  return <section id="duk" className="section faq"><div><span className="eyebrow">D.U.K.</span><h2>Smalsu?<br />Puiku.</h2></div><div>{c.faq.slice(0, 6).map(question)}<div id="more-questions" hidden={!expanded}>{c.faq.slice(6).map(question)}</div>{c.faq.length > 6 && <button className="text-link faq-more" aria-expanded={expanded} aria-controls="more-questions" onClick={() => setExpanded(!expanded)}>{expanded ? 'Rodyti mažiau −' : 'Daugiau klausimų +'}</button>}</div></section>;
 }
 function Tickets() {
   const [load, setLoad] = useState(false);
@@ -82,11 +102,11 @@ function App() {
   useAmbientMotion();
   return <><a className="skip-link" href="#turinys">Pereiti prie turinio</a><Header /><main id="turinys">
     <section id="pradzia" className="hero"><Brand watermark /><div className="hero-meta eyebrow"><span>Patyrimų ir šviesos spektaklis</span><span>{c.city} / Po atviru dangumi</span></div><div className="hero-title"><span className="eyebrow">{c.tagline}</span><h1><span>Magiškas</span><span>Miškas</span></h1></div><div className="hero-bottom"><p>{c.description}</p><div className="hero-date"><span>{c.city}</span><span className="small-note">{closed ? c.season.closedMessage : c.date}</span></div><a className="enter-link" href="#slenkstis">Įžengti <span aria-hidden="true">↓</span></a></div><div className="hero-ticket"><TicketLink /></div></section>
-    <section id="slenkstis" className="pause section"><Brand watermark /><span className="eyebrow">Palik kasdienybę už slenksčio</span><h2>{c.pause}</h2><span className="pause-bottom eyebrow">Ne tik pamatyti. Pajusti.</span></section>
+    <section id="slenkstis" className="pause section"><Brand watermark /><span className="eyebrow">Palik kasdienybę už slenksčio</span><h2>{c.pause}</h2><p className="pause-story">{c.story}</p><span className="pause-bottom eyebrow">Ne tik pamatyti. Pajusti.</span></section>
     <section className="section overview" aria-labelledby="trumpai"><div><h2 id="trumpai">Trumpai<br />apie magiją.</h2></div><dl>{[['Patyrimas', 'Šviesos. Gamtos. Vaizduotės.'], ['Trukmė', c.duration], ['Kam?', 'Visokio ūgio vaikams'], ['Vieta', c.venue]].map(([label, value]) => <div key={label}><dt>{label}</dt><dd>{value}</dd></div>)}</dl></section>
-    <div className="story section"><p>{c.story}</p></div><Journey /><Tickets />
+    <Journey /><Tickets />
     <section id="informacija" className="section practical"><div className="section-heading"><span className="eyebrow">Prieš įžengiant</span><h2>Truputis planavimo.<br />Daugiau magijos.</h2></div><dl>{[['Kada', `${c.date.replace(/\.$/, '')}. ${c.hours.replace(/\.$/, '')}.`], ['Kur', `${c.venue}. ${c.address}.`], ['Trukmė', c.duration], ...c.practical].map(([key, value]) => <div key={key}><dt>{key}</dt><dd>{value}</dd></div>)}</dl><div className="practical-cta"><TicketLink /></div></section>
-    <Arrival /><Instagram /><section id="duk" className="section faq"><div><span className="eyebrow">D.U.K.</span><h2>Smalsu?<br />Puiku.</h2></div><div>{c.faq.map(([question, answer]) => <details key={question}><summary>{question}<span aria-hidden="true">+</span></summary><p>{answer}{question === 'Kaip įsigyti bilietą?' && <span className="faq-ticket"><TicketLink /></span>}</p></details>)}</div></section>
+    <Arrival /><Instagram /><Faq />
     <section className="final section"><Brand watermark /><span className="eyebrow">{c.tagline}</span><h2>{closed ? c.season.closedMessage : <>{c.final.first}<br /><span>{c.final.second}</span></>}</h2><TicketLink /><p>{c.city} · {c.date}</p></section>
   </main><footer><a className="brand" href="#pradzia"><Brand /></a><div className="footer-links">{instagramUrl && <External href={instagramUrl}>Instagram ↗</External>}{safeHttps(c.socials.facebook, ['facebook.com']) && <External href={c.socials.facebook}>Facebook ↗</External>}{safeHttps(c.socials.tiktok, ['tiktok.com']) && <External href={c.socials.tiktok}>TikTok ↗</External>}{c.contactEmail && <a href={`mailto:${c.contactEmail}`}>Susisiekime ↗</a>}{safeHttps(c.reviewUrl) && <External href={c.reviewUrl}>Palikti atsiliepimą ↗</External>}</div><p>© {new Date().getFullYear()} {c.name}</p><a className="text-link" href="#pradzia">Į pradžią ↑</a></footer><div className="mobile-ticket"><TicketLink /></div></>;
 }

@@ -126,6 +126,7 @@ Pasibaigus sezonui nustatykite `season.mode: 'closed'` ir atnaujinkite `season.c
 
 ## Dizainas ir patikra
 
+- Penkios miško erdvės pateikiamos vienoje perjungiamoje scenoje: pasirinkimas pavadinimais, ankstesnės / kitos erdvės mygtukai ir klaviatūros rodyklės. D.U.K. pradžioje rodo šešis klausimus, likę pasiekiami per „Daugiau klausimų“.
 - Magical naudojamas H1/H2/H3, didelėms emocinėms frazėms ir erdvių pavadinimams; Manrope — navigacijai, tekstui, mygtukams ir FAQ.
 - Šriftai konvertuoti iš pateiktų TTF į WOFF2 be simbolių iškirpimo, išsaugotos lietuviškos raidės ir Manrope variable ašis.
 - Logotipo PNG failai išlaikyti originalūs. Balta išvaizda ant tamsaus fono gaunama CSS filtru. Watermark naudoja pateiktą to paties pagrindinio logotipo simbolį.

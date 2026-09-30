@@ -9,7 +9,7 @@ export function useAmbientMotion() {
     const completed = new WeakSet();
     const running = new Set();
     const targets = document.querySelectorAll(
-      '.hero h1 > span, .hero-title > .eyebrow, .hero-bottom > p, main h2, main h3, .story > p, .chapter-copy > p, .section-heading > p',
+      '.hero h1 > span, .hero-title > .eyebrow, .hero-bottom > p, main h2, .transport h3, .pause-story, .section-heading > p',
     );
     let observer;
 

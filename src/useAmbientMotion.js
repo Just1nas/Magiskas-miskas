@@ -9,7 +9,7 @@ export function useAmbientMotion() {
     const completed = new WeakSet();
     const running = new Set();
     const targets = document.querySelectorAll(
-      'main h2, main h3, .story > p, .chapter-copy > p, .section-heading > p',
+      '.hero h1 > span, .hero-title > .eyebrow, .hero-bottom > p, main h2, main h3, .story > p, .chapter-copy > p, .section-heading > p',
     );
     let observer;
 
@@ -24,12 +24,14 @@ export function useAmbientMotion() {
           if (!isIntersecting || completed.has(target)) return;
           completed.add(target);
           observer.unobserve(target);
+          const heroLine = target.matches('.hero h1 > span');
+          const heroDelay = heroLine ? [...target.parentElement.children].indexOf(target) * 160 : 0;
           const animation = target.animate(
             [
-              { opacity: 0.65, transform: 'translateY(14px)' },
+              { opacity: 0.2, transform: 'translateY(28px)' },
               { opacity: 1, transform: 'translateY(0)' },
             ],
-            { duration: 850, easing: 'cubic-bezier(0.22, 1, 0.36, 1)' },
+            { duration: heroLine ? 1400 : 1100, delay: heroDelay, fill: 'backwards', easing: 'cubic-bezier(0.22, 1, 0.36, 1)' },
           );
           running.add(animation);
           animation.finished.then(

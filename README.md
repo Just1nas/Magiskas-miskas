@@ -129,7 +129,7 @@ Pasibaigus sezonui nustatykite `season.mode: 'closed'` ir atnaujinkite `season.c
 - Magical naudojamas H1/H2/H3, didelėms emocinėms frazėms ir erdvių pavadinimams; Manrope — navigacijai, tekstui, mygtukams ir FAQ.
 - Šriftai konvertuoti iš pateiktų TTF į WOFF2 be simbolių iškirpimo, išsaugotos lietuviškos raidės ir Manrope variable ašis.
 - Logotipo PNG failai išlaikyti originalūs. Balta išvaizda ant tamsaus fono gaunama CSS filtru. Watermark naudoja pateiktą to paties pagrindinio logotipo simbolį.
-- Antraštės ir pasakojimo tekstai vieną kartą švelniai atsiskleidžia patekę į matomą sritį; tekstas visada išlieka įskaitomas. Mygtukai reaguoja į pelę, klaviatūros fokusą ir paspaudimą. Logotipo fone judesys lėtas.
+- Pirmojo ekrano antraštė pasirodo dviem etapais; kitos antraštės ir pasakojimo tekstai vieną kartą atsiskleidžia patekę į matomą sritį (28 px, 1,1–1,4 s); tekstas visada išlieka įskaitomas. Mygtukai reaguoja į pelę, klaviatūros fokusą ir paspaudimą. Logotipo fone judesys lėtas.
 - `prefers-reduced-motion` išjungia animaciją ir tolygų slinkimą, taip pat sustabdo jau vykstančius efektus pakeitus sistemos nuostatą. Yra klaviatūros fokusas, skip link, semantinės antraštės, native FAQ accordion, mobile meniu ir nuolatinis bilietų CTA.
 - SEO meta tekstai yra `index.html`; pakeitus renginio esmę juos atnaujinkite kartu su turiniu. Canonical ir renginio struktūriniai duomenys nepridėti be patvirtinto domeno / pilnų datų.
 - Reali bilietų operacija, oficialus widgetas ir tikros paskyros feed turi būti patikrinti prijungus tiekėjo duomenis.

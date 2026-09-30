@@ -241,3 +241,14 @@ img.hero-photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover
 @keyframes lightbox-in{from{opacity:0;transform:translateY(12px) scale(.98)}to{opacity:1;transform:none}}
 @media(max-width:900px){.instagram .gallery-track>*{flex-basis:calc((100% - 20px)/2)}.instagram .gallery-track:after{flex-basis:calc(50% - 10px)}}
 @media(max-width:640px){.instagram .gallery-track>*{flex-basis:84%}.instagram .gallery-track:after{flex-basis:calc(16% - 20px)}.lightbox-content{grid-template-columns:1fr}.lightbox-content>img{height:55svh}.lightbox-copy{padding:24px}.lightbox-copy p{margin-top:14px;font-size:12px}.post-lightbox{max-height:88svh}}
+
+/* Accessible, monochrome social links with a 44px touch target. */
+.social-link{display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;flex:0 0 44px;color:var(--cream);border:1px solid transparent;border-radius:50%;transition:background .25s,border-color .25s,transform .25s}
+.social-link svg{width:23px;height:23px;display:block;flex:none}
+.social-link:focus-visible{outline:2px solid var(--cream);outline-offset:3px}
+.section-heading>.social-link{grid-column:2;justify-self:start}
+.lightbox-copy>.social-link{margin-top:22px}
+.footer-links{gap:10px;align-items:center}
+@media(hover:hover) and (pointer:fine){.social-link:hover{border-color:var(--muted);background:rgba(255,253,248,.08);transform:translateY(-2px)}}
+@media(max-width:640px){.section-heading>.social-link{grid-column:1}}
+@media(prefers-reduced-motion:reduce){.social-link{transition:none;transform:none!important}}

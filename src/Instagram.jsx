@@ -3,11 +3,12 @@ import { content as c } from './content';
 import { safeHttps, normalizePosts } from './integrations';
 import { Gallery } from './Gallery';
 import { PostLightbox } from './PostLightbox';
+import { SocialLink, SocialIcon } from './SocialLink';
 
 function PostImage({ src }) {
   const [failed, setFailed] = useState(false);
   useEffect(() => setFailed(false), [src]);
-  return src && !failed ? <img src={src} alt="" loading="lazy" decoding="async" onError={() => setFailed(true)} /> : <span className="post-image-fallback">Žiūrėti Instagram ↗</span>;
+  return src && !failed ? <img src={src} alt="" loading="lazy" decoding="async" onError={() => setFailed(true)} /> : <span className="post-image-fallback"><SocialIcon network="instagram" /></span>;
 }
 
 export function Instagram() {
@@ -35,10 +36,10 @@ export function Instagram() {
     return () => { stopped = true; clearTimeout(timer); controller?.abort(); };
   }, []);
   return <section id="instagram" className="section instagram">
-    <div className="section-heading"><span className="eyebrow">Akimirkos / Instagram</span><h2>Magija, kuria<br />norisi dalintis.</h2>{profile && <a className="text-link" href={profile} target="_blank" rel="noopener noreferrer">@magiskas.miskas ↗</a>}</div>
+    <div className="section-heading"><span className="eyebrow">Akimirkos / Instagram</span><h2>Magija, kuria<br />norisi dalintis.</h2>{profile && <SocialLink network="instagram" href={profile} />}</div>
     {posts.length > 0 ? <Gallery label="Magiško Miško Instagram įrašai" paused={selected !== null}>{posts.map((post, index) => <button className="instagram-post" key={post.id} aria-haspopup="dialog" onClick={() => setSelected(index)} aria-label={`Peržiūrėti Instagram įrašą: ${post.caption}`}>
       <div className="post-image"><PostImage src={post.image} /><span className="post-kind">{post.media_type === 'VIDEO' ? 'Reel' : 'Peržiūrėti'} <span aria-hidden="true">↗</span></span></div>
-    </button>)}</Gallery> : <div className="instagram-empty" role="status"><p>{state === 'loading' ? 'Ieškome naujausių akimirkų…' : 'Akimirkos laukia mūsų Instagram.'}</p>{profile && <a className="text-link" href={profile} target="_blank" rel="noopener noreferrer">Atidaryti paskyrą ↗</a>}</div>}
+    </button>)}</Gallery> : <div className="instagram-empty" role="status"><p>{state === 'loading' ? 'Ieškome naujausių akimirkų…' : 'Akimirkos laukia mūsų Instagram.'}</p>{profile && <SocialLink network="instagram" href={profile} />}</div>}
     {selected !== null && posts[selected] && <PostLightbox posts={posts} index={selected} onChange={setSelected} onClose={() => setSelected(null)} />}
   </section>;
 }

@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client';
 import { content as c } from './content';
 import { safeHttps } from './integrations';
 import { Instagram } from './Instagram';
+import { SocialLink } from './SocialLink';
 import './styles.css';
 import { useAmbientMotion } from './useAmbientMotion';
 
@@ -10,7 +11,6 @@ const brand = __BRAND__;
 const closed = c.season.mode === 'closed';
 const ticketUrl = closed ? '' : safeHttps(c.tickets.url, ['bilietai.lt']);
 const ticketFrame = safeHttps(c.tickets.iframeUrl, ['bilietai.lt']);
-const instagramUrl = safeHttps(c.instagram.profileUrl, ['instagram.com']);
 function External({ href, children, ...props }) { return <a href={href} target="_blank" rel="noopener noreferrer" {...props}>{children}</a>; }
 function TicketLink({ className = '', children = 'Pirkti bilietą' }) {
   if (closed) return <a className={`button ${className}`} href="#bilietai">Iki susitikimo <span aria-hidden="true">↗</span></a>;
@@ -94,7 +94,7 @@ function App() {
     <section id="informacija" className="section practical"><div className="section-heading"><span className="eyebrow">Prieš įžengiant</span><h2>Truputis planavimo.<br />Daugiau magijos.</h2></div><dl>{[['Kada', `${c.date.replace(/\.$/, '')}. ${c.hours.replace(/\.$/, '')}.`], ['Kur', `${c.venue}. ${c.address}.`], ['Trukmė', c.duration], ...c.practical].map(([key, value]) => <div key={key}><dt>{key}</dt><dd>{value}</dd></div>)}</dl><div className="practical-cta"><TicketLink /></div></section>
     <Arrival /><Faq />
     <section className="final section"><Brand watermark /><span className="eyebrow">{c.tagline}</span><h2>{closed ? c.season.closedMessage : <>{c.final.first}<br /><span>{c.final.second}</span></>}</h2><TicketLink /><p>{c.city} · {c.date}</p></section>
-  </main><footer><a className="brand" href="#pradzia"><Brand /></a><div className="footer-links">{instagramUrl && <External href={instagramUrl}>Instagram ↗</External>}{safeHttps(c.socials.facebook, ['facebook.com']) && <External href={c.socials.facebook}>Facebook ↗</External>}{safeHttps(c.socials.tiktok, ['tiktok.com']) && <External href={c.socials.tiktok}>TikTok ↗</External>}{c.contactEmail && <a href={`mailto:${c.contactEmail}`}>Susisiekime ↗</a>}{safeHttps(c.reviewUrl) && <External href={c.reviewUrl}>Palikti atsiliepimą ↗</External>}</div><p>© {new Date().getFullYear()} {c.name}</p><a className="text-link" href="#pradzia">Į pradžią ↑</a></footer><div className="mobile-ticket"><TicketLink /></div></>;
+  </main><footer><a className="brand" href="#pradzia"><Brand /></a><div className="footer-links"><SocialLink network="instagram" href={c.instagram.profileUrl} /><SocialLink network="facebook" href={c.socials.facebook} /><SocialLink network="tiktok" href={c.socials.tiktok} />{c.contactEmail && <a href={`mailto:${c.contactEmail}`}>Susisiekime ↗</a>}{safeHttps(c.reviewUrl) && <External href={c.reviewUrl}>Palikti atsiliepimą ↗</External>}</div><p>© {new Date().getFullYear()} {c.name}</p><a className="text-link" href="#pradzia">Į pradžią ↑</a></footer><div className="mobile-ticket"><TicketLink /></div></>;
 }
 
 createRoot(document.getElementById('root')).render(<React.StrictMode><App /></React.StrictMode>);

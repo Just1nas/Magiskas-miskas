@@ -18,3 +18,10 @@ test('plain text survives literally and edited FAQ can be added',()=>{
  const value=editableDefaults();value.story='<script>alert(1)</script>';value.faq.push(['Naujas?','Taip.']);
  assert.equal(validateEdits(value).story,value.story);assert.equal(validateEdits(value).faq.length,content.faq.length+1);
 });
+import {authFlow} from '../src/admin/auth-flow.js';
+test('only a complete invitation callback uses the provider invitation flow',()=>{
+ assert.equal(authFlow(''),'pkce');
+ assert.equal(authFlow('#type=invite'),'pkce');
+ assert.equal(authFlow('#type=magiclink&access_token=test&refresh_token=test'),'pkce');
+ assert.equal(authFlow('#type=invite&access_token=test&refresh_token=test'),'implicit');
+});

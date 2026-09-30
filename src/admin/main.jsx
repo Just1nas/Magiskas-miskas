@@ -4,7 +4,8 @@ import { createClient } from '@supabase/supabase-js';
 import { fields, editableDefaults, validateEdits } from '../editable-content.js';
 import { cmsUrl, cmsKey, cmsConfigured } from '../cms-config.js';
 import './style.css';
-const client = cmsConfigured ? createClient(cmsUrl, cmsKey, { auth: { flowType: 'pkce' } }) : null;
+import { authFlow } from './auth-flow.js';
+const client = cmsConfigured ? createClient(cmsUrl, cmsKey, { auth: { flowType: authFlow(location.hash) } }) : null;
 const demo = ['localhost','127.0.0.1'].includes(location.hostname) && new URLSearchParams(location.search).get('perziura') === '1';
 const groups = ['Pradžia', 'Miško erdvės', 'Informacija', 'D.U.K.', 'Pabaiga'];
 function Admin() {
@@ -14,7 +15,7 @@ function Admin() {
   const dirty = saved !== null && JSON.stringify(document) !== saved;
   useEffect(() => {
     if (!client) return;
-    client.auth.getSession().then(({data,error}) => { if(error) setMessage('Prisijungimas nepavyko. Paprašyk naujos nuorodos.'); setSession(data.session); setReady(true); });
+    client.auth.getSession().then(({data,error}) => { if(error) setMessage('Prisijungimas nepavyko. Paprašyk naujos nuorodos.'); setSession(data.session); setReady(true); }).catch(() => {setMessage("Nepavyko patikrinti prisijungimo. Perkrauk puslapį.");setReady(true);});
     const {data:{subscription}} = client.auth.onAuthStateChange((_event,value) => {setSession(value); setReady(true);});
     return () => subscription.unsubscribe();
   }, []);
@@ -33,7 +34,7 @@ function Admin() {
         const value = {...editableDefaults(), ...validateEdits(data.content)};
         setDocument(value); setSaved(JSON.stringify(value)); setRevision(data.revision); setAllowed(true); setMessage('');
       } catch {setMessage('Nepavyko įkelti tekstų. Perkrauk puslapį ir bandyk dar kartą.');}
-    })();
+    })().catch(() => {if(active)setMessage("Nepavyko įkelti tekstų. Patikrink interneto ryšį ir perkrauk puslapį.");});
     return () => {active=false;};
   }, [session?.user.id]);
   useEffect(() => {

@@ -76,9 +76,8 @@ function Tickets() {
   </div></section>;
 }
 function Arrival() {
-  const [mapOpen, setMapOpen] = useState(false);
   const mapUrl = safeHttps(c.map.embedUrl, ['google.com']);
-  return <section id="atvykimas" className="section arrival"><div className="section-heading"><span className="eyebrow">Kaip atvykti</span><h2>Visi keliai<br />veda į mišką.</h2></div><div className="arrival-grid"><div className="transport">{c.transport.map(([title, text, link]) => <div key={title}><h3>{title}</h3><p>{text}</p>{safeHttps(link) && <External className="text-link" href={link}>Planuoti kelionę ↗</External>}</div>)}</div><div className="map-panel"><span className="eyebrow">Vilnius / Vingis</span><p className="map-address">{c.venue}</p><p>{c.address}</p><External className="text-link" href={safeHttps(c.map.directionsUrl)}>Atidaryti maršrutą ↗</External>{mapUrl && (mapOpen ? <iframe title="Renginio vieta žemėlapyje" src={mapUrl} loading="lazy" referrerPolicy="no-referrer" /> : <button className="text-link" onClick={() => setMapOpen(true)}>Rodyti Google žemėlapį +</button>)}</div></div></section>;
+  return <section id="atvykimas" className="section arrival"><div className="section-heading"><span className="eyebrow">Kaip atvykti</span><h2>Visi keliai<br />veda į mišką.</h2></div><div className="arrival-grid"><div className="transport">{c.transport.map(([title, text, link]) => <div key={title}><h3>{title}</h3><p>{text}</p>{safeHttps(link) && <External className="text-link" href={link}>Planuoti kelionę ↗</External>}</div>)}</div><div className="map-panel"><span className="eyebrow">Vilnius / Vingis</span><p className="map-address">{c.venue}</p><p>{c.address}</p><External className="text-link" href={safeHttps(c.map.directionsUrl)}>Atidaryti maršrutą ↗</External>{mapUrl && <><iframe title="Magiško Miško atvykimo žemėlapis" src={mapUrl} loading="lazy" referrerPolicy="strict-origin-when-cross-origin" allowFullScreen /><External className="text-link" href={mapUrl}>Atidaryti žemėlapį ↗</External></>}</div></div></section>;
 }
 function App() {
   useAmbientMotion();

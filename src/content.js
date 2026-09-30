@@ -17,7 +17,7 @@ export const content = {
     profileUrl: 'https://www.instagram.com/magiskas.miskas/',
     endpoint: './instagram/feed.json', refreshMs: 300000, limit: 5,
   },
-  map: { directionsUrl: 'https://www.google.com/maps/search/?api=1&query=VU+Botanikos+sodo+Vingio+skyrius+M.+K.+Čiurlionio+110+Vilnius', embedUrl: '' },
+  map: { directionsUrl: 'https://www.google.com/maps/search/?api=1&query=VU+Botanikos+sodo+Vingio+skyrius+M.+K.+Čiurlionio+110+Vilnius', embedUrl: 'https://www.google.com/maps/d/embed?mid=1FTCxCjWWOorMnTW6itQX26UgJRLCrVc&ehbc=2E312F' },
   journey: [
     { id: 'snabzdesiu-aleja', title: 'Šnabždesių alėja', cue: 'Įsiklausyk.', text: 'Šimtametis liepų takas, šviečiantis tūkstančiais nematytų grybų, kuždančių kerpių, knibždančių šaknų ir žėrinčių vijoklių.', detail: 'Čia prasideda tavo kelionė.' },
     { id: 'prisiminimu-kudra', title: 'Prisiminimų kūdra', cue: 'Prisimink.', text: 'Povandeninio pasaulio šviesos, šešėliai virš vandens ir vaizdiniai iš atminties: įsitaisyk ant sūpynių ir gerk pasaką iš kūdros gelmių.', detail: 'Maža pauzė dideliems jausmams.' },

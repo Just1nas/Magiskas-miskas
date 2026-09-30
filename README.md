@@ -77,7 +77,9 @@ Jei gavote `magiskas-miskas-dist.zip`, jame jau yra surinkta versija. Kiekvieną
 
 ## Bilietai.lt
 
-`src/content.js` laukas `tickets.widgetId` yra vartotojo pateiktas viešas valdiklio ID. `TicketWidget.jsx` po komponento įkėlimo vieną kartą įkelia oficialų `https://www.bilietai.lt/_widgets/widget.iife.js` skriptą su `plg-embed`. Valdiklio elementas turi `plg-widget`, `data-widget-id` ir `data-language="lt"`. Kalendorių, kainas, laisvas vietas, mokėjimą ir iframe aukštį valdo Bilietai.lt. Vidinis valdiklio dizainas priklauso tiekėjui.
+`src/content.js` laukas `tickets.widgetId` yra vartotojo pateiktas viešas valdiklio ID. `TicketWidget.jsx` po komponento įkėlimo vieną kartą įkelia oficialų `https://www.bilietai.lt/_widgets/widget.iife.js` skriptą su `plg-embed`. Valdiklio elementas turi `plg-widget`, `data-widget-id` ir `data-language="lt"`. Kalendorių, kainas, laisvas vietas, mokėjimą ir iframe aukštį valdo Bilietai.lt. Valdiklio spalvos, kraštinės ir šriftai perduodami tiekėjo palaikomais `data-theme`, `data-base`, `data-font` ir `data-custom-styles` parametrais iš `src/ticketTheme.js`. Naudojama dabartinė naktinė svetainės paletė, Manrope tekstams ir Magical H1–H3.
+
+Svarbu: 2026-09-30 tiekėjo temos parametrų režimas neskaito išsaugotos valdiklio konfigūracijos. Todėl kartu perduodami viešo `/api/widget/<ID>` patikrinti `eventId: 7VTPCXHIHO` ir `sp: magiskas`. Pakeitus renginį reikia atnaujinti ir `ticketWidgetRouting`. Mokėjimo funkcijos nekeičiamos. Šriftai tie patys vartotojo pateikti WOFF2, įkeliami iš fiksuotos jo GitHub repo versijos; Hostinger šriftų atsakymai šiuo metu neturi iframe reikalingos CORS antraštės. Tiekėjui pakeitus parametrų palaikymą reikia pakartotinai patikrinti temą ir pirkimo pasirinkimą.
 
 Visi „Pirkti bilietą“ mygtukai veda į `#bilietai`. `tickets.url` yra patikrinta tiesioginė šio renginio nuoroda; ji visada rodoma po valdikliu, taip pat jei skriptas užblokuotas arba kraunasi ilgai. Slapukų pasirinkimus valdo tiekėjas. Svetainėje neapdorojami mokėjimo ar asmens duomenys; pirkimas vyksta Bilietai.lt. Integracijos patikra neapima tikro užsakymo ar apmokėjimo.
 
@@ -106,7 +108,7 @@ Peržiūros nuorodos rodo fono perjungiklį. Įprastame puslapyje jis nerodomas.
 
 ## Žemėlapis, kontaktai ir sezonas
 
-`map.directionsUrl` jau atidaro adresą Google Maps. `map.embedUrl` paliktas tuščias: įrašykite Google Maps „Share → Embed a map“ iframe HTTPS `src`, jei norite žemėlapio vietoje. Jis įkeliamas tik po paspaudimo. Žemėlapis nėra papildomas dekoratyvinis vaizdas.
+`map.directionsUrl` jau atidaro adresą Google Maps. `map.embedUrl` įrašytas vartotojo pateiktas Google My Maps žemėlapis (`mid=1FTCxCjWWOorMnTW6itQX26UgJRLCrVc`). Jis rodomas „Kaip atvykti“ skiltyje ir kraunamas tingiai (`loading="lazy"`), kai lankytojas priartėja prie skilties. Plotis prisitaiko prie ekrano; yra ir atskira nuoroda atidaryti žemėlapį. Žemėlapio viešą prieinamumą, žymeklius ir sluoksnius valdo jo savininkas Google My Maps. Žemėlapis nėra papildomas dekoratyvinis vaizdas.
 
 `socials.facebook`, `socials.tiktok`, `contactEmail`, `reviewUrl` valdo papildomas nuorodas; tušti laukai nerodomi. Adresų nespėliokite.
 

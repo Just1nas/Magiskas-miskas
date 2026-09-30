@@ -1,0 +1,23 @@
+/* Light, not imagery: slow transform/opacity motion with no flashing or tracking. */
+.magic-atmosphere{position:absolute;inset:0;z-index:-1;overflow:hidden;pointer-events:none;contain:layout paint}
+.magic-halo{position:absolute;border-radius:50%;opacity:.7;animation:magic-halo-drift 26s ease-in-out infinite alternate;animation-play-state:paused}
+.magic-halo-blue{width:78%;height:105%;right:-13%;top:-20%;background:radial-gradient(ellipse,rgba(49,112,168,.25),rgba(18,75,114,.11) 40%,transparent 69%)}
+.magic-halo-warm{width:60%;height:85%;right:0;bottom:-36%;background:radial-gradient(ellipse,rgba(227,193,126,.16),rgba(167,133,92,.045) 42%,transparent 69%);animation-duration:32s;animation-delay:-12s}
+.magic-light{position:absolute;display:block;border-radius:50%;background:#fff2cd;box-shadow:0 0 9px 3px rgba(235,214,168,.24),0 0 26px 9px rgba(224,188,122,.06);opacity:.35;animation:magic-light-drift var(--drift-time) ease-in-out var(--drift-delay) infinite alternate;animation-play-state:paused}
+.magic-atmosphere.is-awake .magic-halo,.magic-atmosphere.is-awake .magic-light{animation-play-state:running}
+.hero>.watermark{opacity:.13;animation:magic-logo-reveal 3.2s ease-out both;animation-play-state:paused}
+.hero.magic-active>.watermark{animation-play-state:running}
+.hero:not(.magic-active)::before{animation-play-state:paused}
+.header .brand-image{animation:magic-brand-reveal 1.8s ease-out both}
+.section{padding-block:60px}
+.pause{padding-block:52px;gap:22px}
+.pause h2{margin:0 auto}
+.overview{padding-block:46px}
+.journey{padding-bottom:48px}
+.final{padding-block:68px}
+@keyframes magic-halo-drift{from{transform:translate3d(-2%,2%,0) scale(.94);opacity:.5}to{transform:translate3d(3%,-3%,0) scale(1.06);opacity:.9}}
+@keyframes magic-light-drift{0%{transform:translate3d(-9px,12px,0);opacity:.12}50%{opacity:.65}100%{transform:translate3d(15px,-28px,0);opacity:.25}}
+@keyframes magic-logo-reveal{from{opacity:0}to{opacity:.13}}
+@keyframes magic-brand-reveal{from{opacity:.3}to{opacity:1}}
+@media(max-width:640px){.magic-light:nth-of-type(n+4){display:none}.magic-halo-warm{width:95%;right:-30%;bottom:-23%;opacity:.55}.hero>.watermark{opacity:.1}.section{padding-block:38px}.pause{padding-block:42px;gap:20px}.overview{padding-block:36px}.journey{padding-bottom:34px}.final{padding-block:48px}}
+@media(prefers-reduced-motion:reduce){.magic-light{display:none}.magic-halo,.hero>.watermark,.header .brand-image{animation:none!important}.hero>.watermark{opacity:.13}}

@@ -4,6 +4,7 @@ import { content as c } from './content';
 import { safeHttps } from './integrations';
 import { Instagram } from './Instagram';
 import { SocialLink } from './SocialLink';
+import { MagicAtmosphere } from './MagicAtmosphere';
 import { TicketWidget } from './TicketWidget';
 import './styles.css';
 import { useAmbientMotion } from './useAmbientMotion';
@@ -91,7 +92,7 @@ function App() {
     window.history.replaceState(null, '', url);
   };
   return <><a className="skip-link" href="#turinys">Pereiti prie turinio</a><Header />{preview && <div className="background-preview" role="group" aria-label="Fono variantų peržiūra"><span>Fono peržiūra</span><button aria-pressed={background === 'colors'} onClick={() => switchBackground('colors')}>Spalvos</button><button aria-pressed={background === 'photo'} onClick={() => switchBackground('photo')}>Nuotrauka</button></div>}<main id="turinys">
-    <section id="pradzia" className={`hero hero-${background}`}>{background === 'photo' && <img className="hero-photo" src="images/forest-night.webp" alt="" aria-hidden="true" fetchPriority="high" />}<Brand watermark /><div className="hero-meta eyebrow"><span>{c.copy.heroLabel}</span><span>{c.city} / {c.copy.heroLocation}</span></div><div className="hero-title"><span className="eyebrow">{c.tagline}</span><h1><span>{c.copy.heroFirst}</span><span>{c.copy.heroSecond}</span></h1></div><div className="hero-bottom"><p>{c.description}</p><div className="hero-date"><span>{c.city}</span><span className="small-note">{closed ? c.season.closedMessage : c.date}</span></div><a className="enter-link" href="#slenkstis">{c.copy.enter} <span aria-hidden="true">↓</span></a></div><div className="hero-ticket"><TicketLink /></div></section>
+    <section id="pradzia" className={`hero hero-${background}`}>{background === 'photo' && <img className="hero-photo" src="images/forest-night.webp" alt="" aria-hidden="true" fetchPriority="high" />}<MagicAtmosphere /><Brand watermark /><div className="hero-meta eyebrow"><span>{c.copy.heroLabel}</span><span>{c.city} / {c.copy.heroLocation}</span></div><div className="hero-title"><span className="eyebrow">{c.tagline}</span><h1><span>{c.copy.heroFirst}</span><span>{c.copy.heroSecond}</span></h1></div><div className="hero-bottom"><p>{c.description}</p><div className="hero-date"><span>{c.city}</span><span className="small-note">{closed ? c.season.closedMessage : c.date}</span></div><a className="enter-link" href="#slenkstis">{c.copy.enter} <span aria-hidden="true">↓</span></a></div><div className="hero-ticket"><TicketLink /></div></section>
     <section id="slenkstis" className="pause section"><Brand watermark /><span className="eyebrow">{c.copy.pauseLabel}</span><h2>{c.pause}</h2><p className="pause-story">{c.story}</p><span className="pause-bottom eyebrow">{c.copy.pauseBottom}</span></section>
     <Instagram />
     <section className="section overview" aria-labelledby="trumpai"><div><h2 id="trumpai" style={{whiteSpace:"pre-line"}}>{c.copy.overviewTitle}</h2></div><dl>{[[c.copy.experienceLabel, c.copy.experience], [c.copy.durationLabel, c.duration], [c.copy.audienceLabel, c.copy.audience], [c.copy.venueLabel, c.venue]].map(([label, value]) => <div key={label}><dt>{label}</dt><dd>{value}</dd></div>)}</dl></section>

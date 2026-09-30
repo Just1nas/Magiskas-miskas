@@ -18,8 +18,8 @@ const ticketUrl = closed ? '' : safeHttps(c.tickets.url, ['bilietai.lt']);
 const ticketFrame = safeHttps(c.tickets.iframeUrl, ['bilietai.lt']);
 function External({ href, children, ...props }) { return <a href={href} target="_blank" rel="noopener noreferrer" {...props}>{children}</a>; }
 function TicketLink({ className = '', children = c.copy.buy }) {
-  if (closed) return <a className={`button ${className}`} href="#bilietai">{c.copy.closedButton} <span aria-hidden="true">↗</span></a>;
-  return ticketUrl && !c.tickets.widgetId ? <External className={`button ${className}`} href={ticketUrl}>{children}<span aria-hidden="true">↗</span></External> : <a className={`button ${className}`} href="#bilietai" onClick={() => window.dispatchEvent(new Event('open-ticket-selection'))}>{children}<span aria-hidden="true">↗</span></a>;
+  if (closed) return <a className={`button ${className}`} href="#bilietai">{c.copy.closedButton} <span aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" focusable="false" style={{display:'block'}}><path d="M5 19 19 5M5 5h14v14" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" /></svg></span></a>;
+  return ticketUrl && !c.tickets.widgetId ? <External className={`button ${className}`} href={ticketUrl}>{children}<span aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" focusable="false" style={{display:'block'}}><path d="M5 19 19 5M5 5h14v14" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" /></svg></span></External> : <a className={`button ${className}`} href="#bilietai" onClick={() => window.dispatchEvent(new Event('open-ticket-selection'))}>{children}<span aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" focusable="false" style={{display:'block'}}><path d="M5 19 19 5M5 5h14v14" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" /></svg></span></a>;
 }
 function Brand({ watermark = false }) {
   if (watermark) return brand.logo ? <img className="watermark" src="brand/symbol.png" alt="" aria-hidden="true" /> : null;

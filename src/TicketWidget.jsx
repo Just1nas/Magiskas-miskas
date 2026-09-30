@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { content as c } from './content';
+import './ticketLayout.css';
 import { ticketTheme, ticketBase, ticketFont, ticketCustomStyles } from './ticketTheme';
 
 const SCRIPT_URL = 'https://www.bilietai.lt/_widgets/widget.iife.js';

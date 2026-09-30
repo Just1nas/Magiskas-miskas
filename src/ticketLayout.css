@@ -1,0 +1,7 @@
+/* Full-width ticket section; keep the surrounding editorial text aligned. */
+.tickets-integrated{padding-inline:0}
+.tickets-integrated>.section-heading{margin-inline:5.5vw}
+.tickets-integrated>.ticket-direct{margin-left:5.5vw;margin-right:5.5vw}
+.tickets-integrated .ticket-widget-panel{width:100%;border:0;border-radius:0;background:transparent;box-shadow:none;overflow:visible}
+.tickets-integrated .ticket-widget iframe{border:0;border-radius:0}
+@media(max-width:640px){.tickets-integrated>.section-heading{margin-inline:6vw}.tickets-integrated>.ticket-direct{margin-left:6vw;margin-right:6vw}}

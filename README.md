@@ -71,7 +71,7 @@ Jei planas neturi Deploy Web App, bet turi failų talpinimą:
 2. Padarykite esamo domeno failų atsarginę kopiją.
 3. hPanel File Manager atidarykite konkretaus domeno `public_html`.
 4. Įkelkite **`dist` aplanko turinį**, ne patį aplanką ir ne React šaltinį. `index.html` turi būti tiesiai `public_html`.
-5. Patikrinkite domeną. Šiai vieno puslapio svetainei naudojamos `#` nuorodos, todėl SPA perrašymo taisyklių nereikia. `base: './'` leidžia talpinti ir poaplankyje.
+5. Patikrinkite domeną. Šiai vieno puslapio svetainei naudojamos `#` nuorodos, todėl SPA perrašymo taisyklių nereikia. `base: '/'` skirtas domeno šakniai; administravimui reikia išlaikyti `gabija/index.html`.
 
 Jei gavote `magiskas-miskas-dist.zip`, jame jau yra surinkta versija. Kiekvieną kartą pakeitus šaltinį jį reikia surinkti iš naujo. `build.yml` tikrina aplikaciją; `instagram.yml` atnaujina galerijos duomenis. Svetainę publikuoja Hostinger GitHub jungtis.
 
@@ -124,3 +124,23 @@ Pasibaigus sezonui nustatykite `season.mode: 'closed'` ir atnaujinkite `season.c
 - `prefers-reduced-motion` išjungia animaciją ir tolygų slinkimą, taip pat sustabdo jau vykstančius efektus pakeitus sistemos nuostatą. Yra klaviatūros fokusas, skip link, semantinės antraštės, native FAQ accordion, mobile meniu ir nuolatinis bilietų CTA.
 - SEO meta tekstai yra `index.html`; pakeitus renginio esmę juos atnaujinkite kartu su turiniu. Canonical ir renginio struktūriniai duomenys nepridėti be patvirtinto domeno / pilnų datų.
 - Reali bilietų operacija, oficialus widgetas ir tikros paskyros feed turi būti patikrinti prijungus tiekėjo duomenis.
+
+## Turinio panelė `/gabija/` — prijungimas
+
+Supabase projektas `bksezjoyymvhrlideciq` sukurtas, lentelės ir RLS įdiegtos. Vieša registracija išjungta; grįžimo adresas `https://www.magiskasmiskas.lt/gabija/`. Viešas publishable raktas įrašytas `src/cms-config.js`. Redaktorių pakvietimas, SMTP ir prisijungimo / išsaugojimo patikra dar neužbaigti. Viešoje navigacijoje nėra nuorodos į panelę. Adreso slaptumas nėra apsauga: serverio RLS leidžia rašyti tik `site_editors` įrašytiems vartotojams. Panelė turi `noindex,nofollow`.
+
+1. Sukurkite savininkui priklausantį Supabase projektą. SQL Editor vieną kartą paleiskite `supabase/setup.sql`.
+2. Authentication nustatymuose išjunkite viešą naujų vartotojų registraciją. Site URL: `https://www.magiskasmiskas.lt`. Redirect URLs pridėkite tik `https://www.magiskasmiskas.lt/gabija/` (ir vietinio testavimo adresą, jei reikia). Prisijungimui naudojama vienkartinė el. pašto nuoroda su PKCE, atidaroma toje pačioje naršyklėje.
+3. Sukonfigūruokite Supabase Auth SMTP su savininko el. pašto siuntimo paslauga. Numatytasis testinis siuntimas nėra tinkamas savavališkiems komandos adresams. Patikrinkite pristatymą, apribojimus ir kvietimo bei Magic Link šablonus; naudokite tiekėjo `ConfirmationURL`.
+4. Authentication → Users pakvieskite tik patvirtintus el. pašto adresus. Kiekvieno vartotojo UUID įrašykite į `site_editors` per SQL Editor (pavyzdys SQL failo gale). Kliento kodas negali kurti redaktorių. Pašalinus narį iš šios lentelės jo esama sesija nebeturės rašymo teisės.
+5. Šiam projektui papildomų Hostinger kintamųjų nereikia: `src/cms-config.js` turi viešą URL ir publishable raktą. Kitam projektui galima perrašyti `VITE_SUPABASE_URL` ir `VITE_SUPABASE_PUBLISHABLE_KEY` pagal `.env.example` ir surinkti iš naujo. Tai viešos reikšmės, saugumas priklauso nuo RLS. **Jokių secret / service_role raktų į frontend, GitHub ar VITE kintamuosius.**
+6. Patikrinkite `/gabija` ir `/gabija/` tiesiogiai bei po perkrovimo. Vite surenka atskirą `dist/gabija/index.html`, todėl Hostinger turi patiekti katalogo index, o ne pagrindinės svetainės index. Svetainė skirta domeno šakniai (`base: '/'`). Įsitikinkite, kad neprisijungus ir prisijungus nekviesta paskyra UPDATE, INSERT, DELETE užklausos atmetamos. Kviestas redaktorius gali UPDATE vienintelį `main` dokumentą; negali keisti redaktorių sąrašo.
+7. Su pakviesta paskyra pakeiskite testinį tekstą, išsaugokite, patikrinkite atskirame viešame lange ir grąžinkite tekstą. Atidarykite du panelės langus: išsaugojus pirmame, antro senos versijos išsaugojimas turi rodyti konfliktą. Patikrinkite atsijungimą, nuorodos galiojimą ir teisės atšaukimą. Šie bandymai dar negali būti atlikti be prijungto projekto.
+
+Redaguojamas šūkis, aprašymas, data, miestas, istorija, zonų tekstai, vieta, adresas, darbo laikas, trukmė, praktinė informacija, atvykimo aprašymai, D.U.K. ir baigiamasis kvietimas. Bilietų, Instagram, žemėlapio integracijos, šriftai ir išdėstymas nekeičiami. D.U.K. galima pridėti ir pašalinti. Ne visi fiksuoti navigacijos ar sekcijų pavadinimai įtraukti į panelę.
+
+Išsaugojimas vyksta į Supabase, ne GitHub. Naujas lankytojo puslapio įkėlimas skaito naujausią turinį; jau atidarytą puslapį reikia atnaujinti. Nepavykus pasiekti paslaugos per 2,5 s naudojamas pilnas `src/content.js` atsarginis tekstas (gali būti senesnis už panelės pakeitimus). Planui atitinkančias DB atsargines kopijas ir eksportus tvarko projekto savininkas. Supabase išsaugojimas nesukelia Hostinger diegimo.
+
+Vietinė UI peržiūra: `http://127.0.0.1:4173/gabija/?perziura=1`. Ji leidžiama tik localhost / 127.0.0.1, nerodo tikro prisijungimo ir nieko neišsaugo. Viešame domene šis parametras nesuteikia prieigos. Kol aplinka neprijungta, paprastas `/gabija/` rodo aiškų neaktyvios panelės pranešimą.
+
+Šaltiniai: [Supabase el. pašto prisijungimas](https://supabase.com/docs/guides/auth/auth-email-passwordless), [RLS](https://supabase.com/docs/guides/database/postgres/row-level-security), [API raktai](https://supabase.com/docs/guides/api/api-keys).

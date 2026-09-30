@@ -4,7 +4,7 @@ Vite + React svetainė lietuvių kalba, paruošta GitHub ir Hostinger. Naudojami
 
 ## Būsena ir failai
 
-Aplikacija veikia ir surenkama. Tikras Bilietai.lt renginio URL ir widgetas dar nepateikti. Instagram galerija rodo tikrus @magiskas.miskas įrašų viršelius; bilietams rodoma laukimo būsena. Bendras Bilietai.lt mygtukas atidaro platintojo svetainę ir neapsimeta renginio pirkimo nuoroda.
+Aplikacija veikia ir surenkama. Bilietai.lt renginio nuoroda ir vartotojo pateiktas PLG valdiklis integruoti. Instagram galerija rodo tikrus @magiskas.miskas įrašų viršelius; bilietai pasirenkami oficialiame valdiklyje.
 
 `src/content.js` — tekstai, datos, vieta, zonos, D.U.K., kainos, nuorodos, sezono režimas ir integracijos. `src/styles.css` — visas dizainas, @font-face, mobile ir reduced-motion. `src/main.jsx` — sekcijos ir komponentai. `src/integrations.js` — tikrų Instagram įrašų validavimas. `public/brand/` ir `public/fonts/` — pateikti logotipai bei konvertuoti šriftai. `tests/` — integracijų patikros.
 
@@ -77,13 +77,11 @@ Jei gavote `magiskas-miskas-dist.zip`, jame jau yra surinkta versija. Kiekvieną
 
 ## Bilietai.lt
 
-`src/content.js`:
+`src/content.js` laukas `tickets.widgetId` yra vartotojo pateiktas viešas valdiklio ID. `TicketWidget.jsx` po komponento įkėlimo vieną kartą įkelia oficialų `https://www.bilietai.lt/_widgets/widget.iife.js` skriptą su `plg-embed`. Valdiklio elementas turi `plg-widget`, `data-widget-id` ir `data-language="lt"`. Kalendorių, kainas, laisvas vietas, mokėjimą ir iframe aukštį valdo Bilietai.lt. Vidinis valdiklio dizainas priklauso tiekėjui.
 
-- `tickets.url`: oficiali TIK šio renginio HTTPS nuoroda į Bilietai.lt. Ją užpildžius visi „Pirkti bilietą“ mygtukai (header, hero, praktinė informacija, D.U.K., final ir mobile) nukreips į tą pačią vietą.
-- `tickets.iframeUrl`: tik tiekėjo duotas įterpimo URL. Jis nėra tas pats, kas įprastas renginio puslapis. Widgetas įkeliamas tik lankytojui paspaudus „Rodyti bilietų pasirinkimą“. Tiesioginė nuoroda lieka visada pasiekiama, net jeigu iframe užblokuotas.
-- `tickets.price` ir `ticketTypes`: kainos ir kategorijos. Kategorijos dabar yra iš gairių, be išgalvotų sumų.
+Visi „Pirkti bilietą“ mygtukai veda į `#bilietai`. `tickets.url` yra patikrinta tiesioginė šio renginio nuoroda; ji visada rodoma po valdikliu, taip pat jei skriptas užblokuotas arba kraunasi ilgai. Slapukų pasirinkimus valdo tiekėjas. Svetainėje neapdorojami mokėjimo ar asmens duomenys; pirkimas vyksta Bilietai.lt. Integracijos patikra neapima tikro užsakymo ar apmokėjimo.
 
-Komponentas `Tickets` izoliuoja widgeto vietą. Jei Bilietai.lt pateiks tik script integraciją, pritaikykite ją ten pagal oficialią tiekėjo instrukciją su `useEffect` ir cleanup; nedėkite nepatikrinto script ar HTML į `content.js`. Numatytoji leistinų hostų taisyklė yra `bilietai.lt`; kitą widgeto domeną pridėkite tik gavę oficialų tiekėjo patvirtinimą.
+`season.mode: 'closed'` paslepia valdiklį. Pašalinus `widgetId` grįžtama į ankstesnį nuorodos / pasirenkamo `tickets.iframeUrl` režimą. Nebūtina ir negalima kviesti `PLGWidget.init()` pakartotinai: tiekėjo skriptas pats inicializuoja elementą ir savo pranešimų bei URL pasikeitimo klausytojus.
 
 ## Instagram — nuotraukų galerija
 

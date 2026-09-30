@@ -4,6 +4,7 @@ import { content as c } from './content';
 import { safeHttps } from './integrations';
 import { Instagram } from './Instagram';
 import { SocialLink } from './SocialLink';
+import { TicketWidget } from './TicketWidget';
 import './styles.css';
 import { useAmbientMotion } from './useAmbientMotion';
 
@@ -14,7 +15,7 @@ const ticketFrame = safeHttps(c.tickets.iframeUrl, ['bilietai.lt']);
 function External({ href, children, ...props }) { return <a href={href} target="_blank" rel="noopener noreferrer" {...props}>{children}</a>; }
 function TicketLink({ className = '', children = 'Pirkti bilietą' }) {
   if (closed) return <a className={`button ${className}`} href="#bilietai">Iki susitikimo <span aria-hidden="true">↗</span></a>;
-  return ticketUrl ? <External className={`button ${className}`} href={ticketUrl}>{children}<span aria-hidden="true">↗</span></External> : <a className={`button ${className}`} href="#bilietai">{children}<span aria-hidden="true">↗</span></a>;
+  return ticketUrl && !c.tickets.widgetId ? <External className={`button ${className}`} href={ticketUrl}>{children}<span aria-hidden="true">↗</span></External> : <a className={`button ${className}`} href="#bilietai">{children}<span aria-hidden="true">↗</span></a>;
 }
 function Brand({ watermark = false }) {
   if (watermark) return brand.logo ? <img className="watermark" src="brand/symbol.png" alt="" aria-hidden="true" /> : null;
@@ -64,6 +65,11 @@ function Faq() {
 function Tickets() {
   const [load, setLoad] = useState(false);
   if (closed) return <section id="bilietai" className="section tickets"><h2>{c.season.closedMessage}</h2><p>Sek naujienas. Apie kitą kelionę pranešime čia.</p></section>;
+  if (c.tickets.widgetId) return <section id="bilietai" className="section tickets tickets-integrated">
+    <div className="section-heading"><span className="eyebrow">Tavo vakaras miške</span><h2>Nuostaba<br />laukia tavęs.</h2><p>Pasirink savo apsilankymą. Aktualios kainos ir laisvi laikai – žemiau.</p></div>
+    <div className="ticket-widget-panel"><TicketWidget widgetId={c.tickets.widgetId} /></div>
+    <External className="text-link ticket-direct" href={ticketUrl}>Atidaryti renginį Bilietai.lt ↗</External>
+  </section>;
   return <section id="bilietai" className="section tickets"><div><span className="eyebrow">Tavo vakaras miške</span><h2>Nuostaba<br />laukia tavęs.</h2><p>{c.tickets.price}</p><ul className="ticket-types">{c.ticketTypes.map(type => <li key={type}>{type}</li>)}</ul></div><div className="ticket-panel"><span className="eyebrow">Magiškas Miškas × Bilietai.lt</span>
     {ticketFrame && load ? <iframe title="Magiško Miško bilietai" src={ticketFrame} className="ticket-frame" loading="lazy" referrerPolicy="strict-origin-when-cross-origin" /> : <><p className="ticket-title">{ticketUrl ? 'Iki miško — vienas žingsnis.' : 'Susitikime, kai miškas pabus.'}</p><p>{ticketUrl ? 'Pasirink savo apsilankymą Bilietai.lt.' : 'Bilietų prekybos pradžią ir visą lankymo kalendorių paskelbsime netrukus.'}</p>{ticketFrame && <button className="button outline" onClick={() => setLoad(true)}>Rodyti bilietų pasirinkimą <span>↗</span></button>}</>}
     <External className="button" href={ticketUrl || safeHttps(c.tickets.fallbackUrl, ['bilietai.lt'])}>{ticketUrl ? 'Pirkti bilietą' : 'Atidaryti Bilietai.lt'}<span aria-hidden="true">↗</span></External>{!ticketUrl && <span className="small-note">Renginio bilietų nuoroda dar nepaskelbta.</span>}

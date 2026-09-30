@@ -36,10 +36,10 @@ export function Instagram() {
     return () => { stopped = true; clearTimeout(timer); controller?.abort(); };
   }, []);
   return <section id="instagram" className="section instagram">
-    <div className="section-heading"><span className="eyebrow">Akimirkos / Instagram</span><h2>Magija, kuria<br />norisi dalintis.</h2>{profile && <SocialLink network="instagram" href={profile} />}</div>
-    {posts.length > 0 ? <Gallery label="Magiško Miško Instagram įrašai" paused={selected !== null}>{posts.map((post, index) => <button className="instagram-post" key={post.id} aria-haspopup="dialog" onClick={() => setSelected(index)} aria-label={`Peržiūrėti Instagram įrašą: ${post.caption}`}>
+    <div className="section-heading"><span className="eyebrow">{c.copy.instagramLabel}</span><h2 style={{whiteSpace:"pre-line"}}>{c.copy.instagramTitle}</h2>{profile && <SocialLink network="instagram" href={profile} />}</div>
+    {posts.length > 0 ? <Gallery autoplay={c.instagram.autoplay} intervalMs={c.instagram.intervalMs} caption={c.copy.galleryLabel} label="Magiško Miško Instagram įrašai" paused={selected !== null}>{posts.map((post, index) => <button className="instagram-post" key={post.id} aria-haspopup="dialog" onClick={() => setSelected(index)} aria-label={`Peržiūrėti Instagram įrašą: ${post.caption}`}>
       <div className="post-image"><PostImage src={post.image} /><span className="post-kind">{post.media_type === 'VIDEO' ? 'Reel' : 'Peržiūrėti'} <span aria-hidden="true">↗</span></span></div>
-    </button>)}</Gallery> : <div className="instagram-empty" role="status"><p>{state === 'loading' ? 'Ieškome naujausių akimirkų…' : 'Akimirkos laukia mūsų Instagram.'}</p>{profile && <SocialLink network="instagram" href={profile} />}</div>}
+    </button>)}</Gallery> : <div className="instagram-empty" role="status"><p>{state === 'loading' ? 'Ieškome naujausių akimirkų…' : c.copy.instagramEmpty}</p>{profile && <SocialLink network="instagram" href={profile} />}</div>}
     {selected !== null && posts[selected] && <PostLightbox posts={posts} index={selected} onChange={setSelected} onClose={() => setSelected(null)} />}
   </section>;
 }

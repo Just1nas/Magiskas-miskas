@@ -1,6 +1,19 @@
 // Visas redaguojamas svetainės turinys. Tuščia nuoroda reiškia, kad integracija dar neįjungta.
 export const content = {
   name: 'Magiškas Miškas',
+  copy: {
+    heroFirst: 'Magiškas', heroSecond: 'Miškas', heroLabel: 'Patyrimų ir šviesos spektaklis', heroLocation: 'Po atviru dangumi',
+    buy: 'Pirkti bilietą', closedButton: 'Iki susitikimo', enter: 'Įžengti',
+    navJourney: 'Kas laukia?', navArrival: 'Kaip atvykti', navFaq: 'D.U.K.',
+    pauseLabel: 'Palik kasdienybę už slenksčio', pauseBottom: 'Ne tik pamatyti. Pajusti.',
+    journeyTitle: 'Penkios erdvės.\nViena kelionė.', journeyIntro: 'Pasirink, kur nori nuklysti.', journeyNext: 'Toliau — dar viena paslaptis.',
+    instagramLabel: 'Akimirkos / Instagram', instagramTitle: 'Magija, kuria\nnorisi dalintis.', instagramEmpty: 'Akimirkos laukia mūsų Instagram.', galleryLabel: 'Akimirkos iš mūsų miško',
+    overviewTitle: 'Trumpai\napie magiją.', experienceLabel: 'Patyrimas', experience: 'Šviesos. Gamtos. Vaizduotės.', audienceLabel: 'Kam?', audience: 'Visokio ūgio vaikams', durationLabel: 'Trukmė', venueLabel: 'Vieta',
+    ticketsLabel: 'Tavo vakaras miške', ticketsTitle: 'Nuostaba\nlaukia tavęs.', ticketsIntro: 'Pasirink savo apsilankymą. Aktualios kainos ir laisvi laikai – žemiau.', ticketsDirect: 'Atidaryti renginį Bilietai.lt', closedIntro: 'Sek naujienas. Apie kitą kelionę pranešime čia.',
+    practicalLabel: 'Prieš įžengiant', practicalTitle: 'Truputis planavimo.\nDaugiau magijos.', whenLabel: 'Kada', whereLabel: 'Kur',
+    arrivalTitle: 'Visi keliai\nveda į mišką.', mapLabel: 'Vilnius / Vingis', planTrip: 'Planuoti kelionę', directions: 'Atidaryti maršrutą', openMap: 'Atidaryti žemėlapį',
+    faqTitle: 'Smalsu?\nPuiku.', faqMore: 'Daugiau klausimų +', faqLess: 'Rodyti mažiau −', contact: 'Susisiekime', review: 'Palikti atsiliepimą', backTop: 'Į pradžią',
+  },
   tagline: 'Gamtai miegant – bunda magija',
   description: 'Patyrimų ir šviesos spektaklis visokio ūgio vaikams po atviru dangumi.',
   city: 'Vilnius', date: 'Nuo spalio 10 d.',
@@ -11,11 +24,11 @@ export const content = {
   address: 'M. K. Čiurlionio g. 110, Vilnius',
   duration: 'Trukmę patikslinsime', hours: 'Darbo laiką paskelbsime netrukus',
   pause: 'Tik įžengus į mišką, jis žino – tu grįžai…',
-  tickets: { url: 'https://www.bilietai.lt/renginiai/7VTPCXHIHO/magiskas-miskas-pradzia-patyrimu-spektaklis-visokio-ugio-vaikams', widgetId: 'p_s-gytq4oI1Skv9p_mYtIY1zt1HIS64XD2wUZK_W2A', iframeUrl: '', price: 'Aktualios kainos ir laisvi laikai – bilietų pasirinkime', fallbackUrl: 'https://www.bilietai.lt/' },
-  appearance: { background: 'colors' },
+  tickets: { url: 'https://www.bilietai.lt/renginiai/7VTPCXHIHO/magiskas-miskas-pradzia-patyrimu-spektaklis-visokio-ugio-vaikams', widgetId: 'p_s-gytq4oI1Skv9p_mYtIY1zt1HIS64XD2wUZK_W2A', eventId: '7VTPCXHIHO', provider: 'magiskas', iframeUrl: '', price: 'Aktualios kainos ir laisvi laikai – bilietų pasirinkime', fallbackUrl: 'https://www.bilietai.lt/' },
+  appearance: { background: 'colors', motion: true },
   instagram: {
     profileUrl: 'https://www.instagram.com/magiskas.miskas/',
-    endpoint: './instagram/feed.json', refreshMs: 300000, limit: 5,
+    endpoint: './instagram/feed.json', refreshMs: 300000, limit: 5, autoplay: true, intervalMs: 6500,
   },
   map: { directionsUrl: 'https://www.google.com/maps/search/?api=1&query=VU+Botanikos+sodo+Vingio+skyrius+M.+K.+Čiurlionio+110+Vilnius', embedUrl: 'https://www.google.com/maps/d/embed?mid=1FTCxCjWWOorMnTW6itQX26UgJRLCrVc&ehbc=2E312F' },
   journey: [

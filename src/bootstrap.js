@@ -12,4 +12,11 @@ if (cmsConfigured) {
     if (rows[0]) Object.assign(content, validateEdits(rows[0].content));
   } catch { /* Keep the complete bundled site available if the CMS cannot be reached. */ }
 }
+if (!content.appearance.motion) {
+  const style = document.createElement('style');
+  style.textContent = '*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}';
+  document.head.appendChild(style);
+}
+document.title = content.name;
+document.querySelector('meta[name=description]')?.setAttribute('content',content.description);
 await import('./main.jsx');

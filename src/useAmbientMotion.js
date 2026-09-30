@@ -1,9 +1,10 @@
 import { useEffect } from 'react';
+import { content as c } from './content';
 
 // Animate only when entering the viewport. Content stays readable if motion is unavailable.
 export function useAmbientMotion() {
   useEffect(() => {
-    if (!window.IntersectionObserver || !Element.prototype.animate) return;
+    if (!c.appearance.motion || !window.IntersectionObserver || !Element.prototype.animate) return;
 
     const preference = window.matchMedia('(prefers-reduced-motion: reduce)');
     const completed = new WeakSet();

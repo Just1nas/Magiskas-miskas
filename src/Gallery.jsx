@@ -1,10 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react';
 
-export function Gallery({ children, label, paused = false }) {
+export function Gallery({ children, label, paused = false, autoplay = true, intervalMs = 6500, caption = "Akimirkos iš mūsų miško" }) {
   const viewport = useRef(null);
   const count = React.Children.count(children);
   const [active, setActive] = useState(0);
-  const [playing, setPlaying] = useState(true);
+  const [playing, setPlaying] = useState(autoplay);
   const [hovered, setHovered] = useState(false);
   const [visible, setVisible] = useState(false);
   const [reduced, setReduced] = useState(false);
@@ -23,11 +23,11 @@ export function Gallery({ children, label, paused = false }) {
   };
   useEffect(() => {
     if (paused || !playing || hovered || !visible || reduced || count < 2) return;
-    const timer = setInterval(() => { if (!document.hidden) move(active + 1); }, 6500);
+    const timer = setInterval(() => { if (!document.hidden) move(active + 1); }, intervalMs);
     return () => clearInterval(timer);
-  }, [active, count, playing, hovered, visible, reduced, paused]);
+  }, [active, count, playing, hovered, visible, reduced, paused, intervalMs]);
   return <div className={`gallery ${count === 1 ? 'is-single' : ''} ${visible ? 'is-visible' : ''}`} role="region" aria-label={label} aria-roledescription="karuselė" onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)}>
-    {count > 1 && <div className="gallery-controls"><span className="small-note">Akimirkos iš mūsų miško</span><div>
+    {count > 1 && <div className="gallery-controls"><span className="small-note">{caption}</span><div>
       <button onClick={() => { setPlaying(false); move(active - 1); }} aria-label="Ankstesnis Instagram įrašas">←</button>
       {!reduced && <button className="gallery-play" onClick={() => setPlaying(!playing)} aria-label={playing ? 'Sustabdyti galeriją' : 'Paleisti galeriją'}>{playing ? 'Pauzė' : 'Paleisti'}</button>}
       <button onClick={() => { setPlaying(false); move(active + 1); }} aria-label="Kitas Instagram įrašas">→</button>

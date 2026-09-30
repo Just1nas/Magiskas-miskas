@@ -205,3 +205,39 @@ img.hero-photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover
 @media(max-width:640px){.instagram-live{grid-template-columns:1fr;gap:26px}}
 .profile-frame{display:block;width:100%;height:460px;border:0;background:var(--cream);border-radius:3px}
 @media(max-width:640px){.profile-frame{height:390px}}
+
+/* Native image-only gallery: no third-party iframe or white social frame. */
+.instagram .gallery{margin-top:36px}
+.instagram .instagram-post{padding:0;border:0;gap:0}
+.instagram .post-image{aspect-ratio:4/5;background:#0b1429;border-radius:2px}
+.instagram .post-image img{width:100%;height:100%;object-fit:cover}
+.gallery.is-single .gallery-track{max-width:340px;margin-inline:auto}
+.gallery.is-single .post-image{aspect-ratio:9/16}
+.post-kind{position:absolute;inset:auto 0 0;padding:46px 22px 20px;display:flex;justify-content:space-between;align-items:center;font-size:11px;letter-spacing:.06em;background:linear-gradient(transparent,rgba(3,7,23,.86));color:var(--cream)}
+.post-kind>span{font-size:24px;transition:transform .3s}
+.gallery.is-visible .post-image img{animation:post-awaken 2.8s ease-out}
+.gallery-controls button:focus-visible{outline-color:var(--cream)}
+@keyframes post-awaken{from{opacity:.6;transform:scale(1.07)}to{opacity:1;transform:scale(1)}}
+@media(hover:hover) and (pointer:fine){.instagram-post:hover .post-kind>span{transform:translate(3px,-3px)}.instagram-post:hover img{transform:scale(1.035)}}
+@media(max-width:640px){.gallery.is-single .gallery-track{max-width:300px}.instagram .gallery{margin-top:24px}}
+@media(prefers-reduced-motion:reduce){.gallery.is-visible .post-image img{animation:none;transform:none}.post-kind>span{transform:none!important}}
+
+/* Four image tiles on desktop, a touch carousel on narrow screens. */
+.instagram .gallery-track>*{flex:0 0 calc((100% - 60px)/4)}
+.instagram .gallery-track:after{flex:0 0 calc(75% - 5px)}
+.instagram .gallery-track>:only-child{flex-basis:100%}
+.instagram .instagram-post{text-align:left;font:inherit;color:var(--cream);display:block}
+.post-lightbox{position:fixed;inset:0;margin:auto;width:min(980px,94vw);max-height:90svh;padding:0;border:1px solid var(--line);background:var(--forest);color:var(--cream);overflow:auto;box-shadow:0 20px 100px #0008}
+.post-lightbox::backdrop{background:rgba(2,5,16,.9);backdrop-filter:blur(8px)}
+.lightbox-content{position:relative;display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr)}
+.lightbox-content>img{width:100%;height:min(78svh,760px);object-fit:contain;background:#030715}
+.lightbox-copy{padding:64px 30px 30px;align-self:center}
+.lightbox-copy p{font-size:14px;white-space:pre-line;margin-top:24px;overflow-wrap:anywhere}
+.lightbox-copy .text-link{margin-top:22px}
+.lightbox-close{position:absolute;right:12px;top:12px;width:44px;height:44px;border:1px solid var(--line);background:var(--forest);font-size:30px;z-index:1}
+.lightbox-navigation{display:flex;gap:12px;margin-top:30px}
+.lightbox-navigation button{min-width:44px;height:44px;border:1px solid var(--line);font-size:22px}
+.post-lightbox[open]{animation:lightbox-in .25s ease-out}
+@keyframes lightbox-in{from{opacity:0;transform:translateY(12px) scale(.98)}to{opacity:1;transform:none}}
+@media(max-width:900px){.instagram .gallery-track>*{flex-basis:calc((100% - 20px)/2)}.instagram .gallery-track:after{flex-basis:calc(50% - 10px)}}
+@media(max-width:640px){.instagram .gallery-track>*{flex-basis:84%}.instagram .gallery-track:after{flex-basis:calc(16% - 20px)}.lightbox-content{grid-template-columns:1fr}.lightbox-content>img{height:55svh}.lightbox-copy{padding:24px}.lightbox-copy p{margin-top:14px;font-size:12px}.post-lightbox{max-height:88svh}}

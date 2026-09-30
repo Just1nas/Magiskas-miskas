@@ -5,7 +5,7 @@ export const content = {
   description: 'Patyrimų ir šviesos spektaklis visokio ūgio vaikams po atviru dangumi.',
   city: 'Vilnius', date: 'Nuo spalio 10 d.',
   season: { mode: 'upcoming', closedMessage: 'Iki susitikimo Magiškame Miške 2027 metais!' },
-  socials: { facebook: '', tiktok: '' }, contactEmail: '', reviewUrl: '',
+  socials: { facebook: 'https://www.facebook.com/profile.php?id=61595019476553', tiktok: 'https://www.tiktok.com/@magiskasmiskas' }, contactEmail: '', reviewUrl: '',
   story: 'Kai ruduo užmigdo įprastą pasaulį, miške pradeda busti tai, ko dieną nematome: švytintys grybai, paslaptingi gyventojai, kuždantys medžiai ir istorijos, kurios atsiskleidžia tik tiems, kurie sustoja, įsiklauso ir leidžiasi vedami smalsumo. Čia pats tampi istorijos dalimi – keliauji savo taku, atrandi, palieti, išgirsti, užuodi ir patiri.',
   venue: 'VU Botanikos sodo Vingio skyrius',
   address: 'M. K. Čiurlionio g. 110, Vilnius',
@@ -14,11 +14,8 @@ export const content = {
   tickets: { url: '', iframeUrl: '', price: 'Kainas paskelbsime netrukus', fallbackUrl: 'https://www.bilietai.lt/' },
   appearance: { background: 'colors' },
   instagram: {
-    mode: 'profile',
     profileUrl: 'https://www.instagram.com/magiskas.miskas/',
-    endpoint: '', refreshMs: 300000, limit: 4,
-    // Tik paskyroje patikrinti įrašai. Automatinį srautą įjungia endpoint.
-    featured: ['https://www.instagram.com/magiskas.miskas/reel/Dd4D0m0NxMq/'],
+    endpoint: './instagram/feed.json', refreshMs: 300000, limit: 5,
   },
   map: { directionsUrl: 'https://www.google.com/maps/search/?api=1&query=VU+Botanikos+sodo+Vingio+skyrius+M.+K.+Čiurlionio+110+Vilnius', embedUrl: '' },
   journey: [

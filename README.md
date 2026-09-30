@@ -4,7 +4,7 @@ Vite + React svetainė lietuvių kalba, paruošta GitHub ir Hostinger. Naudojami
 
 ## Būsena ir failai
 
-Aplikacija veikia ir surenkama. Tikras Bilietai.lt renginio URL ir widgetas dar nepateikti. Instagram paskyra @magiskas.miskas prijungta per oficialų profilį įterpiantį Instagram komponentą. Kol jų nėra, rodoma aiški laukimo būsena. Bendras Bilietai.lt mygtukas atidaro platintojo svetainę ir neapsimeta renginio pirkimo nuoroda.
+Aplikacija veikia ir surenkama. Tikras Bilietai.lt renginio URL ir widgetas dar nepateikti. Instagram galerija rodo tikrus @magiskas.miskas įrašų viršelius; bilietams rodoma laukimo būsena. Bendras Bilietai.lt mygtukas atidaro platintojo svetainę ir neapsimeta renginio pirkimo nuoroda.
 
 `src/content.js` — tekstai, datos, vieta, zonos, D.U.K., kainos, nuorodos, sezono režimas ir integracijos. `src/styles.css` — visas dizainas, @font-face, mobile ir reduced-motion. `src/main.jsx` — sekcijos ir komponentai. `src/integrations.js` — tikrų Instagram įrašų validavimas. `public/brand/` ir `public/fonts/` — pateikti logotipai bei konvertuoti šriftai. `tests/` — integracijų patikros.
 
@@ -31,12 +31,7 @@ npm run preview
 
 ## Saugus perkėlimas į GitHub
 
-2026-09-30 GitHub jungtis patikrino `Just1nas/Magiskas-miskas`: repozitorija egzistuoja, bet yra tuščia (`size: 0`, contents API: „This repository is empty“). Pirma svetainės versija paruošta įkelti tik iš naujo patikrinus, kad repozitorija tuščia. Vėlesnius pakeitimus rekomenduojama daryti atskiroje šakoje per pull request.
-
-1. Dar kartą patikrinkite repozitoriją, ar joje neatsirado failų po šios patikros.
-2. Jei ji vis dar tuščia, GitHub pasirinkite **uploading an existing file**, įkelkite šio projekto TURINĮ taip, kad `package.json` būtų repozitorijos šaknyje. Įkelkite ir `package-lock.json`, `src`, `public`, `scripts`, `tests`, `vite.config.js`, `index.html`, README bei paslėptus `.github`, `.gitignore`, `.nvmrc` failus. ZIP reikia išskleisti. `node_modules` ir `dist` į GitHub nekelkite.
-3. Jei joje jau yra failų, paruoškite atskirą `website-v1` šaką iš dabartinės būsenos, pridėkite projektą ir peržiūrėkite pakeitimus per pull request. Neperrašykite esamo `package.json`, konfigūracijos ar neaiškių failų aklai. Jei reikia išlaikyti esamą struktūrą, visą aplikaciją įdėkite į `website/` ir Hostinger root directory nustatykite `website`.
-4. Pirma peržiūrėkite svetainę Hostinger laikinuoju adresu, tik tada prijunkite pagrindinį domeną.
+Projektas įkeltas į `Just1nas/Magiskas-miskas`, šaka `main`, ir prijungtas prie Hostinger. Prieš atnaujinimą patikrinkite naujausią main būseną ir išsaugokite kitų pakeitimus. Į repo keliami šaltiniai, `public`, testai, konfigūracija ir `.github`; `node_modules` ir `dist` nekelkite.
 
 ## Hostinger — GitHub build ir deploy
 
@@ -78,7 +73,7 @@ Jei planas neturi Deploy Web App, bet turi failų talpinimą:
 4. Įkelkite **`dist` aplanko turinį**, ne patį aplanką ir ne React šaltinį. `index.html` turi būti tiesiai `public_html`.
 5. Patikrinkite domeną. Šiai vieno puslapio svetainei naudojamos `#` nuorodos, todėl SPA perrašymo taisyklių nereikia. `base: './'` leidžia talpinti ir poaplankyje.
 
-Jei gavote `magiskas-miskas-dist.zip`, jame jau yra surinkta versija. Kiekvieną kartą pakeitus šaltinį jį reikia surinkti iš naujo. `.github` workflow tik tikrina aplikaciją, pats nieko nepublikuoja.
+Jei gavote `magiskas-miskas-dist.zip`, jame jau yra surinkta versija. Kiekvieną kartą pakeitus šaltinį jį reikia surinkti iš naujo. `build.yml` tikrina aplikaciją; `instagram.yml` atnaujina galerijos duomenis. Svetainę publikuoja Hostinger GitHub jungtis.
 
 ## Bilietai.lt
 
@@ -90,25 +85,19 @@ Jei gavote `magiskas-miskas-dist.zip`, jame jau yra surinkta versija. Kiekvieną
 
 Komponentas `Tickets` izoliuoja widgeto vietą. Jei Bilietai.lt pateiks tik script integraciją, pritaikykite ją ten pagal oficialią tiekėjo instrukciją su `useEffect` ir cleanup; nedėkite nepatikrinto script ar HTML į `content.js`. Numatytoji leistinų hostų taisyklė yra `bilietai.lt`; kitą widgeto domeną pridėkite tik gavę oficialų tiekėjo patvirtinimą.
 
-## Instagram — automatinis paskyros įterpimas
+## Instagram — nuotraukų galerija
 
-`instagram.mode: 'profile'` ir `profileUrl` įjungia oficialų Instagram paskyros bloką per viešą `https://www.instagram.com/magiskas.miskas/embed/` iframe. Bloko turinį, įrašų skaičių, išdėstymą ir talpyklos atnaujinimo laiką valdo Instagram. Naujų įrašų URL rankiniu būdu kopijuoti nereikia. Profilis ir įterpimas turi likti vieši. Šiuo metu paskyroje patikrintas vienas įrašas. Srauto atsinaujinimas nėra garantuotas iškart po publikavimo.
+Trečioje svetainės skiltyje rodoma iki 5 naujausių @magiskas.miskas įrašų viršelių be balto rėmo. Srautas: `public/instagram/feed.json`. Kompiuteryje telpa keturios nuotraukos, telefone galima braukti. Paspaudus atidaroma didesnė peržiūra; Reel vaizdo įrašas atidaromas pačiame Instagram. Vienas įrašas nedubliuojamas: automatinis slinkimas įsijungia turint bent du įrašus.
 
-Patikra 2026-09-30: Hostinger sėkmingai automatiškai įdiegė versiją iš GitHub main. Išvalyta domeno talpykla. Viešame www.magiskasmiskas.lt puslapyje vizualiai patvirtintas Instagram profilis ir tikras jo įrašas. Įterpimas gali krautis ilgiau ar būti blokuojamas lankytojo naršyklėje; tiesioginė paskyros nuoroda išlieka.
+Karuselė perslenka kas 6,5 sekundės, pristabdo užvedus pelę, sustoja po lietimo ar klaviatūros fokuso. Yra rodyklės ir pauzės mygtukas. Už ekrano, neaktyviame lange, atidarius didesnę peržiūrą arba įjungus `prefers-reduced-motion`, automatinis slinkimas nevyksta. Peržiūra uždaroma mygtuku, Escape arba paspaudus už jos ribų.
 
-Šis būdas nereikalauja prieigos rakto ar slaptažodžio. Lankytojo naršyklė kreipiasi į Instagram. Blokavimo arba tiekėjo sutrikimo atveju visada lieka nuoroda į paskyrą. Integracijos slapukai ir turinys priklauso Instagram. Oficialaus bloko viduje svetainė negali valdyti karuselės sukimosi ar tiksliai apriboti įrašų iki 3–5.
+`.github/workflows/instagram.yml` tikrina paskyrą kas valandą, 17 minutę (GitHub vykdymas gali vėluoti). Rankinis paleidimas: GitHub → Actions → Refresh Instagram gallery → Run workflow. Darbas paleidžiamas ir pakeitus atnaujinimo skriptą. Pasikeitus srautui įrašo tik `public/instagram/` pakeitimus į main; Hostinger automatinis diegimas surenka naują versiją. GitHub Actions reikia `contents: write` teisės; main taisyklės turi leisti darbo įrašus.
 
-### Pasirenkama valdoma karuselė
+Šaltinis yra viešo Instagram profilio įterpimo puslapio metaduomenys. Tai nėra autentifikuota Meta Graph API integracija: prisijungimo naršyklėje slapukai nenaudojami, prieigos raktų nėra. Instagram gali pakeisti struktūrą arba riboti užklausas. Tokiu atveju darbas praneša apie nesėkmę, o svetainėje lieka paskutinė sėkminga galerija. Stebėkite GitHub Actions nesėkmių pranešimus. Jei viešas šaltinis taps neprieinamas, reikės oficialios Meta API arba pasirinkto feed tiekėjo integracijos.
 
-`Gallery.jsx` paruošta individualiam srautui: perslenka kas 6,5 sekundės, pristabdo užvedus pelę, sustoja po lietimo ar fokuso, turi rankinius mygtukus ir pauzę. Neaktyviame lange, už ekrano, su vienu įrašu ir įjungus reduced-motion automatinis slinkimas nevyksta. Šis režimas nenaudojamas oficialaus profilio bloko viduje.
+`node scripts/refresh-instagram.js` atnaujina srautą vietoje. Skriptas nevykdo gauto JavaScript: tik perskaito JSON, patikrina paskyros savininką, nuorodas ir vaizdo formatą. Viršeliai saugomi lokaliai, todėl lankytojo naršyklė nesikreipia į Instagram, kol nepaspaudžia išorinės nuorodos. Visi failai paimami prieš pakeičiant srautą; nesėkmingas atsakymas neištrina veikiančios galerijos.
 
-Norint individualios automatinės 3–5 įrašų karuselės reikia serverio API arba feed paslaugos: jos URL įrašomas į `instagram.endpoint`. Tai atskira integracija; prisijungimas prie Instagram naršyklėje API nesukuria. Frontend kas 5 minutes skaito JSON, saugo paskutinį gerą rezultatą ir nutraukia užklausą po 10 sekundžių. Užpildytas srautas turi pirmenybę prieš profilio bloką.
-
-```json
-{"posts":[{"id":"real-id","permalink":"https://www.instagram.com/p/REAL_SHORTCODE/","timestamp":"2026-09-30T12:00:00Z","caption":"Tikras įrašo tekstas","media_type":"IMAGE","media_url":"https://your-media-host.example/photo.jpg"}]}
-```
-
-VIDEO įrašams pateikite `thumbnail_url`, kitiems — `media_url`. JSON pavyzdys nėra rodomas svetainėje. `featured` yra alternatyvus rankinis režimas patikrintų įrašų nuorodoms (iki 5); jį naudoti galima pakeitus `mode` į `featured`. Niekada nedėkite Instagram access token į frontend, `VITE_*`, repo ar viešą JSON.
+`instagram.endpoint` galima pakeisti patikimo serverio JSON adresu. Formatui reikia `posts` masyvo su `id`, `permalink`, `timestamp`, `caption`, `media_type`, `media_url`; VIDEO viršeliui — `thumbnail_url`. Frontend tikrina srautą kas 5 minutes. Niekada nedėkite prieigos rakto į frontend, `VITE_*`, repo ar viešą JSON.
 
 ## Du fono variantai
 

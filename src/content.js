@@ -12,7 +12,14 @@ export const content = {
   duration: 'Trukmę patikslinsime', hours: 'Darbo laiką paskelbsime netrukus',
   pause: 'Tik įžengus į mišką, jis žino – tu grįžai…',
   tickets: { url: '', iframeUrl: '', price: 'Kainas paskelbsime netrukus', fallbackUrl: 'https://www.bilietai.lt/' },
-  instagram: { profileUrl: '', endpoint: '', refreshMs: 300000, limit: 4 },
+  appearance: { background: 'colors' },
+  instagram: {
+    mode: 'profile',
+    profileUrl: 'https://www.instagram.com/magiskas.miskas/',
+    endpoint: '', refreshMs: 300000, limit: 4,
+    // Tik paskyroje patikrinti įrašai. Automatinį srautą įjungia endpoint.
+    featured: ['https://www.instagram.com/magiskas.miskas/reel/Dd4D0m0NxMq/'],
+  },
   map: { directionsUrl: 'https://www.google.com/maps/search/?api=1&query=VU+Botanikos+sodo+Vingio+skyrius+M.+K.+Čiurlionio+110+Vilnius', embedUrl: '' },
   journey: [
     { id: 'snabzdesiu-aleja', title: 'Šnabždesių alėja', cue: 'Įsiklausyk.', text: 'Šimtametis liepų takas, šviečiantis tūkstančiais nematytų grybų, kuždančių kerpių, knibždančių šaknų ir žėrinčių vijoklių.', detail: 'Čia prasideda tavo kelionė.' },

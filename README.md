@@ -1,10 +1,10 @@
 # Magiškas Miškas
 
-Vite + React svetainė lietuvių kalba, paruošta GitHub ir Hostinger. Naudojami tik pateikto pagrindinio logotipo variantai, Magical ir Manrope šriftai, keturios patvirtintos spalvos. Nuotraukų, generuotų iliustracijų ar netikrų socialinių įrašų nėra.
+Vite + React svetainė lietuvių kalba, paruošta GitHub ir Hostinger. Naudojami pateikti logotipai, Magical ir Manrope šriftai bei tikra vartotojo miško nuotrauka. Naujo fono paletė — naktinė mėlyna, turkis ir violetinė pagal šią nuotrauką. Generuotų iliustracijų ar netikrų socialinių įrašų nėra.
 
 ## Būsena ir failai
 
-Aplikacija veikia ir surenkama. Tikras Bilietai.lt renginio URL, widgetas, Instagram paskyra bei duomenų šaltinis dar nepateikti. Kol jų nėra, rodoma aiški laukimo būsena. Bendras Bilietai.lt mygtukas atidaro platintojo svetainę ir neapsimeta renginio pirkimo nuoroda.
+Aplikacija veikia ir surenkama. Tikras Bilietai.lt renginio URL ir widgetas dar nepateikti. Instagram paskyra @magiskas.miskas prijungta per oficialų profilį įterpiantį Instagram komponentą. Kol jų nėra, rodoma aiški laukimo būsena. Bendras Bilietai.lt mygtukas atidaro platintojo svetainę ir neapsimeta renginio pirkimo nuoroda.
 
 `src/content.js` — tekstai, datos, vieta, zonos, D.U.K., kainos, nuorodos, sezono režimas ir integracijos. `src/styles.css` — visas dizainas, @font-face, mobile ir reduced-motion. `src/main.jsx` — sekcijos ir komponentai. `src/integrations.js` — tikrų Instagram įrašų validavimas. `public/brand/` ir `public/fonts/` — pateikti logotipai bei konvertuoti šriftai. `tests/` — integracijų patikros.
 
@@ -90,31 +90,32 @@ Jei gavote `magiskas-miskas-dist.zip`, jame jau yra surinkta versija. Kiekvieną
 
 Komponentas `Tickets` izoliuoja widgeto vietą. Jei Bilietai.lt pateiks tik script integraciją, pritaikykite ją ten pagal oficialią tiekėjo instrukciją su `useEffect` ir cleanup; nedėkite nepatikrinto script ar HTML į `content.js`. Numatytoji leistinų hostų taisyklė yra `bilietai.lt`; kitą widgeto domeną pridėkite tik gavę oficialų tiekėjo patvirtinimą.
 
-## Instagram — vieta tikrai integracijai
+## Instagram — automatinis paskyros įterpimas
 
-Nėra netikrų įrašų. Dizainas lieka be nuotraukų: tikrų įrašų antraštės, datos ir nuorodos rodomos tipografiškai, net jei šaltinis turi media laukus. Desktop matomi 4 įrašai, mobile veikia horizontalus slinkimas. Jei norėsite Instagram nuotraukų, tai būtų atskiras dabartinės „tik logotipas“ krypties pakeitimas.
+`instagram.mode: 'profile'` ir `profileUrl` įjungia oficialų Instagram paskyros bloką per viešą `https://www.instagram.com/magiskas.miskas/embed/` iframe. Bloko turinį, įrašų skaičių, išdėstymą ir talpyklos atnaujinimo laiką valdo Instagram. Naujų įrašų URL rankiniu būdu kopijuoti nereikia. Profilis ir įterpimas turi likti vieši. Šiuo metu paskyroje patikrintas vienas įrašas. Srauto atsinaujinimas nėra garantuotas iškart po publikavimo.
 
-1. Nustatykite `instagram.profileUrl` į oficialią paskyrą; atsiras „Sekti Instagram“ ir footer nuoroda.
-2. Prijunkite atskirą serverio integraciją arba patikimą feed paslaugą prie oficialios paskyros. Ši statinė aplikacija backend neturi. Paskyros leidimai, prieigos raktai, jų atnaujinimas ir API užklausos vykdomi serverio pusėje.
-3. Nustatykite `instagram.endpoint` į viešai skaitomą savo API URL, pvz. `/api/instagram` tik JEI jūsų serveris jį realiai aptarnauja. Kitame domene įjunkite CORS šiam svetainės domenui. Hostinger statinis frontend tokio API automatiškai nesukuria.
-4. API turi grąžinti JSON kontraktą:
+Patikros apribojimas: atskiras viešas Instagram embed adresas grąžina tikrą profilį, tačiau šios sesijos Codex vietinėje iframe peržiūroje turinys liko tuščias. Po diegimo būtina patikrinti įterpimą viešame domene įprastoje naršyklėje; jo rodymas svetainėje dar nepatvirtintas.
+
+Šis būdas nereikalauja prieigos rakto ar slaptažodžio. Lankytojo naršyklė kreipiasi į Instagram. Blokavimo arba tiekėjo sutrikimo atveju visada lieka nuoroda į paskyrą. Integracijos slapukai ir turinys priklauso Instagram. Oficialaus bloko viduje svetainė negali valdyti karuselės sukimosi ar tiksliai apriboti įrašų iki 3–5.
+
+### Pasirenkama valdoma karuselė
+
+`Gallery.jsx` paruošta individualiam srautui: perslenka kas 6,5 sekundės, pristabdo užvedus pelę, sustoja po lietimo ar fokuso, turi rankinius mygtukus ir pauzę. Neaktyviame lange, už ekrano, su vienu įrašu ir įjungus reduced-motion automatinis slinkimas nevyksta. Šis režimas nenaudojamas oficialaus profilio bloko viduje.
+
+Norint individualios automatinės 3–5 įrašų karuselės reikia serverio API arba feed paslaugos: jos URL įrašomas į `instagram.endpoint`. Tai atskira integracija; prisijungimas prie Instagram naršyklėje API nesukuria. Frontend kas 5 minutes skaito JSON, saugo paskutinį gerą rezultatą ir nutraukia užklausą po 10 sekundžių. Užpildytas srautas turi pirmenybę prieš profilio bloką.
 
 ```json
-{
-  "posts": [
-    {
-      "id": "real-post-id",
-      "permalink": "https://www.instagram.com/p/REAL_SHORTCODE/",
-      "timestamp": "2026-09-30T12:00:00Z",
-      "caption": "Tikro paskyros įrašo tekstas"
-    }
-  ]
-}
+{"posts":[{"id":"real-id","permalink":"https://www.instagram.com/p/REAL_SHORTCODE/","timestamp":"2026-09-30T12:00:00Z","caption":"Tikras įrašo tekstas","media_type":"IMAGE","media_url":"https://your-media-host.example/photo.jpg"}]}
 ```
 
-Tai kontrakto pavyzdys, ne svetainei pateikiami įrašai. `media_url` nenaudojamas. Klientas validuoja Instagram nuorodas, pašalina pasikartojimus, surikiuoja naujausius pirmus, rodo `limit` (3–5, numatyta 4), atnaujina kas 5 minutes ir nutraukia užklausą po 10 sekundžių. Jei paskyra turi mažiau įrašų, rodomi tik tikri turimi. Sutrikus atnaujinimui išsaugomi paskutiniai sėkmingai įkelti įrašai.
+VIDEO įrašams pateikite `thumbnail_url`, kitiems — `media_url`. JSON pavyzdys nėra rodomas svetainėje. `featured` yra alternatyvus rankinis režimas patikrintų įrašų nuorodoms (iki 5); jį naudoti galima pakeitus `mode` į `featured`. Niekada nedėkite Instagram access token į frontend, `VITE_*`, repo ar viešą JSON.
 
-Niekada nedėkite Instagram access token į `VITE_*`, repo, JSON atsakymą ar naršyklės kodą: visa frontend konfigūracija yra vieša.
+## Du fono variantai
+
+- `/?perziura=1&fonas=spalvos` — mėlynos, turkio ir violetinės šviesos fonas su logotipu.
+- `/?perziura=1&fonas=nuotrauka` — vartotojo miško nuotrauka hero dalyje su patamsinimu.
+
+Peržiūros nuorodos rodo fono perjungiklį. Įprastame puslapyje jis nerodomas. Numatytoji `appearance.background` reikšmė yra `colors`; galutinai pasirinkus nuotrauką pakeiskite į `photo` ir surinkite projektą. Nuotrauka konvertuota iš vartotojo BMP į 276 KB WebP; originalas nepakeistas. Animacijos išjungtos su `prefers-reduced-motion`.
 
 ## Žemėlapis, kontaktai ir sezonas
 

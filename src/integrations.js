@@ -13,5 +13,13 @@ export function normalizePosts(payload, limit = 4) {
   }).sort((a, b) => Date.parse(b.timestamp) - Date.parse(a.timestamp)).slice(0, Math.max(3, Math.min(5, limit))).map(post => ({
     id: post.id, permalink: safeHttps(post.permalink, ['instagram.com']), timestamp: post.timestamp,
     caption: typeof post.caption === 'string' ? post.caption.slice(0, 500) : 'Naujas įrašas iš Magiško Miško',
+    image: safeHttps(post.media_type === 'VIDEO' ? post.thumbnail_url : post.media_url),
   }));
+}
+
+export function instagramEmbed(value) {
+  const valid = safeHttps(value, ['instagram.com']);
+  if (!valid) return '';
+  const match = new URL(valid).pathname.match(/^\/(?:[\w.]+\/)?(p|reel)\/([\w-]+)\/?$/);
+  return match ? `https://www.instagram.com/${match[1]}/${match[2]}/embed/` : '';
 }

@@ -19,3 +19,16 @@ test('captions are bounded and missing captions have an honest fallback',()=>{
  assert.equal(normalizePosts({posts:[{...post('a'),caption:'x'.repeat(1000)}]})[0].caption.length,500);
  assert.equal(normalizePosts({posts:[{...post('a'),caption:null}]})[0].caption,'Naujas įrašas iš Magiško Miško');
 });
+
+test('gallery uses images and video thumbnails, rejects unsafe media URLs',()=>{
+ const images=normalizePosts({posts:[{...post('photo'),media_url:'https://cdn.example.org/photo.jpg'},{...post('video'),media_type:'VIDEO',media_url:'https://cdn.example.org/video.mp4',thumbnail_url:'https://cdn.example.org/cover.jpg'},{...post('unsafe'),media_url:'javascript:alert(1)'}]});
+ assert.equal(images[0].image,'https://cdn.example.org/photo.jpg');
+ assert.equal(images[1].image,'https://cdn.example.org/cover.jpg');
+ assert.equal(images[2].image,'');
+});
+test('embeds accept only Instagram post paths, not profiles or redirects',async()=>{
+ const {instagramEmbed}=await import('../src/integrations.js');
+ assert.equal(instagramEmbed('https://www.instagram.com/magiskas.miskas/reel/Dd4D0m0NxMq/'),'https://www.instagram.com/reel/Dd4D0m0NxMq/embed/');
+ assert.equal(instagramEmbed('https://www.instagram.com/p/real_post/'),'https://www.instagram.com/p/real_post/embed/');
+ for(const url of ['https://instagram.com/','https://instagram.com/magiskas.miskas/','https://instagram.com.evil.test/p/a/','javascript:alert(1)','https://instagram.com/accounts/login/']) assert.equal(instagramEmbed(url),'');
+});

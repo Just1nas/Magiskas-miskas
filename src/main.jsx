@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import { content as c } from './content';
-import { safeHttps, normalizePosts } from './integrations';
+import { safeHttps } from './integrations';
+import { Instagram } from './Instagram';
 import './styles.css';
 import { useAmbientMotion } from './useAmbientMotion';
 
@@ -73,35 +74,19 @@ function Arrival() {
   const mapUrl = safeHttps(c.map.embedUrl, ['google.com']);
   return <section id="atvykimas" className="section arrival"><div className="section-heading"><span className="eyebrow">Kaip atvykti</span><h2>Visi keliai<br />veda į mišką.</h2></div><div className="arrival-grid"><div className="transport">{c.transport.map(([title, text, link]) => <div key={title}><h3>{title}</h3><p>{text}</p>{safeHttps(link) && <External className="text-link" href={link}>Planuoti kelionę ↗</External>}</div>)}</div><div className="map-panel"><span className="eyebrow">Vilnius / Vingis</span><p className="map-address">{c.venue}</p><p>{c.address}</p><External className="text-link" href={safeHttps(c.map.directionsUrl)}>Atidaryti maršrutą ↗</External>{mapUrl && (mapOpen ? <iframe title="Renginio vieta žemėlapyje" src={mapUrl} loading="lazy" referrerPolicy="no-referrer" /> : <button className="text-link" onClick={() => setMapOpen(true)}>Rodyti Google žemėlapį +</button>)}</div></div></section>;
 }
-function Instagram() {
-  const [posts, setPosts] = useState([]);
-  const [state, setState] = useState('idle');
-  useEffect(() => {
-    const endpoint = c.instagram.endpoint;
-    if (!endpoint || !(endpoint.startsWith('/') && !endpoint.startsWith('//') || safeHttps(endpoint))) return;
-    let stopped = false, timer, controller;
-    async function refresh() {
-      controller = new AbortController();
-      const timeout = setTimeout(() => controller.abort(), 10000);
-      setState('loading');
-      try {
-        const response = await fetch(endpoint, { signal: controller.signal, credentials: 'omit' });
-        if (!response.ok) throw new Error('Feed unavailable');
-        const items = normalizePosts(await response.json(), c.instagram.limit);
-        if (!stopped) { setPosts(items); setState('ready'); }
-      } catch { if (!stopped) setState('error'); }
-      finally { clearTimeout(timeout); if (!stopped) timer = setTimeout(refresh, Math.max(60000, c.instagram.refreshMs)); }
-    }
-    refresh(); return () => { stopped = true; clearTimeout(timer); controller?.abort(); };
-  }, []);
-  return <section id="instagram" className="section instagram"><div className="section-heading"><span className="eyebrow">Akimirkos</span><h2>Iš Magiško<br />Miško.</h2>{instagramUrl && <External className="text-link" href={instagramUrl}>Sekti Instagram ↗</External>}</div>
-    {posts.length ? <div className="instagram-feed" role="region" aria-label="Naujausi Instagram įrašai" tabIndex="0">{posts.map(post => <External href={post.permalink} className="instagram-post" key={post.id}><span className="eyebrow">Instagram</span><p>{post.caption}</p><span className="post-bottom"><time dateTime={post.timestamp}>{new Date(post.timestamp).toLocaleDateString('lt-LT')}</time><span aria-hidden="true">↗</span></span></External>)}</div> : <div className="instagram-empty" role="status"><span className="eyebrow">Istorijos, kuriomis norisi dalintis</span><p>{state === 'loading' ? 'Ieškome naujausių akimirkų…' : state === 'error' ? 'Įrašų šiuo metu nepavyko įkelti.' : 'Pirmosios miško istorijos — jau netrukus.'}</p><span className="small-note">{instagramUrl ? 'Daugiau akimirkų rasi mūsų Instagram paskyroje.' : 'Čia atsiras naujausios mūsų Instagram istorijos.'}</span></div>}
-  </section>;
-}
 function App() {
   useAmbientMotion();
-  return <><a className="skip-link" href="#turinys">Pereiti prie turinio</a><Header /><main id="turinys">
-    <section id="pradzia" className="hero"><Brand watermark /><div className="hero-meta eyebrow"><span>Patyrimų ir šviesos spektaklis</span><span>{c.city} / Po atviru dangumi</span></div><div className="hero-title"><span className="eyebrow">{c.tagline}</span><h1><span>Magiškas</span><span>Miškas</span></h1></div><div className="hero-bottom"><p>{c.description}</p><div className="hero-date"><span>{c.city}</span><span className="small-note">{closed ? c.season.closedMessage : c.date}</span></div><a className="enter-link" href="#slenkstis">Įžengti <span aria-hidden="true">↓</span></a></div><div className="hero-ticket"><TicketLink /></div></section>
+  const params = new URLSearchParams(window.location.search);
+  const preview = params.get('perziura') === '1';
+  const [background, setBackground] = useState(preview && params.get('fonas') === 'nuotrauka' ? 'photo' : c.appearance.background);
+  const switchBackground = value => {
+    setBackground(value);
+    const url = new URL(window.location.href);
+    url.searchParams.set('fonas', value === 'photo' ? 'nuotrauka' : 'spalvos');
+    window.history.replaceState(null, '', url);
+  };
+  return <><a className="skip-link" href="#turinys">Pereiti prie turinio</a><Header />{preview && <div className="background-preview" role="group" aria-label="Fono variantų peržiūra"><span>Fono peržiūra</span><button aria-pressed={background === 'colors'} onClick={() => switchBackground('colors')}>Spalvos</button><button aria-pressed={background === 'photo'} onClick={() => switchBackground('photo')}>Nuotrauka</button></div>}<main id="turinys">
+    <section id="pradzia" className={`hero hero-${background}`}>{background === 'photo' && <img className="hero-photo" src="images/forest-night.webp" alt="" aria-hidden="true" fetchPriority="high" />}<Brand watermark /><div className="hero-meta eyebrow"><span>Patyrimų ir šviesos spektaklis</span><span>{c.city} / Po atviru dangumi</span></div><div className="hero-title"><span className="eyebrow">{c.tagline}</span><h1><span>Magiškas</span><span>Miškas</span></h1></div><div className="hero-bottom"><p>{c.description}</p><div className="hero-date"><span>{c.city}</span><span className="small-note">{closed ? c.season.closedMessage : c.date}</span></div><a className="enter-link" href="#slenkstis">Įžengti <span aria-hidden="true">↓</span></a></div><div className="hero-ticket"><TicketLink /></div></section>
     <section id="slenkstis" className="pause section"><Brand watermark /><span className="eyebrow">Palik kasdienybę už slenksčio</span><h2>{c.pause}</h2><p className="pause-story">{c.story}</p><span className="pause-bottom eyebrow">Ne tik pamatyti. Pajusti.</span></section>
     <section className="section overview" aria-labelledby="trumpai"><div><h2 id="trumpai">Trumpai<br />apie magiją.</h2></div><dl>{[['Patyrimas', 'Šviesos. Gamtos. Vaizduotės.'], ['Trukmė', c.duration], ['Kam?', 'Visokio ūgio vaikams'], ['Vieta', c.venue]].map(([label, value]) => <div key={label}><dt>{label}</dt><dd>{value}</dd></div>)}</dl></section>
     <Journey /><Tickets />

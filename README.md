@@ -94,7 +94,7 @@ Komponentas `Tickets` izoliuoja widgeto vietą. Jei Bilietai.lt pateiks tik scri
 
 `instagram.mode: 'profile'` ir `profileUrl` įjungia oficialų Instagram paskyros bloką per viešą `https://www.instagram.com/magiskas.miskas/embed/` iframe. Bloko turinį, įrašų skaičių, išdėstymą ir talpyklos atnaujinimo laiką valdo Instagram. Naujų įrašų URL rankiniu būdu kopijuoti nereikia. Profilis ir įterpimas turi likti vieši. Šiuo metu paskyroje patikrintas vienas įrašas. Srauto atsinaujinimas nėra garantuotas iškart po publikavimo.
 
-Patikros apribojimas: atskiras viešas Instagram embed adresas grąžina tikrą profilį, tačiau šios sesijos Codex vietinėje iframe peržiūroje turinys liko tuščias. Po diegimo būtina patikrinti įterpimą viešame domene įprastoje naršyklėje; jo rodymas svetainėje dar nepatvirtintas.
+Patikra 2026-09-30: Hostinger sėkmingai automatiškai įdiegė versiją iš GitHub main. Išvalyta domeno talpykla. Viešame www.magiskasmiskas.lt puslapyje vizualiai patvirtintas Instagram profilis ir tikras jo įrašas. Įterpimas gali krautis ilgiau ar būti blokuojamas lankytojo naršyklėje; tiesioginė paskyros nuoroda išlieka.
 
 Šis būdas nereikalauja prieigos rakto ar slaptažodžio. Lankytojo naršyklė kreipiasi į Instagram. Blokavimo arba tiekėjo sutrikimo atveju visada lieka nuoroda į paskyrą. Integracijos slapukai ir turinys priklauso Instagram. Oficialaus bloko viduje svetainė negali valdyti karuselės sukimosi ar tiksliai apriboti įrašų iki 3–5.
 

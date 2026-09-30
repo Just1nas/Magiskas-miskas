@@ -1,3 +1,4 @@
+import { ui } from './locale';
 import React from 'react';
 import { safeHttps } from './integrations';
 
@@ -20,5 +21,5 @@ export function SocialLink({ network, href, label, className = '' }) {
   const url = info && safeHttps(href, [info.host]);
   if (!url) return null;
   const name = label || `Magiškas Miškas – ${info.name}`;
-  return <a className={`social-link ${className}`} href={url} target="_blank" rel="noopener noreferrer" aria-label={`${name} (naujame skirtuke)`} title={name}><SocialIcon network={network} /></a>;
+  return <a className={`social-link ${className}`} href={url} target="_blank" rel="noopener noreferrer" aria-label={`${name} (${ui('naujame skirtuke','opens in a new tab')})`} title={name}><SocialIcon network={network} /></a>;
 }

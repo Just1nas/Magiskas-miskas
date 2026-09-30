@@ -33,7 +33,21 @@ export function safeMediaUrl(value) {
     return url.protocol === 'https:' && !url.username && !url.password && (url.hostname.endsWith('.cdninstagram.com') || url.hostname.endsWith('.fbcdn.net')) ? url.href : '';
   } catch { return ''; }
 }
-async function download(url, image = false) {
+export function parseEmbedVideo(html, shortcode) {
+  // Decode JSON string literals only; never evaluate the embedded scripts.
+  const find = (value, depth = 0) => {
+    if (!value || typeof value !== 'object' || depth > 25) return '';
+    if (value.shortcode === shortcode && value.is_video && safeMediaUrl(value.video_url)) return safeMediaUrl(value.video_url);
+    for (const child of Object.values(value)) { const url = find(child, depth + 1); if (url) return url; }
+    return '';
+  };
+  for (const token of html.match(/"(?:[^"\\]|\\.)*"/g) || []) {
+    if (!token.includes('video_url')) continue;
+    try { const url = find(JSON.parse(JSON.parse(token))); if (url) return url; } catch {}
+  }
+  return '';
+}
+async function download(url, image = false, maxBytes = MAX_BYTES) {
   // Redirects are rejected so an untrusted payload cannot switch download hosts.
   const response = await fetch(url, { redirect: 'error', signal: AbortSignal.timeout(20000), headers: { 'User-Agent': 'Mozilla/5.0 (compatible; MagiskasMiskasGallery/1.0)', 'Accept-Language': 'en' } });
   if (!response.ok) throw new Error(`Instagram returned HTTP ${response.status}; keeping the previous gallery.`);
@@ -42,7 +56,7 @@ async function download(url, image = false) {
   while (true) {
     const { done, value } = await reader.read(); if (done) break;
     length += value.length;
-    if (length > MAX_BYTES) { await reader.cancel(); throw new Error('Response exceeds size limit.'); }
+    if (length > maxBytes) { await reader.cancel(); throw new Error('Response exceeds size limit.'); }
     chunks.push(value);
   }
   const bytes = Buffer.concat(chunks);
@@ -62,7 +76,21 @@ export async function refresh() {
     const name = `${post.id}-${createHash('sha256').update(bytes).digest('hex').slice(0,12)}.jpg`;
     assets.push({ name, bytes });
     const { source: _, ...metadata } = post;
-    posts.push({ ...metadata, media_url: `instagram/${name}`, thumbnail_url: `instagram/${name}` });
+    let video_url = '';
+    if (post.media_type === 'VIDEO') {
+      try {
+        const embed = (await download(`${post.permalink}embed/`)).toString('utf8');
+        const shortcode = new URL(post.permalink).pathname.split('/')[2];
+        const videoSource = parseEmbedVideo(embed, shortcode);
+        if (videoSource) {
+          const video = await download(videoSource, false, 40 * 1024 * 1024);
+          if (video.subarray(4,8).toString() !== 'ftyp') throw new Error('Expected MP4 video.');
+          const videoName = `${post.id}-${createHash('sha256').update(video).digest('hex').slice(0,12)}.mp4`;
+          assets.push({ name: videoName, bytes: video }); video_url = `instagram/${videoName}`;
+        }
+      } catch { console.warn(`Video unavailable for ${post.id}; keeping its poster.`); }
+    }
+    posts.push({ ...metadata, media_url: `instagram/${name}`, thumbnail_url: `instagram/${name}`, ...(video_url ? { video_url } : {}) });
   }
   const data = JSON.stringify({ account: ACCOUNT, posts }, null, 2) + '\n';
   const previous = await readFile(new URL('feed.json', ROOT), 'utf8').catch(() => '');

@@ -5,9 +5,9 @@ const logo = ['svg', 'png', 'webp'].map(ext => `brand/logo.${ext}`).find(path =>
 export default defineConfig({
   plugins: [react()],
   base: '/',
-  build: { rollupOptions: { input: { site: 'index.html', admin: 'gabija/index.html' } } },
+  build: { rollupOptions: { input: { site: 'index.html', english: 'en/index.html', admin: 'gabija/index.html' } } },
   define: { __BRAND__: JSON.stringify({
-    logo: logo || null,
+    logo: logo ? `/${logo}` : null,
     magical: existsSync('public/fonts/Magical-Regular.woff2'),
     manrope: existsSync('public/fonts/Manrope-VariableFont_wght.woff2'),
   }) },

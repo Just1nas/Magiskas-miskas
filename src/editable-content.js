@@ -40,6 +40,7 @@ const urlHosts={'socials.facebook':['facebook.com'],'socials.tiktok':['tiktok.co
 const urlPaths=new Set([...Object.keys(urlHosts),'map.directionsUrl','reviewUrl']);
 function fail(path,reason){throw new Error(`${fields[path.split('.').at(-1)]||path}: ${reason}`);}
 function check(value,template,path){
+  path = path.replace(/^translations\.en\./, '');
   if(Array.isArray(template)) {
     if(!Array.isArray(value)||value.length<1||value.length>(path==='journey'?20:50))fail(path,'reikia 1–'+(path==='journey'?20:50)+' įrašų.');
     if(['faq','practical','transport'].includes(path))return value.map((row,i)=>{

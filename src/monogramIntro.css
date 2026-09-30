@@ -1,0 +1,79 @@
+.monogram-intro{position:fixed;inset:0;z-index:90;overflow:hidden}
+.intro-curtain{position:absolute;inset:0;background:#05091b}
+.intro-lockup{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;gap:clamp(24px,5vw,80px);pointer-events:none}
+.intro-lockup img{filter:brightness(0) invert(1);object-fit:contain;transform-origin:center;flex-shrink:0}
+.intro-symbol{width:clamp(125px,22vw,245px);height:auto}
+.intro-left,.intro-right{width:clamp(60px,11vw,125px);height:auto}
+.intro-skip{position:absolute;right:5.5vw;bottom:max(24px,env(safe-area-inset-bottom));font-size:11px;letter-spacing:.06em;padding:16px;color:#FFFDF8;min-height:44px}
+.intro-experience .hero>.hero-title,.intro-experience .hero>.hero-meta,.intro-experience .hero>.hero-bottom,.intro-experience .hero>.hero-ticket,.intro-experience .continuous-logo-reveal{animation:none!important}
+.intro-running .header,.intro-running .hero h1 .intro-letter,.intro-running .hero-meta,.intro-running .hero-bottom,.intro-running .hero-ticket,.intro-running .hero-title>.eyebrow,.intro-running .mobile-ticket,.intro-running .continuous-logo-reveal{opacity:0}
+@media(max-width:640px){.intro-lockup{gap:20px}.intro-symbol{width:34vw}.intro-left,.intro-right{width:17vw}}
+@media(prefers-reduced-motion:reduce){.monogram-intro{display:none}.intro-running .header,.intro-running .hero h1 .intro-letter,.intro-running .hero-meta,.intro-running .hero-bottom,.intro-running .hero-ticket,.intro-running .hero-title>.eyebrow,.intro-running .mobile-ticket,.intro-running .continuous-logo-reveal{opacity:1}}
+
+.intro-replay{position:static;background:transparent;color:#FFFDF8;border:0;border-bottom:1px solid #464340;padding:10px 0;font-size:11px;min-height:44px}
+
+.intro-experience .hero h1 .intro-letter{display:inline-block;padding:0!important;margin:0!important;white-space:pre}
+.intro-flying-first,.intro-flying-second{position:absolute;display:block;transform-origin:center;opacity:0;color:#FFFDF8;pointer-events:none;white-space:pre}
+.intro-raster-symbol{position:absolute;object-fit:contain;filter:brightness(0) invert(1);max-width:none;opacity:0;pointer-events:none}
+
+/* Retain this element only as a layout reference for the travelling symbol. */
+.intro-lockup .intro-symbol{visibility:hidden}
+
+/* Keep the travelling image mounted: no fade between two copies at the end. */
+.intro-experience>.continuous-background{z-index:-2}
+.intro-experience .continuous-logo-reveal{visibility:hidden}
+.monogram-intro.intro-complete{z-index:-1;pointer-events:none}
+.intro-complete .intro-curtain,.intro-complete .intro-lockup,.intro-complete .intro-skip,.intro-complete .intro-trails{display:none}
+.intro-complete .intro-raster-symbol{left:auto!important;right:2vw;top:12%!important;width:52vw!important;height:82%!important;opacity:var(--logo-opacity,.23);transform:none;transition:opacity .9s ease}
+.intro-trails{position:absolute;inset:0;pointer-events:none}
+.intro-trail-light{position:absolute;left:0;top:0;width:4px;height:4px;border-radius:50%;background:#fff2cd;box-shadow:0 0 12px 5px #efd4a433,0 0 26px 10px #efd4a411;opacity:0}
+@media(max-width:640px){.intro-complete .intro-raster-symbol{width:82vw!important;top:18%!important;height:66%!important}.intro-trail-light{width:3px;height:3px}}
+@media(prefers-reduced-motion:reduce){.monogram-intro.intro-complete{display:block}.intro-complete .intro-raster-symbol{transition:none}.intro-trails{display:none}}
+
+.intro-experience .button{transition:background .3s,color .3s,transform .25s,box-shadow .4s}
+.intro-experience .button:focus-visible{box-shadow:0 0 22px #eedcb533}
+.intro-experience .button:active{box-shadow:0 0 18px #eedcb54d}
+@media(hover:hover) and (pointer:fine){.intro-experience .button:hover{box-shadow:0 0 24px #eedcb533}}
+.zone-glow{position:absolute;inset:0;opacity:0;pointer-events:none;transition:opacity 1.8s ease}
+.zone-blue{background:radial-gradient(ellipse at 70% 55%,#2b739b77,transparent 70%)}
+.zone-violet{background:radial-gradient(ellipse at 70% 55%,#85457e77,transparent 70%)}
+.zone-gold{background:radial-gradient(ellipse at 70% 55%,#b4883977,transparent 70%)}
+.zone-green{background:radial-gradient(ellipse at 70% 55%,#366d6577,transparent 70%)}
+.intro-experience .continuous-background[data-zone="prisiminimu-kudra"] .zone-blue,
+.intro-experience .continuous-background[data-zone="snaudziantis-rozynas"] .zone-violet,
+.intro-experience .continuous-background[data-zone="gardumynu-sodas"] .zone-gold,
+.intro-experience .continuous-background[data-zone="snabzdesiu-aleja"] .zone-green,
+.intro-experience .continuous-background[data-zone="paslapciu-giraite"] .zone-violet{opacity:var(--zone-strength,0)}
+
+/* The same logo stays in place while its light temperature changes. */
+@property --ambient-hue { syntax: '<angle>'; inherits: true; initial-value: 155deg; }
+@property --ambient-drift { syntax: '<angle>'; inherits: false; initial-value: 0deg; }
+.intro-experience{transition:--ambient-hue 4s ease}
+.intro-complete .intro-raster-symbol{
+ filter:brightness(0) invert(1) sepia(.75) saturate(2.4) hue-rotate(calc(var(--ambient-hue) + var(--ambient-drift)));
+ transition:opacity .9s ease,filter 4s ease;
+ animation:ambient-logo-color 28s ease-in-out infinite;
+}
+@keyframes ambient-logo-color{0%,100%{--ambient-drift:0deg}40%{--ambient-drift:38deg}75%{--ambient-drift:-24deg}}
+.intro-experience.ambient-paused .intro-raster-symbol{animation-play-state:paused}
+.intro-experience .ticket-cta,.intro-experience .ticket-open-controls>.button{border-radius:999px;min-height:44px;padding:10px 19px;gap:22px;letter-spacing:.09em}
+.intro-experience .ticket-cta>span{display:grid;place-items:center;width:25px;height:25px;border-radius:50%;background:rgba(26,31,23,.07)}
+.intro-experience .ticket-cta svg{width:16px;height:16px}
+@media(max-width:640px){
+ .intro-experience .mobile-ticket{background:transparent;border:0;padding:8px 6vw calc(10px + env(safe-area-inset-bottom));pointer-events:none}
+ .intro-experience .mobile-ticket .ticket-cta{width:min(100%,290px);min-height:48px;margin-inline:auto;display:flex;pointer-events:auto;box-shadow:0 5px 24px #05091b66}
+ .intro-experience .ticket-open-controls>.button{width:auto;max-width:100%}
+}
+@media(prefers-reduced-motion:reduce){.intro-experience{transition:none}.intro-complete .intro-raster-symbol{animation:none;transition:none}}
+
+/* Quiet, rounded ticket shapes; keep the lettering fully opaque. */
+.intro-experience .ticket-cta,.intro-experience .ticket-open-controls>.button{
+ border-radius:999px;
+ background:rgba(255,253,248,.72);border-color:rgba(255,253,248,.38);color:#1A1F17;
+ backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+}
+.intro-experience .ticket-cta:focus-visible,.intro-experience .ticket-cta:active,
+.intro-experience .ticket-open-controls>.button:focus-visible,.intro-experience .ticket-open-controls>.button:active{background:#FFFDF8;color:#1A1F17;border-color:#FFFDF8}
+@media(hover:hover) and (pointer:fine){
+ .intro-experience .ticket-cta:hover,.intro-experience .ticket-open-controls>.button:hover{background:#FFFDF8;color:#1A1F17;border-color:#FFFDF8}
+}

@@ -1,0 +1,37 @@
+.partners{border-top:1px solid var(--line);padding-block:38px 28px}
+.partners>h2{font-size:clamp(1.9rem,2.6vw,2.7rem);margin-bottom:22px}
+.partner-group{display:grid;grid-template-columns:125px 1fr;gap:22px;padding:18px 0;border-top:1px solid var(--line)}
+.partner-group>h3{font-size:21px;align-self:center}
+.partner-logos{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:16px 24px}
+.partner-logos>li{display:flex;align-items:center;justify-content:center;min-height:52px}
+.partner-logo{--logo-height:46px;display:block;position:relative;overflow:hidden;width:min(100%,140px,calc(var(--ratio)*var(--logo-height)));aspect-ratio:var(--ratio)}
+.partner-logo img{position:absolute;max-width:none;height:auto;filter:brightness(0) invert(1)}
+.is-organizer .partner-logo{--logo-height:54px;width:min(100%,145px,calc(var(--ratio)*var(--logo-height)))}
+@media(min-width:641px) and (max-width:1000px){.partner-logos{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:640px){
+ .partners{padding-block:30px 20px}
+ .partners>h2{font-size:1.9rem;margin-bottom:18px}
+ .partner-group{grid-template-columns:1fr;gap:12px;padding:15px 0}
+ .partner-group>h3{font-size:20px}
+ .partner-logos{grid-template-columns:repeat(3,minmax(0,1fr));gap:14px 18px}
+ .partner-logos>li{min-height:44px}
+ .partner-logo{--logo-height:40px}
+ .is-organizer .partner-logos{grid-template-columns:1fr;justify-items:start}
+ .is-organizer .partner-logos>li{width:125px}
+}
+
+/* Keep the row still; respond only to direct pointer interaction. */
+.partner-logos>li{transition:transform .35s ease,filter .35s ease;transform-origin:center}
+@media(hover:hover) and (pointer:fine){
+ .partner-logos>li:hover{transform:scale(1.04);filter:drop-shadow(0 0 7px rgba(255,253,248,.4))}
+}
+@media(hover:none){
+ .partner-logos>li:active{transform:scale(1.04);filter:drop-shadow(0 0 7px rgba(255,253,248,.4))}
+}
+@media(prefers-reduced-motion:reduce){.partner-logos>li{transition:none}.partner-logos>li:hover,.partner-logos>li:active{transform:none}}
+
+.partner-destination{display:flex;align-items:center;justify-content:center;width:100%;min-height:52px;border-radius:4px}
+.partner-destination:focus-visible{outline:1px solid #FFFDF8;outline-offset:5px}
+.partner-logos>li:focus-within{transform:scale(1.04);filter:drop-shadow(0 0 7px rgba(255,253,248,.4))}
+@media(max-width:640px){.partner-destination{min-height:44px}}
+@media(prefers-reduced-motion:reduce){.partner-logos>li:focus-within{transform:none}}

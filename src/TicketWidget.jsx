@@ -1,3 +1,4 @@
+import { ui, locale } from './locale';
 import React, { useEffect, useRef, useState } from 'react';
 import { content as c } from './content';
 import './ticketLayout.css';
@@ -30,7 +31,7 @@ export function TicketWidget({ widgetId, transparent = false }) {
       if (!next || next === frame) return;
       frame?.removeEventListener('load', loaded);
       frame = next;
-      frame.title = 'Magiško Miško bilietų pasirinkimas – Bilietai.lt';
+      frame.title = ui('Magiško Miško bilietų pasirinkimas – Bilietai.lt','Magiškas Miškas ticket selection — Bilietai.lt');
       frame.addEventListener('load', loaded, { once: true });
     };
     const observer = new MutationObserver(observeFrame);
@@ -41,7 +42,7 @@ export function TicketWidget({ widgetId, transparent = false }) {
     return () => { stopped = true; clearTimeout(timeout); observer.disconnect(); frame?.removeEventListener('load', loaded); };
   }, []);
   return <div className="ticket-widget">
-    {state !== 'ready' && <p className="widget-status" role="status">{state === 'loading' ? 'Kraunamas bilietų pasirinkimas…' : 'Bilietų pasirinkimas neįsikrovė. Atidaryk renginį Bilietai.lt žemiau esančia nuoroda.'}</p>}
-    <div ref={host} plg-widget="" data-widget-id={widgetId} data-language="lt" data-event-id={c.tickets.eventId} data-sp={c.tickets.provider} data-theme={JSON.stringify(transparent ? transparentTicketTheme : ticketTheme)} data-base={JSON.stringify(ticketBase)} data-font={JSON.stringify(ticketFont)} data-custom-styles={transparent ? transparentTicketStyles : ticketCustomStyles} />
+    {state !== 'ready' && <p className="widget-status" role="status">{state === 'loading' ? ui('Kraunamas bilietų pasirinkimas…','Loading ticket selection…') : ui('Bilietų pasirinkimas neįsikrovė. Atidaryk renginį Bilietai.lt žemiau esančia nuoroda.','Ticket selection could not load. Use the link below to open the event on Bilietai.lt.')}</p>}
+    <div ref={host} plg-widget="" data-widget-id={widgetId} data-language={locale} data-event-id={c.tickets.eventId} data-sp={c.tickets.provider} data-theme={JSON.stringify(transparent ? transparentTicketTheme : ticketTheme)} data-base={JSON.stringify(ticketBase)} data-font={JSON.stringify(ticketFont)} data-custom-styles={transparent ? transparentTicketStyles : ticketCustomStyles} />
   </div>;
 }

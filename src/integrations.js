@@ -7,6 +7,9 @@ export function safeHttps(value, hosts) {
 export function safeGalleryImage(value) {
   return typeof value === 'string' && /^instagram\/\d+-[a-f0-9]{12}\.jpg$/.test(value) ? value : safeHttps(value);
 }
+export function safeGalleryVideo(value) {
+  return typeof value === 'string' && /^instagram\/\d+-[a-f0-9]{12}\.mp4$/.test(value) ? value : safeHttps(value);
+}
 export function normalizePosts(payload, limit = 4) {
   if (!Array.isArray(payload?.posts)) throw new Error('Invalid feed');
   const seen = new Set();
@@ -17,6 +20,7 @@ export function normalizePosts(payload, limit = 4) {
     id: post.id, permalink: safeHttps(post.permalink, ['instagram.com']), timestamp: post.timestamp,
     caption: typeof post.caption === 'string' ? post.caption.slice(0, 500) : 'Naujas įrašas iš Magiško Miško',
     media_type: post.media_type === 'VIDEO' ? 'VIDEO' : 'IMAGE',
+    video: post.media_type === 'VIDEO' ? safeGalleryVideo(post.video_url) : '',
     image: safeGalleryImage(post.media_type === 'VIDEO' ? post.thumbnail_url : post.media_url),
   }));
 }

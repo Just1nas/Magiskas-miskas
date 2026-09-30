@@ -1,5 +1,7 @@
+import { english } from './english.js';
 // Visas redaguojamas svetainės turinys. Tuščia nuoroda reiškia, kad integracija dar neįjungta.
 export const content = {
+  translations: { en: english },
   name: 'Magiškas Miškas',
   copy: {
     heroFirst: 'Magiškas', heroSecond: 'Miškas', heroLabel: 'Patyrimų ir šviesos spektaklis', heroLocation: 'Po atviru dangumi',

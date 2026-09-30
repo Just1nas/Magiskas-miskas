@@ -150,3 +150,17 @@ Išsaugojimas vyksta į Supabase, ne GitHub. Naujas lankytojo puslapio įkėlima
 Vietinė UI peržiūra: `http://127.0.0.1:4173/gabija/?perziura=1`. Ji leidžiama tik localhost / 127.0.0.1, nerodo tikro prisijungimo ir nieko neišsaugo. Viešame domene šis parametras nesuteikia prieigos. Kol aplinka neprijungta, paprastas `/gabija/` rodo aiškų neaktyvios panelės pranešimą.
 
 Šaltiniai: [Supabase el. pašto prisijungimas](https://supabase.com/docs/guides/auth/auth-email-passwordless), [RLS](https://supabase.com/docs/guides/database/postgres/row-level-security), [API raktai](https://supabase.com/docs/guides/api/api-keys).
+
+
+## Lietuvių ir anglų kalbos
+
+- `/` — lietuviška versija (numatytoji); `/en/` — angliška. Naršyklės kalba automatiškai nekeičia pasirinkimo. Kalbą apibrėžia adresas, todėl nuorodą galima išsaugoti ir persiųsti.
+- Meniu LT / EN išlaiko atidarytą skiltį ir nekartoja įžangos. Prekės ženklas ir Instagram įrašų tekstai lieka originalūs.
+- `/gabija/` pasirink **LT · Lietuvių** arba **EN · English**. Vienas išsaugojimas apima abiejų kalbų tekstus. Lietuviškų pakeitimų sistema automatiškai neverčia — atnaujink ir EN tekstą.
+- English copy is bundled in `src/english.js`, editable under `translations.en` in the same Supabase `main` document. Old documents automatically receive these defaults. No database migration or extra permissions are required. Existing revision checks and the 128 KB limit apply to both languages together.
+- Maps, URLs, social links, visual settings, season mode and ticket integration remain shared. English transport rows inherit Lithuanian row URLs by position; change their structure in LT and keep translations aligned.
+- Bilietai.lt receives `data-language="en"` in English mode. Event descriptions and third-party content remain controlled by their providers.
+- Vite builds `dist/en/index.html` alongside the Lithuanian and admin entries. Hostinger settings stay unchanged: `npm run build`, output `dist`. Upload/deploy the **whole** dist directory, including `en/`.
+- English factual text was translated from the public CMS content on 2026-10-01. Review both versions whenever dates, prices or visitor rules change.
+
+Production release: the six-second introduction and ambient logo are enabled by default. The introduction plays once per browser tab session, can be skipped, and is bypassed for reduced motion and section links. Replay and background/video experiment controls are available only on localhost.

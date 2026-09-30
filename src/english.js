@@ -1,0 +1,34 @@
+// English copy. Brand names and addresses retain their original spelling.
+export const english = {
+copy: {
+heroFirst:'Magiškas',heroSecond:'Miškas',heroLabel:'An immersive light experience',heroLocation:'Under the open sky',buy:'Buy tickets',closedButton:'See you soon',enter:'Step inside',navJourney:'Explore',navArrival:'Getting here',navFaq:'FAQ',pauseLabel:'Leave the everyday behind',pauseBottom:'More than a sight. A feeling.',journeyTitle:'Five spaces. One journey.',journeyIntro:'Choose where your curiosity takes you.',journeyNext:'Another secret awaits.',instagramLabel:'Moments / Instagram',instagramTitle:'Magic worth sharing.',instagramEmpty:'Find our latest moments on Instagram.',galleryLabel:'Moments from our forest',overviewTitle:'A glimpse of\nthe magic.',experienceLabel:'The experience',experience:'Light. Nature. Imagination.',audienceLabel:'For whom?',audience:'Children of every age and height',durationLabel:'Duration',venueLabel:'Location',ticketsLabel:'Your evening in the forest',ticketsTitle:'Wonder\nawaits you.',ticketsIntro:'Choose your visit. Current prices and available times are shown below.',ticketsDirect:'View the event on Bilietai.lt',closedIntro:'Stay tuned. We will announce our next journey here.',practicalLabel:'Before you step inside',practicalTitle:'A little planning.\nA little more magic.',whenLabel:'When',whereLabel:'Where',arrivalTitle:'All paths lead\nto the forest.',mapLabel:'Vilnius / Vingis section, Vilnius University Botanical Garden',planTrip:'Plan your journey',directions:'Get directions',openMap:'Open the map',faqTitle:'Curious?\nWonderful.',faqMore:'More questions +',faqLess:'Show fewer −',contact:'Get in touch',review:'Leave a review',backTop:'Back to top'
+},
+tagline:'As nature sleeps, magic awakens',description:'An outdoor immersive light experience for children of every age and height.',city:'Vilnius',date:'From 10 October',venue:'Vilnius University Botanical Garden, Vingis section',duration:'Duration to be confirmed',hours:'Opening hours will be announced soon',pause:'The moment you enter, the forest knows — you have returned…',story:'As autumn lulls the everyday world to sleep, the forest awakens with things unseen by day: glowing mushrooms, mysterious inhabitants, whispering trees and stories revealed only to those who pause, listen and follow their curiosity. Here, you become part of the story — following your own path, discovering, touching, listening, breathing it all in.',
+tickets:{price:'See ticket selection for current prices and available times'},season:{closedMessage:'See you in Magiškas Miškas in 2027!'},
+journey:[
+{id:'snabzdesiu-aleja',title:'Whispering Alley',cue:'Listen.',text:'A century-old avenue of lime trees glows with thousands of extraordinary mushrooms, whispering lichens, stirring roots and shimmering vines.',detail:'Your journey begins here.'},
+{id:'prisiminimu-kudra',title:'Pond of Memories',cue:'Remember.',text:'Underwater lights, shadows above the surface and images from memory: settle onto a swing and drink in a tale from the depths of the pond.',detail:'A little pause for big feelings.'},
+{id:'snaudziantis-rozynas',title:'Slumbering Rose Garden',cue:'Take your time.',text:'Do not fear the thorns. They will not hurt. Autumn roses, still awake, lead you through a maze of thoughts and ask their questions… What will you answer?',detail:'Give yourself permission simply to be.'},
+{id:'paslapciu-giraite',title:'Grove of Secrets',cue:'Discover.',text:'Everyone has secrets, but sharing and welcoming them takes courage. The forest welcomes every secret. Here, it feels safe to share and discover.',detail:'Curiosity knows the way.'},
+{id:'gardumynu-sodas',title:'Garden of Delights',cue:'Stay a while.',text:'Share your adventures over hot tea, pancakes, pizza, vegetarian stew and something sweet. They say the stomach is a second heart!',detail:'The sweetest stop on your journey.'}],
+practical:[['Weather','This is an outdoor experience. Dress warmly for the weather and wear comfortable shoes.'],['Accessibility','Details about path surfaces, pushchairs and mobility access will be confirmed before the event.']],
+transport:[['By car','Plan your route to M. K. Čiurlionio g. 110, Vilnius. Exact entrance details will be announced before the event.'],['Parking','Parking locations and any restrictions will be confirmed. Please follow the signs on site.'],['Public transport','Check current routes and timetables in the JUDU journey planner.']],
+ticketTypes:['Single adult ticket — €18','Single discounted ticket — €13','Family ticket (2+1 / 1+2) — €39','Family ticket (2+2 / 1+3) — €49'],
+faq:[
+['What is Magiškas Miškas?','An outdoor immersive light experience for children of every age and height. Five different forest spaces await you.'],
+['Where does it take place?','At the Vingis section of Vilnius University Botanical Garden, M. K. Čiurlionio g. 110, Vilnius.'],
+['When can I visit?','Magiškas Miškas awakens on 10 October. See the ticket selection for available visiting times.'],
+['How long is the walk?','The recommended visit duration will be confirmed before the event.'],
+['Can I bring a pushchair?','Path surface and accessibility details are being confirmed and will be announced before ticket sales begin.'],
+['How do I buy tickets?','Choose your visit in the ticket section of this website. Tickets are sold through Bilietai.lt; you can also open the event directly on their website.'],
+['What happens if it rains?','Come prepared for an outdoor walk. Rules for adverse weather and ticket exchanges will be published with the tickets.'],
+['Do I need to select an arrival time?','When buying your ticket, choose the event date and arrival time shown on Bilietai.lt.'],
+['Can I bring a pet?','Pets are not permitted in the Vingis section of Vilnius University Botanical Garden. Guide dogs and service dogs are an exception.'],
+['Can I take photos and videos?','Photos and videos for personal use are a must! Photography or filming for commercial purposes (publications, advertising or social media), as well as hiring a professional photographer, requires permission from the Botanical Garden administration.'],
+['Can I bring food and drinks?','Hot tea, pancakes, pizza and stew await you in the Garden of Delights. You will find plenty to enjoy here!'],
+['Where can I park?','See the Getting here section for parking information and restrictions.'],
+['Can I change the date or get a refund if I cannot attend?','Ticket exchange and refund conditions will be available on the official event page on Bilietai.lt.'],
+['Who can help with a ticket problem?','For tickets purchased on Bilietai.lt, use the support contacts on the ticket provider’s website.'],
+['Who qualifies for a discount?','Children aged 4–6, school pupils, students, seniors and people with disabilities.']],
+final:{first:'The forest is awakening.',second:'Will you step inside?'}
+};

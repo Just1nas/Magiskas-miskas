@@ -9,9 +9,9 @@ export function useAmbientMotion() {
     const preference = window.matchMedia('(prefers-reduced-motion: reduce)');
     const completed = new WeakSet();
     const running = new Set();
-    const targets = document.querySelectorAll(
+    const targets = [...document.querySelectorAll(
       '.hero h1 > span, .hero-title > .eyebrow, .hero-bottom > p, main h2, .transport h3, .pause-story, .section-heading > p',
-    );
+    )].filter(node => !(node.closest('.hero')));
     let observer;
 
     function syncPreference() {

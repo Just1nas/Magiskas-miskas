@@ -24,4 +24,18 @@ document.title = content.name;
 document.querySelector('meta[name=description]')?.setAttribute('content',content.description);
 document.querySelector('meta[property="og:description"]')?.setAttribute('content',content.description);
 document.querySelector('meta[property="og:title"]')?.setAttribute('content',`${content.name} · ${content.tagline}`);
-await import('./main.jsx');
+const site = await import('./main.jsx');
+if(window.parent!==window&&new URLSearchParams(location.search).get('adminPreview')==='1'){
+  window.addEventListener('message',event=>{
+    if(event.origin!==location.origin||event.source!==window.parent||event.data?.type!=='mm-preview-content')return;
+    try{
+      const next=validateEdits(event.data.content);
+      Object.assign(content,localize(next,locale));
+      site.renderPreview();
+      const section=event.data.section;
+      if(typeof section==='string')setTimeout(()=>document.getElementById(section)?.scrollIntoView({behavior:'instant',block:'start'}),100);
+    }catch{ /* Invalid drafts never replace the last valid preview. */ }
+  });
+  window.parent.postMessage({type:'mm-preview-ready'},location.origin);
+}
+

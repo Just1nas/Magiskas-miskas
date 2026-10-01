@@ -105,7 +105,7 @@ function App() {
   const preview = localPreview && params.get('perziura') === '1';
   const trailerPreview = localPreview && params.get('video') === '1';
   const continuousPreview = true;
-  const introPreview = true;
+  const introPreview = !(window.parent !== window && params.get('adminPreview') === '1');
   const [introDone, setIntroDone] = useState(() => { try { return sessionStorage.getItem('mm-intro-seen-v2') === '1'; } catch { return false; } });
   const finishIntro = useCallback(() => { try { sessionStorage.setItem('mm-intro-seen-v2','1'); } catch {} setIntroDone(true); }, []);
   const [videoOpen, setVideoOpen] = useState(false);
@@ -125,8 +125,11 @@ function App() {
     <Journey /><Tickets />
     <section id="informacija" className="section practical"><div className="section-heading"><span className="eyebrow">{c.copy.practicalLabel}</span><h2 style={{whiteSpace:"pre-line"}}>{c.copy.practicalTitle}</h2></div><dl>{[[c.copy.whenLabel, `${c.date.replace(/\.$/, '')}. ${c.hours.replace(/\.$/, '')}.`], [c.copy.whereLabel, `${c.venue}. ${c.address}.`], [c.copy.durationLabel, c.duration], ...c.practical].map(([key, value]) => <div key={key}><dt>{key}</dt><dd>{value}</dd></div>)}</dl><div className="practical-cta"><TicketLink /></div></section>
     <Arrival /><Faq /><Partners />
-    <section className="final section"><Brand watermark /><span className="eyebrow">{c.tagline}</span><h2>{closed ? c.season.closedMessage : <>{c.final.first}<br /><span>{c.final.second}</span></>}</h2><TicketLink /><p>{c.city} · {c.date}</p></section>
+    <section id="pabaiga" className="final section"><Brand watermark /><span className="eyebrow">{c.tagline}</span><h2>{closed ? c.season.closedMessage : <>{c.final.first}<br /><span>{c.final.second}</span></>}</h2><TicketLink /><p>{c.city} · {c.date}</p></section>
   </main><footer><a className="brand" href="#pradzia"><Brand /></a><div className="footer-links"><SocialLink network="instagram" href={c.instagram.profileUrl} /><SocialLink network="facebook" href={c.socials.facebook} /><SocialLink network="tiktok" href={c.socials.tiktok} />{c.contactEmail && <a href={`mailto:${c.contactEmail}`}>{c.copy.contact} <ArrowIcon direction="out" /></a>}{safeHttps(c.reviewUrl) && <External href={c.reviewUrl}>{c.copy.review} <ArrowIcon direction="out" /></External>}</div><p>© {new Date().getFullYear()} {c.name}</p><a className="text-link" href="#pradzia">{c.copy.backTop} <ArrowIcon direction="up" /></a>{localPreview && params.get('intro') === '1' && introDone && <button className="intro-replay" onClick={() => { window.history.replaceState(null,"",window.location.pathname+window.location.search); window.scrollTo({top:0,behavior:"instant"}); setIntroDone(false); }}>{ui('Pakartoti įžangą','Replay introduction')} <ArrowIcon direction="replay" /></button>}</footer><div className="mobile-ticket"><TicketLink /></div></div>;
 }
 
-createRoot(document.getElementById('root')).render(<React.StrictMode><App /></React.StrictMode>);
+const siteRoot=createRoot(document.getElementById('root'));
+let previewVersion=0;
+export function renderPreview(){siteRoot.render(<React.StrictMode><App key={++previewVersion}/></React.StrictMode>);}
+siteRoot.render(<React.StrictMode><App /></React.StrictMode>);

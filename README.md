@@ -164,3 +164,8 @@ Vietinė UI peržiūra: `http://127.0.0.1:4173/gabija/?perziura=1`. Ji leidžiam
 - English factual text was translated from the public CMS content on 2026-10-01. Review both versions whenever dates, prices or visitor rules change.
 
 Production release: the six-second introduction and ambient logo are enabled by default. The introduction plays once per browser tab session, can be skipped, and is bypassed for reduced motion and section links. Replay and background/video experiment controls are available only on localhost.
+
+
+## Editing with drafts and live preview
+
+At `/gabija/`, authorized editors can edit LT/EN text with a live unpublished preview and desktop/phone views. Save draft stores a validated copy only in the current browser, keyed to the signed-in editor; it is not shared across devices. Restore draft reloads it into the fields and warns if its base revision is older. Publish remains the only server write, using the existing editor RLS and revision conflict check. Cancel changes restores the version loaded at sign-in; it does not roll back other editors. JSON backup tools are under Additional settings. Preview messages are accepted only in an embedded preview from the same-origin parent and validated before rendering; they never write to Supabase.

@@ -105,8 +105,8 @@ function App() {
   const preview = localPreview && params.get('perziura') === '1';
   const trailerPreview = localPreview && params.get('video') === '1';
   const continuousPreview = true;
-  const introPreview = !(window.parent !== window && params.get('adminPreview') === '1');
-  const [introDone, setIntroDone] = useState(() => { try { return sessionStorage.getItem('mm-intro-seen-v2') === '1'; } catch { return false; } });
+  const introPreview = true;
+  const [introDone, setIntroDone] = useState(() => { if(window.parent!==window&&params.get('adminPreview')==='1')return true; try { return sessionStorage.getItem('mm-intro-seen-v2') === '1'; } catch { return false; } });
   const finishIntro = useCallback(() => { try { sessionStorage.setItem('mm-intro-seen-v2','1'); } catch {} setIntroDone(true); }, []);
   const [videoOpen, setVideoOpen] = useState(false);
   const [background, setBackground] = useState(preview && params.get('fonas') === 'nuotrauka' ? 'photo' : c.appearance.background);

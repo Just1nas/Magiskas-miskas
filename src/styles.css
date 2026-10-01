@@ -287,3 +287,23 @@ img.hero-photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover
 .post-video-controls{position:absolute;bottom:14px;left:14px;right:14px;display:flex;gap:8px;z-index:2}
 .post-video-controls button{min-height:44px;padding:10px 14px;border-radius:24px;background:#05091be6;color:#FFFDF8;font-size:11px;border:1px solid #fffdf84d}
 .post-video-controls button:last-child{margin-left:auto}
+
+/* Continuous gallery: repeated neighbours replace the old empty tail. */
+.instagram .gallery-loop .gallery-track:after{display:none}
+.gallery-loop .gallery-track{scrollbar-width:none;touch-action:pan-x pan-y;overflow-anchor:none}
+.gallery-loop .gallery-track::-webkit-scrollbar{display:none}
+.gallery-loop .gallery-count{margin-left:16px;opacity:.65;font-variant-numeric:tabular-nums}
+.gallery-loop .gallery-controls button{border-radius:50%;background:#fffdf808;border-color:#fffdf826;transition:background .2s}
+.gallery-loop .gallery-controls button:hover{background:#fffdf81c}
+.gallery-loop .gallery-controls .gallery-play{font-size:20px;padding:0;width:44px}
+.instagram .post-image{position:relative;overflow:hidden}
+.instagram .post-open{position:absolute;inset:0;width:100%;height:100%;z-index:1;background:none}
+.post-expand,.post-reel{position:absolute;right:12px;bottom:12px;width:44px;height:44px;display:grid;place-items:center;border-radius:50%;background:#05091b99;color:var(--cream);border:1px solid #fffdf830}
+.post-reel{left:12px;right:auto;pointer-events:none;z-index:2}
+.instagram .post-video-controls{left:12px;bottom:12px;right:auto;gap:6px;z-index:2}
+.instagram .post-video-controls button{width:44px;height:44px;min-height:44px;padding:0;display:grid;place-items:center;background:#05091b99;border-color:#fffdf830}
+.instagram .post-video-controls button:last-child{margin:0}
+.post-lightbox video{width:100%;height:min(78svh,760px);object-fit:contain;background:#030715}
+@media(hover:hover) and (pointer:fine){.post-expand,.post-video-controls{opacity:.65;transition:opacity .2s}.instagram-post:hover .post-expand,.instagram-post:hover .post-video-controls,.instagram-post:focus-within .post-expand,.instagram-post:focus-within .post-video-controls{opacity:1}}
+@media(max-width:640px){.instagram .gallery-loop .gallery-track>*{flex-basis:84%}.post-lightbox video{height:55svh}.gallery-loop .gallery-count{margin-left:8px}}
+@media(prefers-reduced-motion:reduce){.gallery-loop *{scroll-behavior:auto!important;transition:none!important;animation:none!important}}

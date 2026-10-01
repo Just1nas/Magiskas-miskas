@@ -14,12 +14,15 @@ export function MonogramIntro({ onDone, finished }) {
     const animations = [];
     const targets = [...page.querySelectorAll('.header,main,footer,.mobile-ticket')];
     const oldOverflow = document.body.style.overflow;
+    const oldRestoration = history.scrollRestoration;
+    const reloaded = performance.getEntriesByType('navigation')[0]?.type === 'reload';
     const finish = () => {
       if (cancelled) return;
       cancelled = true; clearTimeout(timer);
       const returnFocus = el.contains(document.activeElement);
       targets.forEach(node => { node.inert = false; });
       document.body.style.overflow = oldOverflow;
+      history.scrollRestoration = oldRestoration;
       if (returnFocus) page.querySelector('.header .brand')?.focus({ preventScroll: true });
       onDone();
     };
@@ -29,11 +32,13 @@ export function MonogramIntro({ onDone, finished }) {
     const cleanup = () => {
       cancelled = true; clearTimeout(timer); animations.forEach(a => a.cancel());
       el.querySelector('.intro-trails')?.replaceChildren();
-      targets.forEach(node => { node.inert = false; }); document.body.style.overflow = oldOverflow;
+      targets.forEach(node => { node.inert = false; }); document.body.style.overflow = oldOverflow; history.scrollRestoration = oldRestoration;
       el.removeEventListener('intro-skip', finish); removeEventListener('keydown', key);
       removeEventListener('resize', finish); media.removeEventListener('change', finish);
     };
-    if (media.matches || !content.appearance.motion || location.hash) { finish(); return cleanup; }
+    if (media.matches || !content.appearance.motion || (location.hash && !reloaded)) { finish(); return cleanup; }
+    history.scrollRestoration = 'manual';
+    window.scrollTo({top:0,behavior:'instant'});
     targets.forEach(node => { node.inert = true; }); document.body.style.overflow = 'hidden';
     const animate = (node, frames, options) => {
       const a = node.animate(frames, { fill:'both', easing:'cubic-bezier(.45,0,.35,1)', ...options, duration:options.duration * 6 / 9, delay:(options.delay || 0) * 6 / 9 });

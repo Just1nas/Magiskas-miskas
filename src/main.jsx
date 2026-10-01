@@ -99,15 +99,15 @@ function Arrival() {
 }
 function App() {
   useAmbientMotion();
-  useEffect(()=>{if(location.hash){requestAnimationFrame(()=>document.getElementById(decodeURIComponent(location.hash.slice(1)))?.scrollIntoView({behavior:'instant'}));}},[]);
   const params = new URLSearchParams(window.location.search);
   const localPreview = ['localhost','127.0.0.1'].includes(location.hostname);
   const preview = localPreview && params.get('perziura') === '1';
   const trailerPreview = localPreview && params.get('video') === '1';
   const continuousPreview = true;
   const introPreview = true;
-  const [introDone, setIntroDone] = useState(() => { if(window.parent!==window&&params.get('adminPreview')==='1')return true; try { return sessionStorage.getItem('mm-intro-seen-v2') === '1'; } catch { return false; } });
+  const [introDone, setIntroDone] = useState(() => { if(window.parent!==window&&params.get('adminPreview')==='1')return true; if(performance.getEntriesByType('navigation')[0]?.type==='reload')return false; try { return sessionStorage.getItem('mm-intro-seen-v2') === '1'; } catch { return false; } });
   const finishIntro = useCallback(() => { try { sessionStorage.setItem('mm-intro-seen-v2','1'); } catch {} setIntroDone(true); }, []);
+  useEffect(()=>{if(introDone&&location.hash){const frame=requestAnimationFrame(()=>document.getElementById(decodeURIComponent(location.hash.slice(1)))?.scrollIntoView({behavior:'instant'}));return()=>cancelAnimationFrame(frame);}},[introDone]);
   const [videoOpen, setVideoOpen] = useState(false);
   const [background, setBackground] = useState(preview && params.get('fonas') === 'nuotrauka' ? 'photo' : c.appearance.background);
   const switchBackground = value => {

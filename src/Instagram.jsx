@@ -1,3 +1,5 @@
+import { cmsUrl, cmsKey, cmsConfigured } from './cms-config.js';
+import { readInstagramCache, isInstagramFresh } from './instagram-feed.js';
 import { ArrowIcon } from './ArrowIcon';
 import { ui, locale } from './locale';
 import { asset } from './locale';
@@ -51,22 +53,33 @@ export function Instagram() {
   useEffect(() => {
     const endpoint = c.instagram.endpoint;
     if (!endpoint || !(endpoint === './instagram/feed.json' || endpoint.startsWith('/') && !endpoint.startsWith('//') || safeHttps(endpoint))) return;
-    let stopped = false, timer, controller;
+    const serverCache = cmsConfigured && ['./instagram/feed.json', '/instagram/feed.json'].includes(endpoint);
+    let stopped = false, timer, controller, lastChecked;
     async function refresh() {
       controller = new AbortController();
       const timeout = setTimeout(() => controller.abort(), 10000);
       setState('loading');
       try {
-        const response = await fetch(endpoint === './instagram/feed.json' ? '/instagram/feed.json' : endpoint, { signal: controller.signal, credentials: 'omit', cache: 'no-cache' });
-        if (!response.ok) throw new Error('Feed unavailable');
-        const items = normalizePosts(await response.json(), c.instagram.limit);
+        let payload;
+        if (serverCache) {
+          const result = await readInstagramCache(cmsUrl, cmsKey, controller.signal);
+          lastChecked = result.checkedAt;
+          if (!isInstagramFresh(lastChecked)) throw new Error('Feed is stale');
+          payload = result.feed;
+        } else {
+          const response = await fetch(endpoint === './instagram/feed.json' ? '/instagram/feed.json' : endpoint, { signal: controller.signal, credentials: 'omit', cache: 'no-store' });
+          if (!response.ok) throw new Error('Feed unavailable');
+          payload = await response.json();
+        }
+        const items = normalizePosts(payload, c.instagram.limit);
         if (!stopped) { setPosts(items); setState('ready'); }
-      } catch { if (!stopped) setState('error'); }
-      finally { clearTimeout(timeout); if (!stopped) timer = setTimeout(refresh, Math.max(60000, c.instagram.refreshMs)); }
+      } catch { if (!stopped) { setState('error'); if (serverCache && !isInstagramFresh(lastChecked)) setPosts([]); } }
+      finally { clearTimeout(timeout); if (!stopped) timer = setTimeout(refresh, serverCache ? 60000 : Math.max(60000, c.instagram.refreshMs)); }
     }
     refresh();
     return () => { stopped = true; clearTimeout(timer); controller?.abort(); };
   }, []);
+  useEffect(() => setSelected(null), [posts]);
   return <section id="instagram" className="section instagram">
     <div className="section-heading"><span className="eyebrow">{c.copy.instagramLabel}</span><h2 style={{whiteSpace:"pre-line"}}>{c.copy.instagramTitle}</h2>{profile && <SocialLink network="instagram" href={profile} />}</div>
     {posts.length > 0 ? <Gallery autoplay={c.instagram.autoplay} intervalMs={c.instagram.intervalMs} caption={c.copy.galleryLabel} label={ui('Magiško Miško Instagram įrašai','Magiškas Miškas Instagram posts')} paused={selected !== null}>{posts.map((post,index)=><GalleryPost key={post.id} post={post} index={index} onOpen={()=>setSelected(index)}/>) }</Gallery> : <div className="instagram-empty" role="status"><p>{state === 'loading' ? ui('Ieškome naujausių akimirkų…','Loading our latest moments…') : c.copy.instagramEmpty}</p>{profile && <SocialLink network="instagram" href={profile} />}</div>}

@@ -1,3 +1,4 @@
+import { ArrowIcon } from './ArrowIcon';
 import { ui, locale } from './locale';
 import React, { createContext, useEffect, useRef, useState } from 'react';
 
@@ -36,9 +37,9 @@ export function Gallery({ children, label, paused = false, autoplay = true, inte
   }, [active, count, playing, hovered, visible, reduced, paused, intervalMs, activeVideo]);
   return <GalleryContext.Provider value={{onVideoError:id=>setFailedVideos(old=>old.includes(id)?old:[...old,id]),active,visible:visible&&!hidden&&!paused,reduced,count,onEnded:()=>{if(playing&&count>1)move(active+1)}}}><div className={`gallery ${count === 1 ? 'is-single' : ''} ${visible ? 'is-visible' : ''}`} role="region" aria-label={label} aria-roledescription={ui('karuselė','carousel')} onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)}>
     {count > 1 && <div className="gallery-controls"><span className="small-note">{caption}</span><div>
-      <button onClick={() => { setPlaying(false); move(active - 1); }} aria-label={ui('Ankstesnis Instagram įrašas','Previous Instagram post')}>←</button>
+      <button onClick={() => { setPlaying(false); move(active - 1); }} aria-label={ui('Ankstesnis Instagram įrašas','Previous Instagram post')}><ArrowIcon direction="left" /></button>
       {!reduced && <button className="gallery-play" onClick={() => setPlaying(!playing)} aria-label={playing ? ui('Sustabdyti galeriją','Pause gallery') : ui('Paleisti galeriją','Play gallery')}>{playing ? ui('Pauzė','Pause') : ui('Paleisti','Play')}</button>}
-      <button onClick={() => { setPlaying(false); move(active + 1); }} aria-label={ui('Kitas Instagram įrašas','Next Instagram post')}>→</button>
+      <button onClick={() => { setPlaying(false); move(active + 1); }} aria-label={ui('Kitas Instagram įrašas','Next Instagram post')}><ArrowIcon direction="right" /></button>
     </div></div>}
     <div ref={viewport} className="gallery-track" tabIndex="0" aria-label={ui('Instagram įrašai','Instagram posts')} onFocusCapture={() => setPlaying(false)} onPointerDown={() => setPlaying(false)} onScroll={() => {
       const element = viewport.current;

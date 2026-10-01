@@ -1,3 +1,4 @@
+import { ArrowIcon } from './ArrowIcon';
 import { ui, locale } from './locale';
 import { asset } from './locale';
 import React, { useContext, useEffect, useRef, useState } from 'react';
@@ -31,9 +32,9 @@ function GalleryPost({post,index,onOpen}) {
         <div className="post-video-controls">
           <button onClick={()=>{setPaused(playing);setRequested(true)}} aria-label={playing?ui('Sustabdyti vaizdo įrašą','Pause video'):ui('Paleisti vaizdo įrašą','Play video')}>{playing?ui('Pauzė','Pause'):ui('Paleisti','Play')}</button>
           <button onClick={()=>setMuted(!muted)} aria-label={muted?ui('Įjungti garsą','Unmute'):ui('Išjungti garsą','Mute')}>{muted?ui('Įjungti garsą','Unmute'):ui('Išjungti garsą','Mute')}</button>
-          <button onClick={onOpen} aria-label={ui('Atidaryti Instagram įrašo informaciją','Open Instagram post details')}>↗</button>
+          <button onClick={onOpen} aria-label={ui('Atidaryti Instagram įrašo informaciją','Open Instagram post details')}><ArrowIcon direction="out" /></button>
         </div>
-      </> : <button className="post-open" aria-haspopup="dialog" onClick={onOpen} aria-label={`${ui('Peržiūrėti Instagram įrašą','View Instagram post')}: ${post.caption}`}><span className="post-kind">{post.media_type==='VIDEO'?'Reel':ui('Peržiūrėti','View')} ↗</span></button>}
+      </> : <button className="post-open" aria-haspopup="dialog" onClick={onOpen} aria-label={`${ui('Peržiūrėti Instagram įrašą','View Instagram post')}: ${post.caption}`}><span className="post-kind">{post.media_type==='VIDEO'?'Reel':ui('Peržiūrėti','View')} <ArrowIcon direction="out" /></span></button>}
     </div>
   </article>;
 }

@@ -1,3 +1,4 @@
+import { ArrowIcon } from './ArrowIcon';
 import { ui, locale } from './locale';
 import React, { useEffect, useRef } from 'react';
 import { content } from './content';
@@ -131,6 +132,6 @@ export function MonogramIntro({ onDone, finished }) {
       <img className="intro-right" src="/brand/intro-m-right.svg" alt="" />
     </div>
     <img className="intro-raster-symbol" src="/brand/symbol.png" alt="" aria-hidden="true" />
-    <button className="intro-skip" onClick={()=>root.current.dispatchEvent(new Event('intro-skip'))}>{ui('Praleisti įžangą ↗','Skip introduction ↗')}</button>
+    <button className="intro-skip" onClick={()=>root.current.dispatchEvent(new Event('intro-skip'))}>{ui('Praleisti įžangą','Skip introduction')} <ArrowIcon direction="out" /></button>
   </div>;
 }

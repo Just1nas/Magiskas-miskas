@@ -24,8 +24,8 @@ export const hints = {
   'tickets.widgetId':'Tuščias laukas išjungia valdiklį; lieka tiesioginė bilietų nuoroda.',
   'tickets.eventId':'Keičiant renginį atnaujink ir renginio nuorodą, ir šį ID.',
   'instagram.profileUrl':'Keičia paskyros nuorodą. Automatinio įrašų šaltinio paskyrą keičia svetainės prižiūrėtojas.',
-  'instagram.endpoint':'Numatytasis šaltinis: ./instagram/feed.json. Čia nerašyk prisijungimo raktų ar slaptažodžių.',
-  'instagram.refreshMs':'300000 = 5 minutės. Mažiausia reikšmė 60000.',
+  'instagram.endpoint':'Palikus ./instagram/feed.json naudojama automatinė Supabase galerija. Kitas JSON adresas ją pakeičia. Čia nerašyk slaptų raktų.',
+  'instagram.refreshMs':'Taikoma tik kitam JSON adresui: 300000 = 5 minutės. Automatinę galeriją serveris tikrina kas 5 min., svetainė pasiima kas minutę.',
   'instagram.intervalMs':'6500 = 6,5 sekundės. Judėjimas gerbia lankytojo mažesnio judesio pasirinkimą.',
   'map.embedUrl':'Įklijuok tik iframe src nuorodą, ne visą HTML kodą.',
 };

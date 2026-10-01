@@ -79,7 +79,7 @@ export function Instagram() {
     refresh();
     return () => { stopped = true; clearTimeout(timer); controller?.abort(); };
   }, []);
-  useEffect(() => setSelected(null), [posts]);
+  useEffect(() => setSelected(null), [posts.map(post => post.id).join(',')]);
   return <section id="instagram" className="section instagram">
     <div className="section-heading"><span className="eyebrow">{c.copy.instagramLabel}</span><h2 style={{whiteSpace:"pre-line"}}>{c.copy.instagramTitle}</h2>{profile && <SocialLink network="instagram" href={profile} />}</div>
     {posts.length > 0 ? <Gallery autoplay={c.instagram.autoplay} intervalMs={c.instagram.intervalMs} caption={c.copy.galleryLabel} label={ui('Magiško Miško Instagram įrašai','Magiškas Miškas Instagram posts')} paused={selected !== null}>{posts.map((post,index)=><GalleryPost key={post.id} post={post} index={index} onOpen={()=>setSelected(index)}/>) }</Gallery> : <div className="instagram-empty" role="status"><p>{state === 'loading' ? ui('Ieškome naujausių akimirkų…','Loading our latest moments…') : c.copy.instagramEmpty}</p>{profile && <SocialLink network="instagram" href={profile} />}</div>}

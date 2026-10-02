@@ -5,7 +5,7 @@ export const GalleryContext = createContext({});
 
 export function Gallery({ children, label, paused=false, autoplay=true, intervalMs=6500, caption='Akimirkos iš mūsų miško' }) {
   const items=React.Children.toArray(children), count=items.length;
-  const track=useRef(null), settling=useRef(null), current=useRef(count>1?count:0);
+  const track=useRef(null), settling=useRef(null), current=useRef(0);
   const [active,setActive]=useState(current.current), [playing,setPlaying]=useState(autoplay);
   const [hovered,setHovered]=useState(false), [visible,setVisible]=useState(false), [hidden,setHidden]=useState(document.hidden), [reduced,setReduced]=useState(false);
   const [failed,setFailed]=useState([]), [blocked,setBlocked]=useState(false), [ended,setEnded]=useState(false);
@@ -13,8 +13,8 @@ export function Gallery({ children, label, paused=false, autoplay=true, interval
   const select=index=>{current.current=index;setActive(index);setBlocked(false);setEnded(false)};
   const jump=index=>{const el=track.current; if(!el?.children[index])return;el.scrollTo({left:el.children[index].offsetLeft,behavior:'instant'});select(index)};
   useLayoutEffect(()=>{
-    jump(multiple?count:0);
-    const resize=new ResizeObserver(()=>jump(multiple?count+(current.current%count):0));
+    jump(0);
+    const resize=new ResizeObserver(()=>jump(current.current%count));
     resize.observe(track.current);
     return()=>{resize.disconnect();clearTimeout(settling.current)};
   },[count]);
@@ -26,7 +26,7 @@ export function Gallery({ children, label, paused=false, autoplay=true, interval
     return()=>{observer.disconnect();media.removeEventListener('change',update);document.removeEventListener('visibilitychange',visibility)};
   },[]);
   const move=step=>{
-    const el=track.current,index=current.current+step;
+    const el=track.current,index=(current.current+step+count)%count;
     if(el?.children[index])el.scrollTo({left:el.children[index].offsetLeft,behavior:reduced?'instant':'smooth'});
   };
   const canAdvance=playing&&!hovered&&!paused&&!hidden&&visible&&!reduced&&!blocked;
@@ -42,12 +42,10 @@ export function Gallery({ children, label, paused=false, autoplay=true, interval
     const index=positions.indexOf(Math.min(...positions));
     if(index!==current.current)select(index);
     clearTimeout(settling.current);
-    settling.current=setTimeout(()=>{
-      if(multiple&&(current.current<count||current.current>=count*2))jump(count+current.current%count);
-    },180);
+
   };
   const context={active,visible:visible&&!hidden&&!paused,reduced,count,onEnded:()=>setEnded(true),onVideoError:id=>setFailed(old=>old.includes(id)?old:[...old,id]),onPlaybackBlocked:()=>setBlocked(true),onManualPlay:()=>setBlocked(false)};
-  const slides=multiple?[...items,...items,...items]:items;
+  const slides=items;
   return <GalleryContext.Provider value={context}><div className={`gallery gallery-loop ${multiple?'':'is-single'} ${visible?'is-visible':''}`} role="region" aria-label={label} aria-roledescription={ui('karuselė','carousel')} onMouseEnter={()=>setHovered(true)} onMouseLeave={()=>setHovered(false)}>
     {multiple&&<div className="gallery-controls"><span className="small-note">{caption} <span className="gallery-count">{active%count+1} / {count}</span></span><div>
       <button onClick={()=>{setPlaying(false);move(-1)}} aria-label={ui('Ankstesnis Instagram įrašas','Previous Instagram post')}><ArrowIcon direction="left"/></button>
@@ -55,7 +53,7 @@ export function Gallery({ children, label, paused=false, autoplay=true, interval
       <button onClick={()=>{setPlaying(false);move(1)}} aria-label={ui('Kitas Instagram įrašas','Next Instagram post')}><ArrowIcon direction="right"/></button>
     </div></div>}
     <div ref={track} className="gallery-track" tabIndex="0" aria-label={ui('Instagram įrašai','Instagram posts')} onFocusCapture={()=>setPlaying(false)} onPointerDown={()=>setPlaying(false)} onScroll={onScroll} onKeyDown={e=>{if(e.target===e.currentTarget&&['ArrowLeft','ArrowRight'].includes(e.key)){e.preventDefault();setPlaying(false);move(e.key==='ArrowRight'?1:-1)}}}>
-      {slides.map((child,index)=>React.cloneElement(child,{key:`${child.key}-${Math.floor(index/count)}`,index,duplicate:multiple&&(index<count||index>=count*2)}))}
+      {slides.map((child,index)=>React.cloneElement(child,{key:`${child.key}-${Math.floor(index/count)}`,index,duplicate:false}))}
     </div>
   </div></GalleryContext.Provider>;
 }

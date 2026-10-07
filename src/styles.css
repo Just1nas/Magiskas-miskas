@@ -307,3 +307,8 @@ img.hero-photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover
 @media(hover:hover) and (pointer:fine){.post-expand,.post-video-controls{opacity:.65;transition:opacity .2s}.instagram-post:hover .post-expand,.instagram-post:hover .post-video-controls,.instagram-post:focus-within .post-expand,.instagram-post:focus-within .post-video-controls{opacity:1}}
 @media(max-width:640px){.instagram .gallery-loop .gallery-track>*{flex-basis:84%}.post-lightbox video{height:55svh}.gallery-loop .gallery-count{margin-left:8px}}
 @media(prefers-reduced-motion:reduce){.gallery-loop *{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
+
+/* Crop only the My Maps title/author strip; retain map attribution and controls. */
+.map-viewport{width:100%;height:480px;overflow:hidden;position:relative;border-radius:2px;flex:none}
+.map-panel .map-viewport iframe{height:540px;margin-top:-60px;border-radius:0}
+@media(max-width:640px){.map-viewport{height:380px}.map-panel .map-viewport iframe{height:440px}}

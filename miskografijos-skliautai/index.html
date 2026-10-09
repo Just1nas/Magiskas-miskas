@@ -18,12 +18,18 @@
     aside{margin-top:46px;padding-top:32px;border-top:1px solid #b8c7c32b;max-width:680px}aside h2{font-family:Magical,serif;font-size:32px;font-weight:400;line-height:1.25;margin:0 0 18px}aside p{font-size:15px;color:#c1cdca}.message{display:inline-flex;align-items:center;gap:12px;min-height:48px;margin-top:12px;padding:11px 20px;border:1px solid #b8c7c34a;border-radius:8px;background:#fffdf80b;color:#FFFDF8;text-decoration:none;font-size:13px;transition:background .2s,border-color .2s}.message:hover{background:#fffdf819;border-color:#fffdf899}a:focus-visible{outline:2px solid #FFFDF8;outline-offset:5px}.message svg{width:20px;height:20px;fill:currentColor;flex:none}footer{padding:26px 28px;text-align:center;font-size:11px;color:#86847E;border-top:1px solid #46434066}
     @media(max-width:600px){header{padding:22px 22px 0}header img{width:125px}main{padding:48px 22px 52px}.subtitle{margin-bottom:36px;font-size:13px}.story p{font-size:15px;margin-bottom:23px}.story .lead{font-size:17px}aside{margin-top:34px}.message{width:100%;justify-content:center}}
     @media(prefers-reduced-motion:reduce){*{transition:none!important}}
-  </style>
+  
+body{isolation:isolate}body:before{z-index:-2}body:after{content:'';position:fixed;inset:0;z-index:-1;background:url('/brand/intro-symbol.svg') no-repeat 88% 50%/min(60vw,650px) 85vh;filter:brightness(0) invert(1);opacity:.065;pointer-events:none;animation:forest-breathe 16s ease-in-out infinite alternate}
+header{display:flex;align-items:center;justify-content:space-between;gap:20px}.socials{display:flex;gap:4px}.socials a{display:grid;place-items:center;width:44px;height:44px;color:#FFFDF8;opacity:.65;border-radius:50%;transition:opacity .2s,background .2s}.socials a:hover{opacity:1;background:#fffdf80c}.socials svg{width:20px;height:20px;fill:currentColor}
+.eyebrow{color:#a9b9b7;letter-spacing:.16em;text-transform:uppercase;font-size:10px;margin-bottom:20px}.story{padding-left:24px;border-left:1px solid #aec8c21b}.subtitle{margin-bottom:45px}aside{background:linear-gradient(110deg,#264e4420,transparent);padding:28px;border-radius:12px;border-top:1px solid #b8c7c326}.footer-inner{max-width:1080px;margin:auto;display:flex;gap:20px;justify-content:space-between;align-items:center;flex-wrap:wrap}footer a{color:#bcc9c5;text-decoration:none;font-size:12px}footer a:hover{color:#fffdf8}.footer-contact{display:flex;gap:22px;flex-wrap:wrap}.return{display:inline-block;margin-top:40px;color:#b8c7c3;font-size:12px;text-decoration:none;border-bottom:1px solid #b8c7c34a}
+@keyframes forest-breathe{to{opacity:.09;transform:scale(1.035)}}@media(max-width:600px){body:after{background-position:50% 40%;background-size:85vw 70vh;opacity:.05}.story{padding-left:0;border:0}aside{padding:22px 18px}.footer-inner{justify-content:center}.footer-contact{justify-content:center;gap:12px 20px}header{gap:12px}.socials{gap:0}.socials a{width:40px}}
+@media(prefers-reduced-motion:reduce){body:after{animation:none}}
+</style>
 </head>
 <body>
-  <header><a href="/" aria-label="Magiškas Miškas — pagrindinis puslapis"><img src="/brand/logo.png" alt="Magiškas Miškas"></a></header>
+  <header><a href="/" aria-label="Magiškas Miškas — pagrindinis puslapis"><img src="/brand/logo.png" alt="Magiškas Miškas"></a><nav class="socials" aria-label="Socialiniai tinklai"><a href="https://www.instagram.com/magiskas.miskas/" target="_blank" rel="noopener noreferrer" aria-label="Magiškas Miškas – Instagram (naujame skirtuke)"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="12" r="4.2" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="17.5" cy="6.5" r="1.2"/></svg></a><a href="https://www.facebook.com/profile.php?id=61595019476553" target="_blank" rel="noopener noreferrer" aria-label="Magiškas Miškas – Facebook (naujame skirtuke)"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 22v-9h3l.5-3.5H14V7.3c0-1 .3-1.8 1.8-1.8h1.9V2.4A24 24 0 0 0 15 2c-2.7 0-4.5 1.7-4.5 4.8v2.7H7.4V13h3.1v9Z"/></svg></a><a href="https://www.tiktok.com/@magiskasmiskas" target="_blank" rel="noopener noreferrer" aria-label="Magiškas Miškas – TikTok (naujame skirtuke)"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16.6 2c.3 2.6 1.7 4.1 4.4 4.3v3.5a9.1 9.1 0 0 1-4.5-1.4v7.1a6.3 6.3 0 1 1-5.4-6.2v3.6a2.8 2.8 0 1 0 1.9 2.6V2Z"/></svg></a></nav></header>
   <main>
-    <h1>MIŠKOGRAFIJOS SKLIAUTAI</h1>
+    <p class="eyebrow">Magiško Miško atradimai</p><h1>MIŠKOGRAFIJOS SKLIAUTAI</h1>
     <p class="subtitle">fotografės Urtės Statkutės tylūs miško atradimai</p>
     <article class="story" aria-label="Urtės miškografija">
       <p class="lead">Tu tik pažiūrėk, koks laimikis - ne valgyti skirti baravykai ar voveraitės, o maži, kartais vos pastebimi miško gyventojai, kuriuos reikia surasti, įsižiūrėti ir suprasti!</p>
@@ -39,7 +45,8 @@
       <p><em>Kol Urtė ieško visokių grybukų, kerpių, vabaliukų ir kitų mažų gyventojų, tu gali jai parašyti žinutę, kas patiko, kas nustebino. Žinau, jai labai patiks.</em></p>
       <a class="message" href="https://www.facebook.com/share/1XxLpXGf9Q/?mibextid=wwXIfr" target="_blank" rel="noopener noreferrer" aria-label="Parašyti Urtei per Facebook — atsidarys naujame skirtuke"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 12a10 10 0 1 0-11.56 9.88v-6.99H7.9V12h2.54V9.8c0-2.5 1.5-3.9 3.78-3.9 1.1 0 2.24.2 2.24.2v2.46H15.2c-1.24 0-1.64.77-1.64 1.56V12h2.79l-.45 2.89h-2.34v6.99A10 10 0 0 0 22 12Z"/></svg>Parašyti Urtei</a>
     </aside>
+    <a class="return" href="/">Grįžti į Magišką Mišką</a>
   </main>
-  <footer>Magiškas Miškas · Miškografijos skliautai</footer>
+  <footer><div class="footer-inner"><span>Magiškas Miškas · Miškografijos skliautai</span><div class="footer-contact"><a href="mailto:info@kaukiuakademija.lt">Susisiekime!</a><a href="tel:+37069906696">+370 699 06696</a></div></div></footer>
 </body>
 </html>

@@ -312,3 +312,5 @@ img.hero-photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover
 .map-viewport{width:100%;height:480px;overflow:hidden;position:relative;border-radius:2px;flex:none}
 .map-panel .map-viewport iframe{height:540px;margin-top:-60px;border-radius:0}
 @media(max-width:640px){.map-viewport{height:380px}.map-panel .map-viewport iframe{height:440px}}
+
+.forest-guide-link{margin:0 5.5vw;padding:26px 0;display:flex;align-items:center;justify-content:space-between;gap:24px;border-top:1px solid var(--line)}.forest-guide-link p{font-size:13px;color:var(--muted);margin-top:10px}.forest-guide-link a{white-space:nowrap;min-height:44px;display:inline-flex;align-items:center;gap:14px}@media(max-width:640px){.forest-guide-link{align-items:flex-start;flex-direction:column;gap:12px}}

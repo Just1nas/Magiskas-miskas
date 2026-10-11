@@ -13,13 +13,14 @@ import { ContinuousBackground } from './ContinuousBackground';
 import { AnimatedBrand } from './AnimatedBrand';
 import { MonogramIntro } from './MonogramIntro';
 import { TicketWidget } from './TicketWidget';
+import { TICKET_SERIES_URL } from './ticketSelection';
 import './styles.css';
 import './headerSocials.css';
 import { useAmbientMotion } from './useAmbientMotion';
 
 const brand = __BRAND__;
 const closed = c.season.mode === 'closed';
-const ticketUrl = closed ? '' : safeHttps(c.tickets.url, ['bilietai.lt']);
+const ticketUrl = closed ? '' : c.tickets.widgetId ? TICKET_SERIES_URL : safeHttps(c.tickets.url, ['bilietai.lt']);
 const ticketFrame = safeHttps(c.tickets.iframeUrl, ['bilietai.lt']);
 function External({ href, children, ...props }) { return <a href={href} target="_blank" rel="noopener noreferrer" {...props}>{children}</a>; }
 function TicketLink({ className = '', children = c.copy.buy }) {

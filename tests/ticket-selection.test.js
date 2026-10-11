@@ -1,8 +1,11 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { readFileSync } from 'node:fs';
 import { selectTicketEvent } from '../src/ticketSelection.js';
-const events = JSON.parse(readFileSync(new URL('../src/ticket-events.json', import.meta.url)));
+const events = [
+ {id:'XTDEEDIFT4',eventStartAt:'2026-10-11T14:45:00Z',eventEndAt:'2026-10-11T19:00:00Z',status:'ON_SALE'},
+ {id:'SXVCG5HCBQ',eventStartAt:'2026-10-15T14:45:00Z',eventEndAt:'2026-10-15T19:00:00Z',status:'ON_SALE'},
+ {id:'DPNI7I66TC',eventStartAt:'2026-10-25T15:45:00Z',eventEndAt:'2026-10-25T20:00:00Z',status:'ON_SALE'},
+];
 test('keeps today until its exact end and skips days without events', () => {
   assert.equal(selectTicketEvent(events, Date.parse('2026-10-11T18:59:59Z')).id, 'XTDEEDIFT4');
   assert.equal(selectTicketEvent(events, Date.parse('2026-10-11T19:00:00Z')).id, 'SXVCG5HCBQ');
@@ -13,7 +16,7 @@ test('respects DST timestamps and never falls back to an expired event', () => {
   assert.equal(selectTicketEvent(events, Date.parse('2026-10-25T20:00:00Z')), null);
 });
 test('ignores cancelled events and sorts unsorted data', () => {
-  const input = [...events].reverse();
+  const input = events.map(event => ({ ...event })).reverse();
   input.find(e => e.id === 'XTDEEDIFT4').status = 'CANCELLED';
   assert.equal(selectTicketEvent(input, Date.parse('2026-10-11T12:00:00Z')).id, 'SXVCG5HCBQ');
 });

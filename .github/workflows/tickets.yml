@@ -1,0 +1,43 @@
+name: Refresh ticket schedule
+on:
+  schedule:
+    - cron: '17 5 * * *'
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/tickets.yml'
+      - 'scripts/refresh-ticket-events.js'
+permissions:
+  contents: write
+concurrency:
+  group: ticket-schedule-refresh
+  cancel-in-progress: false
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - name: Read current dates from Bilietai.lt
+        run: node scripts/refresh-ticket-events.js --strict
+      - name: Check date selection
+        run: node --test tests/ticket-selection.test.js
+      - name: Publish changed dates for Hostinger automatic deployment
+        run: |
+          git add src/ticket-events.json
+          if git diff --cached --quiet; then
+            echo 'The ticket schedule has not changed.'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m 'Refresh Bilietai.lt event dates'
+          git pull --rebase origin main
+          git push origin HEAD:main

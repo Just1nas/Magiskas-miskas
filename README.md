@@ -171,3 +171,9 @@ Production release: the six-second introduction and ambient logo are enabled by 
 ## Editing with drafts and live preview
 
 At `/gabija/`, authorized editors can edit LT/EN text with a live unpublished preview and desktop/phone views. Save draft stores a validated copy only in the current browser, keyed to the signed-in editor; it is not shared across devices. Restore draft reloads it into the fields and warns if its base revision is older. Publish remains the only server write, using the existing editor RLS and revision conflict check. Cancel changes restores the version loaded at sign-in; it does not roll back other editors. JSON backup tools are under Additional settings. Preview messages are accepted only in an embedded preview from the same-origin parent and validated before rendering; they never write to Supabase.
+
+### Automatinė bilietų data
+
+Valdiklis parenka artimiausią ON_SALE renginį, kurio Bilietai.lt nurodytas pabaigos laikas dar nepraėjo. Data perskaičiuojama atidarius puslapį, kas 30 sekundžių ir grįžus į langą. ISO UTC laikai teisingai apima Lietuvos vasaros / žiemos laiko pasikeitimą. Pasibaigus grafikui senas renginys neatveriamas.
+
+Kiekvieno build metu scripts/refresh-ticket-events.js atnaujina src/ticket-events.json iš oficialaus FOPZN745ZJ serijos puslapio. Jei šaltinis nepasiekiamas, lieka paskutinis patikrintas grafikas. Pridėjus / atšaukus datas Bilietai.lt reikia paleisti naują Hostinger deployment; jau įtrauktos datos persijungia automatiškai be deployment. Tai ne bilietų likučio patikra.

@@ -1,6 +1,8 @@
+import { subpageDefaults } from './subpage-defaults.js';
 import { english } from './english.js';
 // Visas redaguojamas svetainės turinys. Tuščia nuoroda reiškia, kad integracija dar neįjungta.
 export const content = {
+  ...subpageDefaults,
   translations: { en: english },
   name: 'Magiškas Miškas',
   copy: {

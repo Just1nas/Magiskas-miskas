@@ -3,6 +3,7 @@ import { safeHttps } from './integrations.js';
 // Snapshot before bootstrap applies the saved document. Public fallback and editor share one schema.
 const defaults = structuredClone(content);
 export const fields = {
+  guide:'Miško gidas', miskografija:'Miškografijos skliautai',
   name:'Svetainės pavadinimas', tagline:'Pagrindinis šūkis', description:'Trumpas aprašymas', city:'Miestas', date:'Data', pause:'Didžioji frazė', story:'Miško istorija', venue:'Renginio vieta', address:'Adresas', duration:'Trukmė', hours:'Darbo laikas', contactEmail:'Kontaktinis el. paštas', reviewUrl:'Atsiliepimų nuoroda',
   copy:'Antraštės ir mygtukai', season:'Sezonas', appearance:'Išvaizda', socials:'Socialiniai tinklai', tickets:'Bilietai', ticketTypes:'Bilietų tipai', instagram:'Instagram galerija', map:'Žemėlapis', journey:'Miško erdvės', practical:'Praktinė informacija', transport:'Atvykimo būdai', faq:'D.U.K.', final:'Baigiamasis kvietimas',
   first:'Pirma eilutė',second:'Antra eilutė',title:'Pavadinimas',cue:'Trumpas kvietimas',text:'Aprašymas',detail:'Baigiamoji frazė',id:'Nuorodos identifikatorius',
@@ -18,6 +19,8 @@ export const groups = [
   {name:'Instagram ir kontaktai',keys:['instagram','socials','contactEmail','reviewUrl']},
   {name:'D.U.K.',keys:['faq']}, {name:'Pabaiga',keys:['final']},
   {name:'Sezonas ir išvaizda',keys:['season','appearance']},
+  {name:'Miško gidas',keys:['guide']},
+  {name:'Miškografijos skliautai',keys:['miskografija']},
 ];
 export const choices = {'season.mode':[['upcoming','Artėja'],['live','Vyksta'],['closed','Pasibaigė']], 'appearance.background':[['colors','Spalvinis fonas'],['photo','Pateikta miško nuotrauka']]};
 export const hints = {
@@ -65,6 +68,7 @@ function check(value,template,path){
     if(!Number.isInteger(value)||value<min||value>max)fail(path,`įvesk skaičių nuo ${min} iki ${max}.`);
     return value;
   }
+  if (/^(guide|miskografija)\.(href|src)\d+$/.test(path) && value && !safeHttps(value) && !/^\/gidas\/[\w.-]+$/.test(value)) fail(path,'naudok saugią HTTPS arba /gidas/ failo nuorodą.');
   if(value.length>10000)fail(path,'tekstas per ilgas.');
   if(choices[path]&&!choices[path].some(([key])=>key===value))fail(path,'pasirink reikšmę iš sąrašo.');
   if(urlPaths.has(path)&&value&&!safeHttps(value,urlHosts[path]))fail(path,'netinkama arba nepalaikoma HTTPS nuoroda.');

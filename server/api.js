@@ -1,6 +1,7 @@
 import { digest, token, validToken, equalToken, assertOrigin, sessionCookie, readSession } from './security.js';
 import { parseContent } from './database.js';
 import { validateEdits } from '../src/editable-content.js';
+import { hashPassword,verifyPassword } from './passwords.js';
 const failure=(status,message)=>Object.assign(new Error(message),{status});
 async function body(req) {
   if(!String(req.headers['content-type']||'').startsWith('application/json')) throw failure(415,'JSON required');
@@ -8,7 +9,7 @@ async function body(req) {
   for await(const part of req) {length+=part.length;if(length>140000)throw failure(413,'Content too large');parts.push(part);}
   try{return JSON.parse(Buffer.concat(parts).toString());}catch{throw failure(400,'Invalid JSON');}
 }
-export function createApi({db,sendLogin,origin,production=true,readGallery,backupContent,readContentBackup}) {
+export function createApi({db,origin,production=true,readGallery,backupContent,readContentBackup}) {
   const respond=(res,status,data)=>{res.writeHead(status,{'Content-Type':'application/json; charset=utf-8','Cache-Control':'no-store','X-Content-Type-Options':'nosniff'});res.end(JSON.stringify(data));};
   async function rate(key,limit) {
     const hash=digest(key);
@@ -36,26 +37,28 @@ export function createApi({db,sendLogin,origin,production=true,readGallery,backu
       if(path==='/api/auth/login'&&req.method==='POST') {
         const input=await body(req);const email=String(input.email||'').trim().toLowerCase();
         if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)||email.length>254)throw failure(400,'Invalid email');
-        await rate('email:'+email,5);await rate('ip:'+req.socket.remoteAddress,100);
-        const [[editor]]=await db.execute('SELECT email FROM mm_editors WHERE email=? AND active=TRUE',[email]);
-        if(editor) {
-          const raw=token();await db.execute('DELETE FROM mm_login WHERE email=? OR expires_at<=UTC_TIMESTAMP()',[email]);
-          await db.execute('INSERT INTO mm_login(token_hash,email,expires_at) VALUES(?,?,DATE_ADD(UTC_TIMESTAMP(),INTERVAL 15 MINUTE))',[digest(raw),email]);
-          try {await sendLogin(email,`${origin}/gabija/#login=${raw}`);}catch(error){await db.execute('DELETE FROM mm_login WHERE token_hash=?',[digest(raw)]);throw failure(503,'Laiško išsiųsti nepavyko. Bandykite vėliau.');}
-        }
+        await rate('email:'+email,10);await rate('ip:'+req.socket.remoteAddress,100);
+        const [[editor]]=await db.execute('SELECT p.password_hash FROM mm_passwords p JOIN mm_editors e ON p.email=e.email AND e.active=TRUE WHERE p.email=?',[email]);
+        if(!await verifyPassword(input.password,editor?.password_hash))throw failure(401,'Neteisingas el. paštas arba slaptažodis.');
+        const raw=token(),csrf=token();
+        await db.execute('INSERT INTO mm_sessions(token_hash,csrf,email,expires_at) VALUES(?,?,?,DATE_ADD(UTC_TIMESTAMP(),INTERVAL 12 HOUR))',[digest(raw),csrf,email]);
+        res.setHeader('Set-Cookie',sessionCookie(raw,production));
         return respond(res,200,{ok:true});
       }
-      if(path==='/api/auth/verify'&&req.method==='POST') {
-        await rate('verify:'+req.socket.remoteAddress,100);
-        const input=await body(req);if(!validToken(input.token))throw failure(400,'Invalid token');
-        const conn=await db.getConnection();let email;
-        try {
+      if(path==='/api/auth/setup'&&req.method==='POST') {
+        await rate('setup:'+req.socket.remoteAddress,30);
+        const input=await body(req);if(!validToken(input.token))throw failure(400,'Netinkama nuoroda.');
+        const passwordHash=await hashPassword(input.password);const conn=await db.getConnection();
+        try{
           await conn.beginTransaction();
-          const [[row]]=await conn.execute('SELECT l.email FROM mm_login l JOIN mm_editors e ON l.email=e.email AND e.active=TRUE WHERE token_hash=? AND expires_at>UTC_TIMESTAMP() FOR UPDATE',[digest(input.token)]);
-          if(!row)throw failure(401,'Nuoroda nebegalioja. Paprašykite naujos.');
-          email=row.email;await conn.execute('DELETE FROM mm_login WHERE token_hash=?',[digest(input.token)]);
+          const [[setup]]=await conn.execute('SELECT s.email FROM mm_password_setup s JOIN mm_editors e ON s.email=e.email AND e.active=TRUE WHERE s.token_hash=? AND s.expires_at>UTC_TIMESTAMP() FOR UPDATE',[digest(input.token)]);
+          if(!setup)throw failure(401,'Nuoroda nebegalioja arba jau panaudota.');
+          const [[existing]]=await conn.execute('SELECT email FROM mm_passwords WHERE email=?',[setup.email]);
+          if(existing)throw failure(409,'Slaptažodis jau sukurtas. Prisijunkite įprastai.');
+          await conn.execute('INSERT INTO mm_passwords(email,password_hash) VALUES(?,?)',[setup.email,passwordHash]);
+          await conn.execute('DELETE FROM mm_password_setup WHERE email=?',[setup.email]);
           const raw=token(),csrf=token();
-          await conn.execute('INSERT INTO mm_sessions(token_hash,csrf,email,expires_at) VALUES(?,?,?,DATE_ADD(UTC_TIMESTAMP(),INTERVAL 12 HOUR))',[digest(raw),csrf,email]);
+          await conn.execute('INSERT INTO mm_sessions(token_hash,csrf,email,expires_at) VALUES(?,?,?,DATE_ADD(UTC_TIMESTAMP(),INTERVAL 12 HOUR))',[digest(raw),csrf,setup.email]);
           await conn.commit();res.setHeader('Set-Cookie',sessionCookie(raw,production));
         }catch(error){await conn.rollback();throw error;}finally{conn.release();}
         return respond(res,200,{ok:true});
@@ -66,6 +69,15 @@ export function createApi({db,sendLogin,origin,production=true,readGallery,backu
       if(req.method!=='GET'&&!equalToken(req.headers['x-csrf-token'],current.csrf))throw failure(403,'Invalid CSRF token');
       if(path==='/api/auth/logout'&&req.method==='POST') {
         await db.execute('DELETE FROM mm_sessions WHERE token_hash=?',[current.hash]);res.setHeader('Set-Cookie',sessionCookie('',production,true));return respond(res,200,{ok:true});
+      }
+      if(path==='/api/auth/password'&&req.method==='POST') {
+        await rate('password:'+current.email,10);
+        const input=await body(req);const [[row]]=await db.execute('SELECT password_hash FROM mm_passwords WHERE email=?',[current.email]);
+        if(!await verifyPassword(input.currentPassword,row?.password_hash))throw failure(401,'Dabartinis slaptažodis neteisingas.');
+        const passwordHash=await hashPassword(input.password);
+        await db.execute('UPDATE mm_passwords SET password_hash=? WHERE email=?',[passwordHash,current.email]);
+        await db.execute('DELETE FROM mm_sessions WHERE email=? AND token_hash<>?',[current.email,current.hash]);
+        return respond(res,200,{ok:true});
       }
       if(path==='/api/content'&&req.method==='PUT') {
         const input=await body(req);if(!Number.isSafeInteger(input.revision)||input.revision<0)throw failure(400,'Invalid revision');

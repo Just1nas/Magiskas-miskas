@@ -25,3 +25,12 @@ test('an authenticated cookie alone cannot publish without CSRF',async()=>{
 test('empty migration never exposes old placeholder content as imported content',async()=>{
   const r=await call('/api/content');assert.equal(r.status,503);
 });
+test('password login rejects invalid credentials without creating a session or sending mail',async()=>{
+  const queries=[];
+  const r=await call('/api/auth/login','POST',{email:'editor@example.test',password:'wrong long password'}, {},async(sql)=>{queries.push(sql);return sql.includes('SELECT hits')?[[{hits:1}]]:[[]];});
+  assert.equal(r.status,401);assert.equal(queries.some(q=>q.startsWith('INSERT INTO mm_sessions')),false);
+});
+test('setup rejects malformed capabilities before opening a transaction',async()=>{
+  const r=await call('/api/auth/setup','POST',{token:'guess',password:'long enough password'}, {},async(sql)=>sql.includes('SELECT hits')?[[{hits:1}]]:[[]]);
+  assert.equal(r.status,400);
+});

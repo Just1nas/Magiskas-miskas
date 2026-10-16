@@ -1,5 +1,7 @@
 // Feature-gated until the content export, mail sender and Hostinger server have been verified.
 export const hostingerCms = import.meta.env?.VITE_CMS_BACKEND === 'hostinger';
+export const passwordSetupToken = hostingerCms && typeof location!=='undefined' ? new URLSearchParams(location.hash.slice(1)).get('setup') : null;
+if(passwordSetupToken)history.replaceState(null,'',location.pathname+location.search);
 let csrf='';
 export async function cmsRequest(path, {method='GET',body,signal}={}) {
   const response=await fetch(`/api/${path}`,{method,signal,credentials:'same-origin',cache:'no-store',headers:{...(body?{'Content-Type':'application/json'}:{}),...(csrf?{'X-CSRF-Token':csrf}:{})},...(body?{body:JSON.stringify(body)}:{})});
@@ -23,6 +25,10 @@ export function createHostingerClient() {
       async getSession(){try{const data=await hostingerSession();current=data.user?{user:data.user}:null;return result({session:current});}catch(error){return result({session:null},error);}},
       onAuthStateChange(callback){listeners.add(callback);return {data:{subscription:{unsubscribe:()=>listeners.delete(callback)}}};},
       async signInWithOtp({email}){try{await cmsRequest('auth/login',{method:'POST',body:{email}});return result(null);}catch(error){return result(null,error);}},
+      async signInWithPassword({email,password,setupToken}){try{
+        await cmsRequest(setupToken?'auth/setup':'auth/login',{method:'POST',body:setupToken?{token:setupToken,password}:{email,password}});
+        const data=await hostingerSession();current=data.user?{user:data.user}:null;notify();return result({session:current});
+      }catch(error){return result(null,error);}},
       async signOut(){try{await cmsRequest('auth/logout',{method:'POST',body:{}});current=null;notify();return result(null);}catch(error){return result(null,error);}},
     },
     from(table){

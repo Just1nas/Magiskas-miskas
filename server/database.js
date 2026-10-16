@@ -11,6 +11,9 @@ export async function schema(db) {
     `CREATE TABLE IF NOT EXISTS mm_login (token_hash CHAR(64) PRIMARY KEY, email VARCHAR(254) NOT NULL, expires_at DATETIME NOT NULL)`,
     `CREATE TABLE IF NOT EXISTS mm_sessions (token_hash CHAR(64) PRIMARY KEY, csrf CHAR(64) NOT NULL, email VARCHAR(254) NOT NULL, expires_at DATETIME NOT NULL)`,
     `CREATE TABLE IF NOT EXISTS mm_rates (bucket CHAR(64) PRIMARY KEY, hits INT NOT NULL DEFAULT 1, expires_at DATETIME NOT NULL)`,
+    `CREATE TABLE IF NOT EXISTS mm_passwords (email VARCHAR(254) PRIMARY KEY, password_hash VARCHAR(200) NOT NULL)`,
+    `CREATE TABLE IF NOT EXISTS mm_password_setup (token_hash CHAR(64) PRIMARY KEY, email VARCHAR(254) NOT NULL, expires_at DATETIME NOT NULL)`,
+    `CREATE TABLE IF NOT EXISTS mm_setup_provisioned (token_hash CHAR(64) PRIMARY KEY)`,
   ]) await db.execute(sql);
 }
 export function parseContent(row) {return typeof row.content==='string'?JSON.parse(row.content):row.content;}

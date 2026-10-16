@@ -2,21 +2,17 @@ import http from 'node:http';
 import { createReadStream } from 'node:fs';
 import { stat, realpath } from 'node:fs/promises';
 import { resolve, sep } from 'node:path';
-import nodemailer from 'nodemailer';
 import { bootstrapImport } from './bootstrap-import.js';
 import { connectDatabase, schema } from './database.js';
 import { backupContent,readContentBackup } from './backups.js';
 import { readGallery,refreshGallery,mediaDirectory } from './instagram.js';
 import { createApi } from './api.js';
+import { provisionPasswordSetup } from './setup-passwords.js';
 function start(){
 const db=connectDatabase();
-const ready=schema(db).then(()=>bootstrapImport(db)).catch(error=>console.warn('CMS initialization failed:',error.code||error.name));
+const ready=schema(db).then(()=>bootstrapImport(db)).then(()=>provisionPasswordSetup(db)).catch(error=>console.warn('CMS initialization failed:',error.code||error.name));
 const origin=new URL(process.env.SITE_ORIGIN||'https://www.magiskasmiskas.lt').origin;
-const mail=nodemailer.createTransport({host:process.env.SMTP_HOST,port:Number(process.env.SMTP_PORT||465),secure:process.env.SMTP_PORT!=='587',auth:{user:process.env.SMTP_USER,pass:process.env.SMTP_PASSWORD}});
-const api=createApi({db,origin,readGallery,backupContent,readContentBackup,sendLogin:async(to,url)=>{
-  if(!process.env.SMTP_HOST||!process.env.SMTP_PASSWORD||!process.env.SMTP_FROM)throw new Error('SMTP not configured');
-  await mail.sendMail({from:process.env.SMTP_FROM,to,subject:'Magiškas Miškas · prisijungimas',text:`Prisijunk prie redagavimo skydelio:\n${url}\n\nNuoroda galioja 15 minučių ir tik vieną kartą. Jei jos neprašei, laišką ignoruok.`});
-}});
+const api=createApi({db,origin,readGallery,backupContent,readContentBackup});
 const root=resolve(import.meta.dirname,'../dist');
 const mime={'.html':'text/html; charset=utf-8','.js':'text/javascript; charset=utf-8','.css':'text/css; charset=utf-8','.json':'application/json','.png':'image/png','.jpg':'image/jpeg','.svg':'image/svg+xml','.webp':'image/webp','.woff2':'font/woff2','.mp4':'video/mp4','.pdf':'application/pdf','.ico':'image/x-icon'};
 const server=http.createServer(async(req,res)=>{

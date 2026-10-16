@@ -1,5 +1,5 @@
 import { subpageLabels } from '../subpage-defaults.js';
-import { hostingerCms, createHostingerClient } from '../hostinger-cms.js';
+import { hostingerCms, createHostingerClient, passwordSetupToken } from '../hostinger-cms.js';
 import { InstagramStatus } from './InstagramStatus';
 import { ArrowIcon } from '../ArrowIcon';
 import React, { useEffect, useState, useRef } from 'react';
@@ -15,6 +15,7 @@ const demo = ['localhost','127.0.0.1'].includes(location.hostname) && new URLSea
 function Admin() {
   const [session, setSession] = useState(null), [ready,setReady] = useState(!client), [allowed,setAllowed] = useState(demo);
   const [email,setEmail] = useState(''), [message,setMessage] = useState(''), [busy,setBusy] = useState(false);
+  const [password,setPassword]=useState(''),[confirmation,setConfirmation]=useState('');
   const [document,setDocument] = useState(editableDefaults), [saved,setSaved] = useState(()=>demo?JSON.stringify(editableDefaults()):null), [revision,setRevision] = useState(0), [group,setGroup] = useState(0);
   const [language,setLanguage] = useState('lt');
   const frame=useRef(null), canvas=useRef(null);
@@ -71,6 +72,12 @@ function Admin() {
   async function login(event) {
     event.preventDefault(); setBusy(true); setMessage('');
     try {
+      if(hostingerCms){
+        if(passwordSetupToken&&password!==confirmation){setMessage('Slaptažodžiai nesutampa.');return;}
+        const {error}=await client.auth.signInWithPassword({email:email.trim(),password,setupToken:passwordSetupToken});
+        if(error)setMessage(error.message);else{setPassword('');setConfirmation('');}
+        return;
+      }
       const {error} = await client.auth.signInWithOtp({email:email.trim(),options:{shouldCreateUser:false,emailRedirectTo:`${location.origin}/gabija/`}});
       setMessage(error ? 'Nuorodos išsiųsti nepavyko. Patikrink, ar tavo el. paštas pakviestas, arba bandyk vėliau.' : 'Patikrink el. paštą. Prisijungimo nuorodą atidaryk šioje naršyklėje.');
     } catch {setMessage('Nepavyko susisiekti. Patikrink interneto ryšį.');} finally {setBusy(false);}
@@ -119,7 +126,7 @@ function Admin() {
     }catch(error){setMessage('Kopijos įkelti nepavyko. '+error.message);}
   }
   return <div className="admin"><header><a href="/">Magiškas Miškas <span><ArrowIcon direction="out" /></span></a><span>Turinio redagavimas</span>{session && <button onClick={async()=>{if(dirty&&!confirm('Yra neišsaugotų pakeitimų. Atsijungti?'))return; await client.auth.signOut();setAllowed(false);setSaved(null);}}>Atsijungti</button>}</header>
-    {!ready ? <main><p>Tikrinamas prisijungimas…</p></main> : !allowed ? <main className="login"><p className="eyebrow">Tik pakviestiems redaktoriams</p><h1>Labas, miško<br/>pasakotojau.</h1><p>Prisijunk ir redaguok svetainės tekstus.</p>{!client ? <p className="notice">Panelė paruošta prijungimui. Prisijungimas bus aktyvuotas prijungus turinio saugojimo paslaugą.</p> : !session ? <form onSubmit={login}><label>El. paštas<input type="email" autoComplete="email" required value={email} onChange={e=>setEmail(e.target.value)}/></label><button className="primary" disabled={busy}>{busy?'Siunčiama…':'Gauti prisijungimo nuorodą'}</button></form> : <p>Redagavimo teisės tikrinamos pagal pakviestų žmonių sąrašą.</p>}<p role="status">{message}</p></main> : <>
+    {!ready ? <main><p>Tikrinamas prisijungimas…</p></main> : !allowed ? <main className="login"><p className="eyebrow">Tik pakviestiems redaktoriams</p><h1>Labas, miško<br/>pasakotojau.</h1><p>Prisijunk ir redaguok svetainės tekstus.</p>{!client ? <p className="notice">Panelė paruošta prijungimui. Prisijungimas bus aktyvuotas prijungus turinio saugojimo paslaugą.</p> : !session ? <form onSubmit={login}><>{!passwordSetupToken&&<label>El. paštas<input type="email" autoComplete="email" required value={email} onChange={e=>setEmail(e.target.value)}/></label>}{hostingerCms&&<><label>{passwordSetupToken?'Sukurk slaptažodį (bent 12 simbolių)':'Slaptažodis'}<input type="password" autoComplete={passwordSetupToken?'new-password':'current-password'} minLength={12} maxLength={128} required value={password} onChange={e=>setPassword(e.target.value)}/></label>{passwordSetupToken&&<label>Pakartok slaptažodį<input type="password" autoComplete="new-password" minLength={12} maxLength={128} required value={confirmation} onChange={e=>setConfirmation(e.target.value)}/></label>}</>}</><button className="primary" disabled={busy}>{busy?'Palauk…':hostingerCms?(passwordSetupToken?'Sukurti slaptažodį ir prisijungti':'Prisijungti'):'Gauti prisijungimo nuorodą'}</button></form> : <p>Redagavimo teisės tikrinamos pagal pakviestų žmonių sąrašą.</p>}<p role="status">{message}</p></main> : <>
     {demo && <div className="notice">Panelės peržiūra · čia atliekami bandymai viešos svetainės nekeičia.</div>}
     <div className="workspace"><nav aria-label="Redagavimo skiltys">{groups.map(({name},i)=><button key={name} aria-current={group===i?'page':undefined} onClick={()=>{setGroup(i);window.scrollTo({top:0,behavior:"instant"});}}>{name}</button>)}<a href="/" target="_blank" rel="noopener noreferrer">Atidaryti svetainę <ArrowIcon direction="out" /></a></nav><main><div className="toolbar"><div><p className="eyebrow">Svetainės turinys</p><h1>{groups[group].name}</h1></div><button className="primary" disabled={busy||(!demo&&!dirty)} onClick={save}>{busy?'Publikuojama…':demo?'Patikrinti publikavimą':'Publikuoti'}</button></div><div className="draft-actions"><button disabled={busy||!dirty} onClick={saveDraft}>Išsaugoti juodraštį</button><button disabled={busy||!dirty} onClick={discard}>Atšaukti pakeitimus</button></div><p className="draft-note">Juodraštis saugomas tik šioje naršyklėje. Viešą svetainę keičia tik „Publikuoti“.</p>{draft&&<div className="draft-banner"><span>Yra juodraštis · {new Date(draft.updatedAt).toLocaleString('lt-LT')}</span><button onClick={restoreDraft}>Atkurti juodraštį</button></div>}<p className="draft-note" role="status">{draftStatus}</p><p className="status" role="status">{message || (dirty?'Yra nepublikuotų pakeitimų.':'Pasirink laukelį ir redaguok tekstą.')}</p><div className="editor-languages" role="group" aria-label="Tekstų kalba"><button aria-pressed={language==='lt'} onClick={()=>{if(language!=='lt'){setPreviewReady(false);setLanguage('lt')}}}>LT · Lietuvių</button><button aria-pressed={language==='en'} onClick={()=>{if(language!=='en'){setPreviewReady(false);setLanguage('en')}}}>EN · English</button><a href={language==='en'?'/en/':'/'} target="_blank" rel="noopener noreferrer">Peržiūrėti {language.toUpperCase()} <ArrowIcon direction="out" /></a></div><p className="field-help">Tekstus redaguok abiem kalbomis. Lietuviški pakeitimai automatiškai neišverčiami. Žemėlapis, nuorodos ir integracijų nustatymai bendri — juos rasi LT skiltyse.</p>{group===5&&<InstagramStatus/>}<fieldset disabled={busy}>
     {groups[group].keys.filter(key=>language==='lt'||Object.hasOwn(document.translations.en,key)).map(key=>renderField(language==='lt'?document[key]:document.translations.en[key],language==='lt'?[key]:['translations','en',key],fields[key]||key))}{language==='en'&&!groups[group].keys.some(key=>Object.hasOwn(document.translations.en,key))&&<p>Šios skilties nustatymai bendri abiem kalboms. Juos redaguok LT skiltyje.</p>}

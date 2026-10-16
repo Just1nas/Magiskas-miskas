@@ -1,3 +1,17 @@
+# Dabartinis paleidimas: Hostinger Node.js ir MySQL
+
+Nuo 2026-10-16 svetainė paleidžiama kaip Node.js serveris, ne Vite statinė svetainė.
+
+- Node.js 24, framework Other, šaka main, root ./, build script build, output ./, entry server/index.js, package manager npm.
+- VITE_CMS_BACKEND=hostinger turi būti nustatytas prieš build. DB prisijungimo reikšmės tik Hostinger aplinkoje.
+- /gabija/ prisijungimas el. paštu ir slaptažodžiu, be SMTP ir prisijungimo laiškų. Pirminės nuorodos privačios ir vienkartinės.
+- Tekstai ir redaktoriai MySQL; turinio atsarginė kopija ir Instagram medija ~/mm-data. Galerijos atnaujinimas serveryje kas 5 min.
+- Visos dabartinės diegimo, saugumo ir priežiūros instrukcijos: [server/README.md](server/README.md).
+
+Žemiau išlikusi ankstesnio statinio Vite ir Supabase paleidimo dokumentacija; jos diegimo ir prisijungimo skyriai yra istoriniai. Naujiems diegimams taikyti viršuje nurodytus serverio nustatymus. Supabase duomenys palikti atkūrimui.
+
+---
+
 # Magiškas Miškas
 
 Vite + React svetainė lietuvių kalba, paruošta GitHub ir Hostinger. Naudojami pateikti logotipai, Magical ir Manrope šriftai bei tikra vartotojo miško nuotrauka. Naujo fono paletė — naktinė mėlyna, turkis ir violetinė pagal šią nuotrauką. Generuotų iliustracijų ar netikrų socialinių įrašų nėra.

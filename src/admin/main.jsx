@@ -1,4 +1,5 @@
 import { subpageLabels } from '../subpage-defaults.js';
+import { hostingerCms, createHostingerClient } from '../hostinger-cms.js';
 import { InstagramStatus } from './InstagramStatus';
 import { ArrowIcon } from '../ArrowIcon';
 import React, { useEffect, useState, useRef } from 'react';
@@ -9,7 +10,7 @@ import { cmsUrl, cmsKey, cmsConfigured } from '../cms-config.js';
 import './style.css';
 import { draftKey, encodeDraft, decodeDraft } from './draft.js';
 import { authFlow } from './auth-flow.js';
-const client = cmsConfigured ? createClient(cmsUrl, cmsKey, { auth: { flowType: authFlow(location.hash) } }) : null;
+const client = hostingerCms ? createHostingerClient() : cmsConfigured ? createClient(cmsUrl, cmsKey, { auth: { flowType: authFlow(location.hash) } }) : null;
 const demo = ['localhost','127.0.0.1'].includes(location.hostname) && new URLSearchParams(location.search).get('perziura') === '1';
 function Admin() {
   const [session, setSession] = useState(null), [ready,setReady] = useState(!client), [allowed,setAllowed] = useState(demo);

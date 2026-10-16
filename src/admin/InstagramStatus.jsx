@@ -13,5 +13,5 @@ export function InstagramStatus() {
     }
     check();return()=>{stopped=true;clearTimeout(timer);controller?.abort()};
   },[]);
-  return <div className="notice" role="status"><strong>Instagram atnaujinimas</strong><p>{result?`Paskutinis sėkmingas tikrinimas: ${new Date(result.checkedAt).toLocaleString('lt-LT')} · Įrašų: ${result.feed.posts.length}`:'Tikrinama…'}</p><p>{error?'Nepavyko patikrinti ryšio.':result&&!isInstagramFresh(result.checkedAt)?'Atnaujinimas vėluoja. Reikia patikrinti Supabase funkcijos žurnalą.':'Serveris tikrina kas 5 min. Atidaryta svetainė naujus duomenis pasiima kas minutę.'}</p></div>;
+  return <div className="notice" role="status"><strong>Instagram atnaujinimas</strong><p>{result?`Paskutinis sėkmingas tikrinimas: ${new Date(result.checkedAt).toLocaleString('lt-LT')} · Įrašų: ${result.feed.posts.length}`:'Tikrinama…'}</p><p>{error?'Nepavyko patikrinti ryšio.':result&&!isInstagramFresh(result.checkedAt)?'Atnaujinimas vėluoja. Reikia patikrinti galerijos atnaujinimo žurnalą.':'Serveris tikrina kas 5 min. Atidaryta svetainė naujus duomenis pasiima kas minutę.'}</p></div>;
 }

@@ -1,7 +1,8 @@
+import { hostingerCms } from './hostinger-cms.js';
 // The server cache is authoritative, including an intentionally empty gallery.
 export async function readInstagramCache(url, key, signal, request = fetch) {
-  const response = await request(`${url}/rest/v1/instagram_cache?id=eq.1&select=feed,checked_at`, {
-    headers: { apikey: key }, signal, credentials: 'omit', cache: 'no-store',
+  const response = await request(hostingerCms ? '/api/instagram' : `${url}/rest/v1/instagram_cache?id=eq.1&select=feed,checked_at`, {
+    headers: hostingerCms ? {} : { apikey: key }, signal, credentials: 'omit', cache: 'no-store',
   });
   if (!response.ok) throw new Error('Instagram cache unavailable');
   const rows = await response.json();

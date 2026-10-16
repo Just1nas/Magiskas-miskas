@@ -1,3 +1,4 @@
+import { hostingerCms, loadHostingerContent } from './hostinger-cms.js';
 import { content } from './content.js';
 import { validateEdits, mergeEdits } from './editable-content.js';
 import { cmsUrl, cmsKey, cmsConfigured } from './cms-config.js';
@@ -25,13 +26,13 @@ if (preview) {
     try { apply(mergeEdits(validateEdits(event.data.content))); } catch { /* Keep last valid draft. */ }
   });
 }
-if (cmsConfigured) {
+if (hostingerCms || cmsConfigured) {
   try {
-    const response = await fetch(`${cmsUrl}/rest/v1/site_content?slug=eq.main&select=content`, {
+    const response = hostingerCms ? null : await fetch(`${cmsUrl}/rest/v1/site_content?slug=eq.main&select=content`, {
       headers: { apikey: cmsKey }, signal: AbortSignal.timeout(5000), cache: 'no-store',
     });
-    if (!response.ok) throw new Error('Unavailable');
-    const rows = await response.json();
+    if (response && !response.ok) throw new Error('Unavailable');
+    const rows = hostingerCms ? [await loadHostingerContent()] : await response.json();
     if (rows[0]) apply(mergeEdits(rows[0].content));
   } catch { /* Original complete HTML remains available. */ }
 }

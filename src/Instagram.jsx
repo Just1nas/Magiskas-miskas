@@ -1,3 +1,4 @@
+import { hostingerCms } from './hostinger-cms.js';
 import { cmsUrl, cmsKey, cmsConfigured } from './cms-config.js';
 import { readInstagramCache, isInstagramFresh } from './instagram-feed.js';
 import { ArrowIcon } from './ArrowIcon';
@@ -53,7 +54,7 @@ export function Instagram() {
   useEffect(() => {
     const endpoint = c.instagram.endpoint;
     if (!endpoint || !(endpoint === './instagram/feed.json' || endpoint.startsWith('/') && !endpoint.startsWith('//') || safeHttps(endpoint))) return;
-    const serverCache = cmsConfigured && ['./instagram/feed.json', '/instagram/feed.json'].includes(endpoint);
+    const serverCache = (hostingerCms || cmsConfigured) && ['./instagram/feed.json', '/instagram/feed.json'].includes(endpoint);
     let stopped = false, timer, controller, lastChecked;
     async function refresh() {
       controller = new AbortController();

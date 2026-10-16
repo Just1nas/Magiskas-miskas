@@ -1,3 +1,4 @@
+import { hostingerCms, loadHostingerContent } from './hostinger-cms.js';
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { TicketWidget } from './TicketWidget';
@@ -8,11 +9,11 @@ import { validateEdits } from './editable-content';
 import { safeHttps } from './integrations';
 import './tickets-page.css';
 
-if (cmsConfigured) {
+if (hostingerCms || cmsConfigured) {
   try {
-    const response = await fetch(`${cmsUrl}/rest/v1/site_content?slug=eq.main&select=content`, {headers:{apikey:cmsKey},signal:AbortSignal.timeout(5000),cache:'no-store'});
-    if (!response.ok) throw new Error('Unavailable');
-    const rows=await response.json();
+    const response = hostingerCms ? null : await fetch(`${cmsUrl}/rest/v1/site_content?slug=eq.main&select=content`, {headers:{apikey:cmsKey},signal:AbortSignal.timeout(5000),cache:'no-store'});
+    if (response && !response.ok) throw new Error('Unavailable');
+    const rows=hostingerCms ? [await loadHostingerContent()] : await response.json();
     if(rows[0]) Object.assign(c,validateEdits(rows[0].content));
   } catch { /* Use the bundled event configuration if the public CMS is unavailable. */ }
 }

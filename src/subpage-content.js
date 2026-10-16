@@ -18,6 +18,7 @@ function apply(documentContent) {
   const heading = document.querySelector('h1');
   if (heading && !document.querySelector('title[data-cms-text]')) document.title = `${heading.textContent} · Magiškas Miškas`;
 }
+apply(content);
 const preview = window.parent !== window && new URLSearchParams(location.search).get('adminPreview') === '1';
 if (preview) {
   window.addEventListener('message', event => {

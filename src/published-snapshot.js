@@ -1,0 +1,531 @@
+// Verified published CMS revision 24. Public content only; editor identities are excluded.
+export const publishedSnapshot = {
+  "guide": {
+    "text1": "Miško gidas · Magiškas Miškas",
+    "alt2": "Magiškas Miškas",
+    "text3": "MAGIŠKAS MIŠKAS",
+    "text4": "Jau Miške?",
+    "text5": "Tavo Miško gidas",
+    "text6": "Miškas pakvietė Tave į pasimatymą. Gerai, kad atėjai! Atrask takus, susitikimus ir mažas paslaptis.",
+    "text7": "Miško planas",
+    "text8": "Susitikimai",
+    "text9": "Ką atrasti?",
+    "text10": "Pasirink savo taką.",
+    "aria_label11": "Išdidinti Miško planą",
+    "src12": "/gidas/planas.jpg",
+    "alt13": "Miško planas su 15 vietų, įėjimu, išėjimu ir tualetais",
+    "text14": "Paliesk planą, kad išdidintum. Išdidintą planą gali slinkti į šonus.",
+    "text15": "",
+    "text16": "Susitik su Miško gyventojais.",
+    "text17": "Prie prisiminimų kūdros",
+    "text18": "18:18",
+    "text19": "19:19",
+    "text20": "20:20",
+    "text21": "21:21",
+    "text22": "Ką atrasti?",
+    "text23": "Šnabždesių alėja",
+    "text24": "Sakuratyvus interaktyvas",
+    "text25": "Prisiminimų kūdra",
+    "text26": "Snaudžiantis rožynas",
+    "text27": "Herbariumas",
+    "text28": "Didžioji sodo tuopa",
+    "text29": "Aimanų kelmai",
+    "text30": "Miškografijos skliautai",
+    "text31": "Ir sienos turi ausis",
+    "text32": "Paslapčių giraitė",
+    "text33": "Katė maiše",
+    "text34": "Aromatiniai stiklo namai",
+    "text35": "Senoji sodo trešnė",
+    "text36": "Gardumynų sodas*",
+    "text37": "Meškos girna – karuselė*",
+    "text38": "* Paslauga mokama",
+    "text39": "Miškas Tau kužda…",
+    "text40": "Šnabždesių alėja",
+    "text41": "Tūkstančiai šviečiančių kremblių rodo tau kelią link prisiminimų, jausmų ir paslapčių - jie jau kažką Tau kužda… Ar girdi? Ar gal ne jie čia šnabžda? Bet nuo kelio nenukrypk - Šnabždesių alėja veda teisinga kryptimi. Eidamas ja nugirsk Magiją, neišsigąsk Miško padarėlių ir leiskis į prisiminimus, tyvuliuojančius Kūdros gelmėje.",
+    "text42": "Prisiminimų kūdra",
+    "text43": "Kartais prisiminimai pasislepia labai giliai – lyg po vandeniu, lyg sapne, nors, rodos, vis dar galvoje. Tam ir susitinkame prie Prisiminimų Kūdros, kurios atspindžiai sugrąžins Tave prie to, kas galbūt pamiršta. Ir nesvarbu, baugu ar džiugu – kiekvienam prisiminimui Kūdros dugne vietos pakanka, tad klausk drąsiai!",
+    "text44": "Snaudžiantis rožynas",
+    "text45": "Nors rudenį rožės užmiega, Miško Rožyne jos tik snaudžia. Ir rožės čia ne tokios kaip Žemėje. Sklinda gandai, jog Magiškosios Rožės atkeliavo iš kosmoso, kur mažas žmogutis jas išveisė asteroide B-612. Pažink jų mąslumą ir nesibodėk susimąstyti pats.",
+    "text46": "Herbariumas",
+    "text47": "Juk esame Miško Sode, tad pažink jo Herbariumą, kuriame auga ypatingos botaninės būtybės – ir ne visos jos augalai. Įsižiūrėk atidžiau – kiekviena turi savitą charakterį. Jos ne tik auga, bet ir šviečia, kvepia, liečia, klauso, o gal net ragauja Tave. Būk toks ir Tu! Smalsus ir tikras.",
+    "text48": "Paslapčių giraitė",
+    "text49": "Jei nuo įspūdžių įsisuko galva – paaimanuok su Kelmais ir nuklysk į Paslapčių Giraitę, suaugusią Sodo kampe. Miškas pasidalins savo paslaptimis ir mielai išgirs Tavąsias. Juk paslapčių turi visi – minkštų, aštriais kampais ar glotniais dygliais. Ir kartais taip norisi jomis pasidalinti… jei jauku. Miškas viliasi, kad Tau čia jauku.",
+    "text50": "Miškografijos skliautai",
+    "text51": "fotografės Urtės Statkutės tylūs miško atradimai",
+    "text52": "Tu tik pažiūrėk, koks laimikis - ne valgyti skirti baravykai ar voveraitės, o maži, kartais vos pastebimi miško gyventojai, kuriuos reikia surasti, įsižiūrėti ir suprasti!",
+    "text53": "Jei tau patinka miškas, tuomet mums pakeliui. Man miškas - tai tarsi užuovėja. Tiesiog būnu ten, kartais – paverkiu, kartais – pamedituoju. Miške jaučiuosi maža, bet pačia geriausia prasme, nes jeigu aš maža tokiame dideliame kontekste, tai ir mano problemos yra mažos. Kaip tau tokia mintis?",
+    "text54": "Vieną dieną tarp ilgų žolių pastebėjau mažytį šungrybį. Nufotografavau jį ir tada tarsi atsivėrė naujas kelias. Tas mažas grybas tapo pirmuoju objektu, nuo kurio prasidėjo „Urtės miškografija“, su kuria dabar ir tu gali susipažinti.",
+    "text55": "Maži grybai mane domina ir todėl, kad jų pasaulis atsiveria tik tada, kai žmogus sulėtėja.",
+    "text56": "Šiandien ir tau noriu parodyti mano atrastus ir fotokamera užfiksuotus lobius. Įdomu, ar atpažinsi retą ir saugomą grybą - dėmėtąjį perkūnbaravykį?",
+    "text57": "O jei atidžiau pažvelgsi į nuotraukas, pamatysi, kaip atrodo, kai grybą užkariauja kiti grybai, tiksliau - pelėsis. Argi ne gražu?!",
+    "text58": "Linkiu iš visos širdies pasimėgauti grybais, kerpėmis, gleivūnais, jų formomis ir dydžiais.",
+    "text59": "Psss… ar tu dar čia? Čia Miškas tau šnabžda:",
+    "text60": "Kol Urtė ieško visokių grybukų, kerpių, vabaliukų ir kitų mažų gyventojų, tu gali jai parašyti žinutę, kas patiko, kas nustebino. Žinau, jai labai patiks.",
+    "href61": "https://www.facebook.com/share/1XxLpXGf9Q/?mibextid=wwXIfr",
+    "text62": "Parašyti Urtei per Facebook",
+    "text63": "Mišku rūpinkimės kartu.",
+    "text64": "Prašome laikytis plane parodytų botanikos sodo taisyklių.",
+    "href65": "/gidas/libretas.pdf",
+    "text66": "Atsisiųsti Miško gidą · PDF",
+    "text67": "Magiškas Miškas ·",
+    "text68": "Grįžti į pagrindinį puslapį",
+    "text69": "Miško planas · slink į šonus",
+    "text70": "Uždaryti",
+    "alt72": "Išdidintas Miško planas"
+  },
+  "miskografija": {
+    "aria_label1": "Magiškas Miškas — pagrindinis puslapis",
+    "alt2": "Magiškas Miškas",
+    "href3": "https://www.instagram.com/magiskas.miskas/",
+    "aria_label4": "Magiškas Miškas – Instagram (naujame skirtuke)",
+    "href5": "https://www.facebook.com/profile.php?id=61595019476553",
+    "aria_label6": "Magiškas Miškas – Facebook (naujame skirtuke)",
+    "href7": "https://www.tiktok.com/@magiskasmiskas",
+    "aria_label8": "Magiškas Miškas – TikTok (naujame skirtuke)",
+    "text9": "Magiško Miško atradimai",
+    "text10": "MIŠKOGRAFIJOS SKLIAUTAI",
+    "text11": "fotografės Urtės Statkutės tylūs miško atradimai",
+    "text12": "Tu tik pažiūrėk, koks laimikis - ne valgyti skirti baravykai ar voveraitės, o maži, kartais vos pastebimi miško gyventojai, kuriuos reikia surasti, įsižiūrėti ir suprasti!",
+    "text13": "Jei tau patinka miškas, tuomet mums pakeliui. Man miškas - tai tarsi užuovėja. Tiesiog būnu ten, kartais – paverkiu, kartais – pamedituoju. Miške jaučiuosi maža, bet pačia geriausia prasme, nes jeigu aš maža tokiame dideliame kontekste, tai ir mano problemos yra mažos. Kaip tau tokia mintis?",
+    "text14": "Vieną dieną tarp ilgų žolių pastebėjau mažytį šungrybį. Nufotografavau jį ir tada tarsi atsivėrė naujas kelias. Tas mažas grybas tapo pirmuoju objektu, nuo kurio prasidėjo „Urtės miškografija“, su kuria dabar ir tu gali susipažinti.",
+    "text15": "Maži grybai mane domina ir todėl, kad jų pasaulis atsiveria tik tada, kai žmogus sulėtėja.",
+    "text16": "Šiandien ir tau noriu parodyti mano atrastus ir fotokamera užfiksuotus lobius. Įdomu, ar atpažinsi retą ir saugomą grybą - dėmėtąjį perkūnbaravykį?",
+    "text17": "O jei atidžiau pažvelgsi į nuotraukas, pamatysi, kaip atrodo, kai grybą užkariauja kiti grybai, tiksliau - pelėsis. Argi ne gražu?!",
+    "text18": "Linkiu iš visos širdies pasimėgauti grybais, kerpėmis, gleivūnais, jų formomis ir dydžiais.",
+    "text19": "Psss… ar tu dar čia? Čia Miškas tau šnabžda:",
+    "text20": "Kol Urtė ieško visokių grybukų, kerpių, vabaliukų ir kitų mažų gyventojų, tu gali jai parašyti žinutę, kas patiko, kas nustebino. Žinau, jai labai patiks.",
+    "href21": "https://www.facebook.com/share/1XxLpXGf9Q/?mibextid=wwXIfr",
+    "aria_label22": "Parašyti Urtei per Facebook — atsidarys naujame skirtuke",
+    "text23": "Parašyti Urtei",
+    "text24": "Grįžti į Magišką Mišką",
+    "text25": "Magiškas Miškas · Miškografijos skliautai",
+    "text26": "Susisiekime!",
+    "text27": "+370 699 06696"
+  },
+  "translations": {
+    "en": {
+      "copy": {
+        "heroFirst": "Magiškas",
+        "heroSecond": "Miškas",
+        "heroLabel": "An immersive light experience",
+        "heroLocation": "Under the open sky",
+        "buy": "Buy tickets",
+        "closedButton": "See you soon",
+        "enter": "Step inside",
+        "navJourney": "Explore",
+        "navArrival": "Getting here",
+        "navFaq": "FAQ",
+        "pauseLabel": "Leave the everyday behind",
+        "pauseBottom": "More than a sight. A feeling.",
+        "journeyTitle": "Five spaces. One journey.",
+        "journeyIntro": "Choose where your curiosity takes you.",
+        "journeyNext": "Another secret awaits.",
+        "instagramLabel": "Moments / Instagram",
+        "instagramTitle": "Magic worth sharing.",
+        "instagramEmpty": "Find our latest moments on Instagram.",
+        "galleryLabel": "Moments from our forest",
+        "overviewTitle": "A glimpse of\nthe magic.",
+        "experienceLabel": "The experience",
+        "experience": "Light. Nature. Imagination.",
+        "audienceLabel": "For whom?",
+        "audience": "Children of every age and height",
+        "durationLabel": "Duration",
+        "venueLabel": "Location",
+        "ticketsLabel": "Your evening in the forest",
+        "ticketsTitle": "Wonder\nawaits you.",
+        "ticketsIntro": "Choose your visit. Current prices and available times are shown below.",
+        "ticketsDirect": "View the event on Bilietai.lt",
+        "closedIntro": "Stay tuned. We will announce our next journey here.",
+        "practicalLabel": "Before you step inside",
+        "practicalTitle": "A little planning.\nA little more magic.",
+        "whenLabel": "When",
+        "whereLabel": "Where",
+        "arrivalTitle": "All paths lead\nto the forest.",
+        "mapLabel": "Vilnius / Vingis section, Vilnius University Botanical Garden",
+        "planTrip": "Plan your journey",
+        "directions": "Get directions",
+        "openMap": "Open the map",
+        "faqTitle": "Curious?\nWonderful.",
+        "faqMore": "More questions +",
+        "faqLess": "Show fewer −",
+        "contact": "Get in touch",
+        "review": "Leave a review",
+        "backTop": "Back to top"
+      },
+      "tagline": "As nature sleeps, magic awakens",
+      "description": "An outdoor immersive light experience for children of every age and height.",
+      "city": "Vilnius",
+      "date": "From 10 October",
+      "venue": "Vilnius University Botanical Garden, Vingis section",
+      "duration": "Duration to be confirmed",
+      "hours": "Opening hours will be announced soon",
+      "pause": "The moment you enter, the forest knows — you have returned…",
+      "story": "As autumn lulls the everyday world to sleep, the forest awakens with things unseen by day: glowing mushrooms, mysterious inhabitants, whispering trees and stories revealed only to those who pause, listen and follow their curiosity. Here, you become part of the story — following your own path, discovering, touching, listening, breathing it all in.",
+      "tickets": {
+        "price": "See ticket selection for current prices and available times"
+      },
+      "season": {
+        "closedMessage": "See you in Magiškas Miškas in 2027!"
+      },
+      "journey": [
+        {
+          "id": "snabzdesiu-aleja",
+          "title": "Whispering Alley",
+          "cue": "Listen.",
+          "text": "A century-old avenue of lime trees glows with thousands of extraordinary mushrooms, whispering lichens, stirring roots and shimmering vines.",
+          "detail": "Your journey begins here."
+        },
+        {
+          "id": "prisiminimu-kudra",
+          "title": "Pond of Memories",
+          "cue": "Remember.",
+          "text": "Underwater lights, shadows above the surface and images from memory: settle onto a swing and drink in a tale from the depths of the pond.",
+          "detail": "A little pause for big feelings."
+        },
+        {
+          "id": "snaudziantis-rozynas",
+          "title": "Slumbering Rose Garden",
+          "cue": "Take your time.",
+          "text": "Do not fear the thorns. They will not hurt. Autumn roses, still awake, lead you through a maze of thoughts and ask their questions… What will you answer?",
+          "detail": "Give yourself permission simply to be."
+        },
+        {
+          "id": "paslapciu-giraite",
+          "title": "Grove of Secrets",
+          "cue": "Discover.",
+          "text": "Everyone has secrets, but sharing and welcoming them takes courage. The forest welcomes every secret. Here, it feels safe to share and discover.",
+          "detail": "Curiosity knows the way."
+        },
+        {
+          "id": "gardumynu-sodas",
+          "title": "Garden of Delights",
+          "cue": "Stay a while.",
+          "text": "Share your adventures over hot tea, pancakes, pizza, vegetarian stew and something sweet. They say the stomach is a second heart!",
+          "detail": "The sweetest stop on your journey."
+        }
+      ],
+      "practical": [
+        [
+          "Weather",
+          "This is an outdoor experience. Dress warmly for the weather and wear comfortable shoes."
+        ],
+        [
+          "Accessibility",
+          "Details about path surfaces, pushchairs and mobility access will be confirmed before the event."
+        ]
+      ],
+      "transport": [
+        [
+          "By car",
+          "Plan your route to M. K. Čiurlionio g. 110, Vilnius. Exact entrance details will be announced before the event."
+        ],
+        [
+          "Parking",
+          "Parking locations and any restrictions will be confirmed. Please follow the signs on site."
+        ],
+        [
+          "Public transport",
+          "Check current routes and timetables in the JUDU journey planner."
+        ]
+      ],
+      "ticketTypes": [
+        "Single adult ticket — €18",
+        "Single discounted ticket — €13",
+        "Family ticket (2+1 / 1+2) — €39",
+        "Family ticket (2+2 / 1+3) — €49"
+      ],
+      "faq": [
+        [
+          "What is Magiškas Miškas?",
+          "An outdoor immersive light experience for children of every age and height. Five different forest spaces await you."
+        ],
+        [
+          "Where does it take place?",
+          "At the Vingis section of Vilnius University Botanical Garden, M. K. Čiurlionio g. 110, Vilnius."
+        ],
+        [
+          "When can I visit?",
+          "Magiškas Miškas awakens on 10 October. See the ticket selection for available visiting times."
+        ],
+        [
+          "How long is the walk?",
+          "The recommended visit duration will be confirmed before the event."
+        ],
+        [
+          "Can I bring a pushchair?",
+          "Path surface and accessibility details are being confirmed and will be announced before ticket sales begin."
+        ],
+        [
+          "How do I buy tickets?",
+          "Choose your visit in the ticket section of this website. Tickets are sold through Bilietai.lt; you can also open the event directly on their website."
+        ],
+        [
+          "What happens if it rains?",
+          "Come prepared for an outdoor walk. Rules for adverse weather and ticket exchanges will be published with the tickets."
+        ],
+        [
+          "Do I need to select an arrival time?",
+          "When buying your ticket, choose the event date and arrival time shown on Bilietai.lt."
+        ],
+        [
+          "Can I bring a pet?",
+          "Pets are not permitted in the Vingis section of Vilnius University Botanical Garden. Guide dogs and service dogs are an exception."
+        ],
+        [
+          "Can I take photos and videos?",
+          "Photos and videos for personal use are a must! Photography or filming for commercial purposes (publications, advertising or social media), as well as hiring a professional photographer, requires permission from the Botanical Garden administration."
+        ],
+        [
+          "Can I bring food and drinks?",
+          "Hot tea, pancakes, pizza and stew await you in the Garden of Delights. You will find plenty to enjoy here!"
+        ],
+        [
+          "Where can I park?",
+          "See the Getting here section for parking information and restrictions."
+        ],
+        [
+          "Can I change the date or get a refund if I cannot attend?",
+          "Ticket exchange and refund conditions will be available on the official event page on Bilietai.lt."
+        ],
+        [
+          "Who can help with a ticket problem?",
+          "For tickets purchased on Bilietai.lt, use the support contacts on the ticket provider’s website."
+        ],
+        [
+          "Who qualifies for a discount?",
+          "Children aged 4–6, school pupils, students, seniors and people with disabilities."
+        ]
+      ],
+      "final": {
+        "first": "The forest is awakening.",
+        "second": "Will you step inside?"
+      }
+    }
+  },
+  "name": "Magiškas Miškas",
+  "copy": {
+    "heroFirst": "Magiškas",
+    "heroSecond": "Miškas",
+    "heroLabel": "Patyrimų šviesos spektaklis",
+    "heroLocation": "vilnius",
+    "buy": "Pirkti bilietą",
+    "closedButton": "Iki susitikimo 2027",
+    "enter": "Įžengti",
+    "navJourney": "Kas laukia?",
+    "navArrival": "Kaip atvykti?",
+    "navFaq": "D.U.K.",
+    "pauseLabel": "Palik kasdienybę už magiškų vartų!",
+    "pauseBottom": "",
+    "journeyTitle": "Kelionėje Jūsų laukia",
+    "journeyIntro": "",
+    "journeyNext": "Toliau — dar viena paslaptis.",
+    "instagramLabel": "Akimirkos / Instagram",
+    "instagramTitle": "Magija, kuria norisi dalintis.",
+    "instagramEmpty": "Akimirkos laukia mūsų Instagram.",
+    "galleryLabel": "Akimirkos iš Magiško Miško",
+    "overviewTitle": "Trumpai\napie Mišką",
+    "experienceLabel": "Patyrimas",
+    "experience": "Šviesa. Gamta. Vaizduotė.",
+    "audienceLabel": "Kam?",
+    "audience": "Visokio ūgio vaikams",
+    "durationLabel": "Trukmė",
+    "venueLabel": "Vieta",
+    "ticketsLabel": "Tavo vakaras miške",
+    "ticketsTitle": "Nuostaba\nlaukia tavęs.",
+    "ticketsIntro": "Pasirink savo apsilankymą. Aktualios kainos ir laisvi laikai – žemiau.",
+    "ticketsDirect": "Atidaryti renginį Bilietai.lt",
+    "closedIntro": "Sek naujienas. Apie kitą kelionę pranešime čia.",
+    "practicalLabel": "Prieš įžengiant",
+    "practicalTitle": "Truputis planavimo.\nDaugiau magijos.",
+    "whenLabel": "Kada?",
+    "whereLabel": "Kur?",
+    "arrivalTitle": "Visi keliai\nveda į mišką.",
+    "mapLabel": "Vilnius / Vingio skyrius, VU botanikos sodas.",
+    "planTrip": "Planuoti kelionę",
+    "directions": "Atidaryti maršrutą",
+    "openMap": "Atidaryti žemėlapį",
+    "faqTitle": "Prieš įžengiant į Mišką...",
+    "faqMore": "Daugiau klausimų +",
+    "faqLess": "Rodyti mažiau −",
+    "contact": "Susisiekime!",
+    "review": "Palikti atsiliepimą",
+    "backTop": "Į pradžią"
+  },
+  "tagline": "Gamtai mingant, bunda magija. ",
+  "description": "Patyrimų šviesos spektaklis \"Magiškas Miškas. Pradžia\" po atviru dangumi visokio ūgio vaikams.",
+  "city": "VU botanikos sodo VINGIO skyrius",
+  "date": "Nuo spalio 10 d.",
+  "season": {
+    "mode": "upcoming",
+    "closedMessage": "Iki susitikimo Magiškame Miške 2027 metais!"
+  },
+  "socials": {
+    "facebook": "https://www.facebook.com/profile.php?id=61595019476553",
+    "tiktok": "https://www.tiktok.com/@magiskasmiskas"
+  },
+  "contactEmail": "info@kaukiuakademija.lt",
+  "reviewUrl": "",
+  "story": "Visi pasaulio gyventojai jau yra lankęsi Magiškame Miške. Tiesą sakant, visi iš jo ir atėjome. Miškui nesvarbu, kokio tu ūgio, jam svarbu tik, kad prisimintum: esi jo dalis - esi magija. Tai nėra įprastas spektaklis, kurį stebi iš tamsios salės - tai pasakojimas, kurį tu kuri pats, keliaudamas tik savo taku per paties šviečiantį Mišką.",
+  "venue": "VU Botanikos sodo VINGIO skyrius, Vakarinė VINGIO parko dalis ",
+  "address": "M. K. Čiurlionio g. 110, Vilnius",
+  "duration": "1-2 h",
+  "hours": "17:30 - 22:00 \n",
+  "pause": "Tik įžengus į Mišką, Jis žino: Tu grįžai…",
+  "tickets": {
+    "url": "https://www.bilietai.lt/renginiai/7VTPCXHIHO/magiskas-miskas-pradzia-patyrimu-spektaklis-visokio-ugio-vaikams",
+    "widgetId": "p_s-gytq4oI1Skv9p_mYtIY1zt1HIS64XD2wUZK_W2A",
+    "eventId": "7VTPCXHIHO",
+    "provider": "magiskas",
+    "iframeUrl": "",
+    "price": "Aktualios kainos ir laisvi laikai – bilitai.lt.",
+    "fallbackUrl": "https://www.bilietai.lt/"
+  },
+  "appearance": {
+    "background": "colors",
+    "motion": true
+  },
+  "instagram": {
+    "profileUrl": "https://www.instagram.com/magiskas.miskas/",
+    "endpoint": "./instagram/feed.json",
+    "refreshMs": 300000,
+    "limit": 5,
+    "autoplay": true,
+    "intervalMs": 6500
+  },
+  "map": {
+    "directionsUrl": "https://www.google.com/maps/search/?api=1&query=VU+Botanikos+sodo+Vingio+skyrius+M.+K.+Čiurlionio+110+Vilnius",
+    "embedUrl": "https://www.google.com/maps/d/embed?mid=1jOKicUeDffQ-K_Ik48DRanXXXcJO4EE&ehbc=2E312F"
+  },
+  "journey": [
+    {
+      "id": "snabzdesiu-aleja",
+      "title": "Šnabždesių alėja",
+      "cue": "Įsiklausyk.",
+      "text": "Šimtametis liepų takas, šviečiantis tūkstančiais nematytų grybų, kuždančių kerpių, knibždančių šaknų ir žėrinčių vijoklių.",
+      "detail": "Čia prasideda tavo kelionė."
+    },
+    {
+      "id": "prisiminimu-kudra",
+      "title": "Prisiminimų kūdra",
+      "cue": "Prisimink.",
+      "text": "Povandeninio pasaulio šviesos, šešėliai virš vandens ir vaizdiniai iš atminties: įsitaisyk ant sūpynių ir gerk pasaką iš kūdros gelmių.",
+      "detail": "Maža pauzė dideliems jausmams."
+    },
+    {
+      "id": "snaudziantis-rozynas",
+      "title": "Snaudžiantis rožynas",
+      "cue": "Neskubėk.",
+      "text": "Neišsigąsk dyglių, skaudžiai nedurs. Dar nemiegančios rudens rožės veda tave minčių labirintu, klausia… Ką atsakai?",
+      "detail": "Leisk sau tiesiog būti."
+    },
+    {
+      "id": "paslapciu-giraite",
+      "title": "Paslapčių giraitė",
+      "cue": "Atrask.",
+      "text": "Paslapčių turi visi, bet dalintis ir priimti ryžtasi tik drąsieji. Miškas priima visų paslaptis, čia dalintis ir atrasti nebaugu, čia mums saugu.",
+      "detail": "Smalsumas žino kelią."
+    },
+    {
+      "id": "gardumynu-sodas",
+      "title": "Gardumynų sodas",
+      "cue": "Pasilik.",
+      "text": "Nuotykiu dalintis kvies karšta arbata, blynai, pica, vegetariškas troškinys ir kai kas saldaus. Sakoma, skrandis – tai antra širdis!",
+      "detail": "Saldžiausias kelionės taškas."
+    }
+  ],
+  "practical": [
+    [
+      "Oras",
+      "Renginys vyksta po atviru dangumi. Rekomenduojame pasirinkti atitinkamą pagal orus aprangą bei avalynę."
+    ],
+    [
+      "Prieinamumas",
+      "Botanikos sodo įėjimas turi statų nuolydį ir jei kam sudėtinga jį įveikti, kviečiame pasinaudoti įėjimu iš kitos botanikos sodo pusės. Žemėlapyje ji pažymėta ženkliuku OUT. "
+    ]
+  ],
+  "transport": [
+    [
+      "Automobiliu",
+      "Jeigu į renginį atvykstate automobiliu, informaciją apie artimiausias stovėjimo aikšteles.",
+      "https://www.google.com/maps/d/embed?mid=1jOKicUeDffQ-K_Ik48DRanXXXcJO4EE&ehbc=2E312F"
+    ],
+    [
+      "Viešuoju transportu",
+      "Nuo Čiurlionio g. pusės artimiausios stotelės yra „Vingio parkas“ ir „Vinco Pietario“ stotelės, o nuo Žvėryno pusės – „Liubarto tiltas“, „Kęstučio“ ir „Latvių“ stotelės. Autobusais 24, 2G, 56, N2, 7 ir troleibusas 16, 4, 4-2, 3, 7. Aktualų maršrutą ir tvarkaraščius pasitikrink JUDU kelionių programėlėje.",
+      "https://judu.lt/"
+    ],
+    [
+      "Dviračiu ar paspirtuku ",
+      "Į Vingio parką galite atvykti paspirtukais ir dviračiais, tačiau juos palikite už VU botanikos sodo ribų. ",
+      ""
+    ]
+  ],
+  "ticketTypes": [
+    "Vienkartinis bilietas suaugusiam - 18eur.",
+    "Vienkartinis bilietas su nuolaida - 13eur.",
+    "Šeimos bilietas (2+1/1+2) - 39eur.",
+    "Šeimos bilietas (2+2/1+3) - 49eur."
+  ],
+  "faq": [
+    [
+      "Kas yra Magiškas Miškas?",
+      "Tai patyrimų šviesos spektaklis visokio ūgio vaikams po atviru dangumi. "
+    ],
+    [
+      "Kur vyks patyrimas?",
+      "VU Botanikos sodo VINGIO skyriuje, vakarinėje VINGIO parko dalyje, adresu M. K. Čiurlionio g. 110, Vilniuje."
+    ],
+    [
+      "Kada galima apsilankyti?",
+      "Magiškas Miškas vartus lankytojams atidaro nuo spalio 10 d. Tikslesnius apsilankymo laikus rasi bilietų pasirinkime."
+    ],
+    [
+      "Kiek trunka pasivaikščiojimas?",
+      "Nuo 1 iki 2 valandų. "
+    ],
+    [
+      "Ar galima atvykti su vaikų vežimėliu?",
+      "Botanikos sodo įėjimas turi statų nuolydį ir jei kam sudėtinga jį įveikti, kviečiame pasinaudoti įėjimu iš kitos botanikos sodo pusės. Žemėlapyje ji pažymėta ženkliuku OUT. "
+    ],
+    [
+      "Kaip įsigyti bilietą?",
+      "Bilietų skiltyje pasirinkite norimą apsilankymo datą ir įsigykite bilietus. Bilietų prekybą vykdo „Bilietai.lt“ – į renginio bilietų puslapį galite patekti ir tiesiogiai per platintojo svetainę.\n"
+    ],
+    [
+      "Ką daryti, jei lis?",
+      "Magiškas Miškas lankytojų laukia ir lietingais vakarais – juk Miške magija nesibaigia prasidėjus lietui. Rekomenduojame pasirūpinti tinkama apranga ir avalyne, nes renginys vyksta lauke."
+    ],
+    [
+      "Ar reikia pasirinkti konkretų atvykimo laiką?",
+      "Pirkdamas bilietą pasirink renginio dieną ir atvykimo laiką, kuriuos rasi Bilietai.lt."
+    ],
+    [
+      "Ar galima ateiti su augintiniais?",
+      "Augintiniai į VU botanikos sodo VINGIO skyrių neįleidžiami. Išimtis – šunys vedliai ir tarnybiniai šunys."
+    ],
+    [
+      "Ar galima fotografuoti ir filmuoti?",
+      "Fotografuoti ir filmuoti asmeninėms reikmėms - PRIVALOMA!\n\n*(Fotografuoti ir filmuoti komerciniais tikslais (leidiniams, reklamai, socialiniams tinklams), taip pat samdant profesionalų fotografą, galima tik gavus VU Botanikos sodo administracijos leidimą.)"
+    ],
+    [
+      "Ar galima atsinešti maisto ir gėrimų?",
+      "Gardumynų sode lauks karšta arbata, blynai, pica, troškinys. Už juos atsiskaityti galima banko kortele ir bekontakčiu mokėjimu telefonu. "
+    ],
+    [
+      "Ar galima pakeisti bilieto datą arba negalint atvykti susigrąžinti pinigus?",
+      "Bilietų keitimo ir grąžinimo sąlygos bus pateiktos oficialiame renginio puslapyje Bilietai.lt."
+    ],
+    [
+      "Kam kreiptis kilus problemoms dėl bilieto?",
+      "Dėl įsigyto bilieto kreipkis pagalbos kontaktais, kuriuos rasi bilietų platintojo svetainėje Bilietai.lt"
+    ],
+    [
+      "Kam taikoma nuolaida?",
+      "Vaikas (4-6 m.), moksleiviams, studentams, senjorams, asmenims su negalia. Vaikai iki 3 m. įleidžiami nemokamai."
+    ]
+  ],
+  "final": {
+    "first": "Miškas jau bunda.",
+    "second": "Ar įžengsi?"
+  }
+};

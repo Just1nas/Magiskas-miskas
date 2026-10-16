@@ -3,11 +3,13 @@ import { createReadStream } from 'node:fs';
 import { stat, realpath } from 'node:fs/promises';
 import { resolve, sep } from 'node:path';
 import nodemailer from 'nodemailer';
+import { bootstrapImport } from './bootstrap-import.js';
 import { connectDatabase, schema } from './database.js';
 import { backupContent,readContentBackup } from './backups.js';
 import { readGallery,refreshGallery,mediaDirectory } from './instagram.js';
 import { createApi } from './api.js';
 const db=connectDatabase();await schema(db).catch(()=>console.warn('Database unavailable; serving last published content where available.'));
+await bootstrapImport(db).catch(()=>console.warn('Initial data import needs attention; existing data was not overwritten.'));
 const origin=new URL(process.env.SITE_ORIGIN||'https://www.magiskasmiskas.lt').origin;
 const mail=nodemailer.createTransport({host:process.env.SMTP_HOST,port:Number(process.env.SMTP_PORT||465),secure:process.env.SMTP_PORT!=='587',auth:{user:process.env.SMTP_USER,pass:process.env.SMTP_PASSWORD}});
 const api=createApi({db,origin,readGallery,backupContent,readContentBackup,sendLogin:async(to,url)=>{

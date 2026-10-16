@@ -1,11 +1,11 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { mergeEdits, validateEdits } from '../src/editable-content.js';
+import { mergeEdits, validateEdits, editableDefaults } from '../src/editable-content.js';
 import { subpageDefaults } from '../src/subpage-defaults.js';
 test('old CMS content gains complete subpage defaults without losing saved text', () => {
   const data = mergeEdits({name:'Išsaugotas vardas'});
   assert.equal(data.name,'Išsaugotas vardas');
-  assert.deepEqual(data.guide,subpageDefaults.guide);
+  assert.deepEqual(data.guide,editableDefaults().guide);
 });
 test('subpage edits round trip, partial edits retain other fields', () => {
   const key=Object.keys(subpageDefaults.guide).find(k=>k.startsWith('text'));

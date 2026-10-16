@@ -1,3 +1,4 @@
+import { publishedSnapshot } from './published-snapshot.js';
 import { subpageDefaults } from './subpage-defaults.js';
 import { english } from './english.js';
 // Visas redaguojamas svetainės turinys. Tuščia nuoroda reiškia, kad integracija dar neįjungta.
@@ -71,3 +72,6 @@ export const content = {
   ],
   final: { first: 'Miškas jau bunda.', second: 'Ar įžengsi?' },
 };
+
+// A CMS outage must retain the latest verified published text, not initial placeholders.
+Object.assign(content, publishedSnapshot);

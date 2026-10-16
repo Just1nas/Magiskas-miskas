@@ -8,6 +8,7 @@ import { connectDatabase, schema } from './database.js';
 import { backupContent,readContentBackup } from './backups.js';
 import { readGallery,refreshGallery,mediaDirectory } from './instagram.js';
 import { createApi } from './api.js';
+async function start(){
 const db=connectDatabase();await schema(db).catch(()=>console.warn('Database unavailable; serving last published content where available.'));
 await bootstrapImport(db).catch(()=>console.warn('Initial data import needs attention; existing data was not overwritten.'));
 const origin=new URL(process.env.SITE_ORIGIN||'https://www.magiskasmiskas.lt').origin;
@@ -16,7 +17,7 @@ const api=createApi({db,origin,readGallery,backupContent,readContentBackup,sendL
   if(!process.env.SMTP_HOST||!process.env.SMTP_PASSWORD||!process.env.SMTP_FROM)throw new Error('SMTP not configured');
   await mail.sendMail({from:process.env.SMTP_FROM,to,subject:'Magiškas Miškas · prisijungimas',text:`Prisijunk prie redagavimo skydelio:\n${url}\n\nNuoroda galioja 15 minučių ir tik vieną kartą. Jei jos neprašei, laišką ignoruok.`});
 }});
-const root=await realpath(resolve('dist'));
+const root=await realpath(resolve(import.meta.dirname,'../dist'));
 const mime={'.html':'text/html; charset=utf-8','.js':'text/javascript; charset=utf-8','.css':'text/css; charset=utf-8','.json':'application/json','.png':'image/png','.jpg':'image/jpeg','.svg':'image/svg+xml','.webp':'image/webp','.woff2':'font/woff2','.mp4':'video/mp4','.pdf':'application/pdf','.ico':'image/x-icon'};
 const server=http.createServer(async(req,res)=>{
   if(req.url.startsWith('/api/'))return api(req,res);
@@ -52,3 +53,6 @@ const refresh=()=>refreshGallery().catch(()=>console.warn('Instagram refresh una
 refresh();const galleryTimer=setInterval(refresh,300000);galleryTimer.unref();
 server.listen(Number(process.env.PORT||3000),'0.0.0.0');
 for(const signal of ['SIGTERM','SIGINT'])process.on(signal,()=>server.close(()=>db.end().finally(()=>process.exit(0))));
+
+}
+start().catch(error=>{console.error(error);process.exitCode=1;});

@@ -19,13 +19,16 @@ export const ticketFont = { family: 'Manrope' };
 // the current Hostinger font responses lack the CORS header required inside the widget.
 const fontRoot = 'https://raw.githubusercontent.com/Just1nas/Magiskas-miskas/5f274e1496e62308d2ba596ab8d5ad8122944650/public/fonts';
 export const ticketCustomStyles = `
+.widget-embed:has(.ticket-selection) .event .flex.justify-center,.widget-embed:has(.ticket-selection) .event .basis-auto.grow,.widget-embed:has(.ticket-selection) .event ~ *,.widget-embed:has(.ticket-selection) .widget-layout .wrapper:not(:has(.event)){display:none!important}
+.widget-embed:has(.ticket-selection) .ticket-selection{max-width:none!important;width:100%!important}
+.widget-embed:has(.ticket-selection) .ticket-selection .white-rounded-block{display:block!important;position:static!important}
+.widget-embed:has(.ticket-selection) .event-sectors button{min-height:48px}
+.widget-embed:has(.ticket-selection) .event-series,.widget-embed:has(.ticket-selection) .price-info-mobile{display:none!important}
+.widget-embed:has(.ticket-selection) .ticket-selection .pt-6.z-10{position:sticky;bottom:0;background:#0b1429;padding-block:12px}
+.widget-embed:has(.ticket-selection) button[data-cy="increment-button"],.widget-embed:has(.ticket-selection) button[data-cy="decrement-button"]{min-width:44px;min-height:44px}
 @font-face{font-family:Manrope;src:url('${fontRoot}/Manrope-VariableFont_wght.woff2') format('woff2');font-weight:200 800;font-style:normal;font-display:swap}
-@font-face{font-family:Magical;src:url('${fontRoot}/Magical-Regular.woff2') format('woff2');font-weight:400;font-style:normal;font-display:swap}
 .widget-embed{color-scheme:dark;--neutral-93:#172239;--neutral-95:#172239;--neutral-98:#0b1429;--neutral-30:#a6b4c8;--system-neutral-primary:#FFFDF8;--system-neutral-secondary:#a6b4c8}
 .widget-embed :is(button,input,select,textarea){font-family:Manrope,sans-serif}
-.widget-embed :is(h1,h2,h3),.widget-embed :is(h1,h2,h3).font-heading{font-family:Magical,sans-serif!important;font-weight:400!important;line-height:1.15;color:#FFFDF8!important}
-.widget-embed h1{font-size:clamp(2rem,4vw,3rem)!important}
-.widget-embed :is(h2,h3){font-size:1.8rem!important}
 .widget-embed :is(a,button,input,select,textarea):focus-visible{outline:2px solid #FFFDF8;outline-offset:3px}
 `;
 

@@ -75,18 +75,17 @@ function Faq() {
 }
 function Tickets() {
   const [load, setLoad] = useState(false);
-  const [opened, setOpened] = useState(false);
-  const onDemand = true;
   useEffect(() => {
-    const open = () => { setOpened(true); setLoad(true); };
+    const open = () => setLoad(true);
+    const observer=new IntersectionObserver(entries=>{if(entries.some(e=>e.isIntersecting)){setLoad(true);observer.disconnect();}},{rootMargin:'350px'});
+    const section=document.getElementById('bilietai');if(section)observer.observe(section);
     window.addEventListener('open-ticket-selection', open);
-    return () => window.removeEventListener('open-ticket-selection', open);
+    return () => {observer.disconnect();window.removeEventListener('open-ticket-selection', open);};
   }, []);
   if (closed) return <section id="bilietai" className="section tickets"><h2>{c.season.closedMessage}</h2><p>{c.copy.closedIntro}</p></section>;
   if (c.tickets.widgetId) return <section id="bilietai" className="section tickets tickets-integrated">
     <div className="section-heading"><span className="eyebrow">{c.copy.ticketsLabel}</span><h2 style={{whiteSpace:"pre-line"}}>{c.copy.ticketsTitle}</h2><p>{c.copy.ticketsIntro}</p></div>
-    {onDemand && <div className="ticket-open-controls"><button className="button" aria-expanded={load} aria-controls="ticket-selection" onClick={() => { setOpened(true); setLoad(!load); }}>{load ? ui('Uždaryti bilietų pasirinkimą','Close ticket selection') : ui('Rinktis bilietus','Choose tickets')}<span aria-hidden="true">{load ? '−' : <ArrowIcon />}</span></button>{load && <p className="small-note">{ui('Bilietų lange slenkamas jo turinys. Uždarius pasirinkimą, toliau slinks visas puslapis.','Scroll within the ticket window to browse tickets. Close it to continue scrolling the page.')}</p>}</div>}
-    <div id="ticket-selection" className="ticket-widget-panel" hidden={onDemand && !load}>{(!onDemand || opened) && <TicketWidget widgetId={c.tickets.widgetId} transparent={onDemand} />}</div>
+    <div id="ticket-selection" className="ticket-widget-panel">{load && <TicketWidget widgetId={c.tickets.widgetId} transparent />}</div>
     <External className="text-link ticket-direct" href={ticketUrl}>{c.copy.ticketsDirect} <ArrowIcon direction="out" /></External>
   </section>;
   return <section id="bilietai" className="section tickets"><div><span className="eyebrow">{c.copy.ticketsLabel}</span><h2 style={{whiteSpace:"pre-line"}}>{c.copy.ticketsTitle}</h2><p>{c.tickets.price}</p><ul className="ticket-types">{c.ticketTypes.map(type => <li key={type}>{type}</li>)}</ul></div><div className="ticket-panel"><span className="eyebrow">Magiškas Miškas × Bilietai.lt</span>

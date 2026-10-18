@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { selectTicketEvent } from '../src/ticketSelection.js';
+import { selectTicketEvent, availableTicketEvents } from '../src/ticketSelection.js';
 const events = [
  {id:'XTDEEDIFT4',eventStartAt:'2026-10-11T14:45:00Z',eventEndAt:'2026-10-11T19:00:00Z',status:'ON_SALE'},
  {id:'SXVCG5HCBQ',eventStartAt:'2026-10-15T14:45:00Z',eventEndAt:'2026-10-15T19:00:00Z',status:'ON_SALE'},
@@ -19,4 +19,10 @@ test('ignores cancelled events and sorts unsorted data', () => {
   const input = events.map(event => ({ ...event })).reverse();
   input.find(e => e.id === 'XTDEEDIFT4').status = 'CANCELLED';
   assert.equal(selectTicketEvent(input, Date.parse('2026-10-11T12:00:00Z')).id, 'SXVCG5HCBQ');
+});
+test('date selector offers all remaining dates once and leaves source data unchanged',()=>{
+  const input=[events[2],events[1],events[1],events[0]];
+  assert.deepEqual(availableTicketEvents(input,Date.parse('2026-10-14T12:00:00Z')).map(e=>e.id),['SXVCG5HCBQ','DPNI7I66TC']);
+  assert.equal(input[0].id,'DPNI7I66TC');
+  assert.deepEqual(availableTicketEvents(input,Date.parse('2026-10-26T12:00:00Z')),[]);
 });

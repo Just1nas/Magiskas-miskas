@@ -75,3 +75,5 @@ export const content = {
 
 // A CMS outage must retain the latest verified published text, not initial placeholders.
 Object.assign(content, publishedSnapshot);
+// Older published snapshots predate the English guide; preserve any saved EN edits.
+content.translations.en.guide={...english.guide,...content.translations.en.guide};

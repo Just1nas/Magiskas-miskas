@@ -2,9 +2,10 @@ import { hostingerCms, loadHostingerContent } from './hostinger-cms.js';
 import { content } from './content.js';
 import { validateEdits, mergeEdits } from './editable-content.js';
 import { cmsUrl, cmsKey, cmsConfigured } from './cms-config.js';
+import { locale,localize,guideUrl } from './locale.js';
 const page = document.querySelector('[data-cms-page]')?.dataset.cmsPage;
 function apply(documentContent) {
-  const values = documentContent[page];
+  const values = localize(documentContent,locale)[page];
   if (!values) return;
   document.querySelectorAll('[data-cms-text]').forEach(node => {
     const value = values[node.dataset.cmsText];
@@ -20,6 +21,14 @@ function apply(documentContent) {
   if (heading && !document.querySelector('title[data-cms-text]')) document.title = `${heading.textContent} · Magiškas Miškas`;
 }
 apply(content);
+if(page==='guide'){
+  const updateLanguages=()=>document.querySelectorAll('[data-guide-language]').forEach(link=>{
+    const language=link.dataset.guideLanguage;
+    link.href=guideUrl(language,location.search,location.hash);
+    if(language===locale)link.setAttribute('aria-current','page');else link.removeAttribute('aria-current');
+  });
+  updateLanguages();window.addEventListener('hashchange',updateLanguages);
+}
 const preview = window.parent !== window && new URLSearchParams(location.search).get('adminPreview') === '1';
 if (preview) {
   window.addEventListener('message', event => {

@@ -9,6 +9,11 @@
 .ticket-date-choice select{width:100%;min-height:52px;padding:12px 16px;background:#172239;color:#fffdf8;border:1px solid #647289;border-radius:12px;font:inherit;color-scheme:dark;cursor:pointer}
 .ticket-date-choice select:focus-visible{outline:2px solid #fffdf8;outline-offset:3px}
 .ticket-date-choice p{font-size:13px;line-height:1.6;color:#b8c7c3;margin:12px 0}
+.ticket-checkout-help{font-size:12px;line-height:1.7;color:#b8c7c3;max-width:780px;margin:0 0 12px}
+.ticket-checkout-help summary{cursor:pointer;text-decoration:underline;text-underline-offset:4px;padding:6px 0}
+.ticket-checkout-help p{margin:8px 0 12px}
+.ticket-checkout-help summary:focus-visible{outline:2px solid #fffdf8;outline-offset:3px}
+.tickets-integrated .ticket-checkout-help{margin-inline:5.5vw}
 .tickets-integrated .ticket-date-choice{margin-inline:5.5vw}
 @media(max-width:640px){.tickets-integrated .ticket-date-choice{margin-inline:6vw}.ticket-date-choice{padding-top:8px}}
 @media(max-width:640px){.tickets-integrated>.section-heading{margin-inline:6vw}.tickets-integrated>.ticket-direct{margin-left:6vw;margin-right:6vw}}

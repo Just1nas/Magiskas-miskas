@@ -19,6 +19,7 @@ export function normalizePosts(payload) {
   }).sort((a, b) => Date.parse(b.timestamp) - Date.parse(a.timestamp)).map(post => ({
     id: post.id, permalink: safeHttps(post.permalink, ['instagram.com']), timestamp: post.timestamp,
     caption: typeof post.caption === 'string' ? post.caption.slice(0, 500) : 'Naujas įrašas iš Magiško Miško',
+    owner: typeof post.owner === 'string' && /^[\w.]+$/.test(post.owner) ? post.owner : 'magiskas.miskas',
     media_type: post.media_type === 'VIDEO' ? 'VIDEO' : 'IMAGE',
     video: post.media_type === 'VIDEO' ? safeGalleryVideo(post.video_url) : '',
     image: safeGalleryImage(post.media_type === 'VIDEO' ? post.thumbnail_url : post.media_url),

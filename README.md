@@ -198,8 +198,11 @@ Kiekvieno build metu scripts/refresh-ticket-events.js atnaujina src/ticket-event
 
 
 ### Instagram galerijos įrašų skaičius
-Galerija rodo visus serverio pateiktus įrašus, pašalina pasikartojančius ID ir sukasi ratu. Ankstesnis `instagram.limit` laukas paliktas turinio suderinamumui, bet įrašų nebekerpa. Perjungimas rodyklėmis ar braukimas neišjungia automatinio judėjimo; pauzės mygtukas, klaviatūros fokusas, atverta peržiūra ir mažesnio judesio pasirinkimas išlieka.
 
-Viešas Instagram profilio įterpinys pateikia tik naujausią profilio dalį (2026-10-20: 6 iš 18 įrašų). Tai nėra visas archyvas. Senų įrašų neišgalvojame ir negrąžiname iš nepatikrinto seno podėlio. Visam archyvui automatiškai gauti reikia prijungti oficialią Instagram API su paskyros savininko autorizacija ir nuskaityti visus jos puslapius.
+Galerija rodo visus šaltinių pateiktus įrašus be penkių įrašų ribos, deduplikuotus pagal ID ir originalaus įrašo kodą. Automatinis judėjimas eina per visą sąrašą ir grįžta į pradžią.
 
-Oficialios jungties gavimas jau paruoštas `server/instagram-api.js`: Hostinger aplinkoje įrašius `INSTAGRAM_ACCESS_TOKEN`, serveris patikrina būtent `magiskas.miskas` ir nuskaito visus `/media` puslapius, atominiu būdu pakeisdamas galeriją tik po sėkmingo pilno nuskaitymo. Reikalinga tik `instagram_business_basic` skaitymo teisė. Raktą savininkas įveda tiesiai Hostinger, niekada į Git ar pokalbį. Kol rakto nėra, naudojamas ribotas viešas įterpinys. Meta programėlės ir rakto sukūrimas dar neatliktas; nėra patvirtinta gyva API integracija. App Dashboard ilgo galiojimo raktas galioja 60 dienų; prieš naudojimą ilgalaikei integracijai reikia nustatyti rakto atnaujinimą.
+Hostinger `INSTAGRAM_ACCESS_TOKEN` prijungta oficiali `instagram_business_basic` jungtis. `server/instagram-api.js` patikrina `magiskas.miskas` paskyrą ir nuskaito visus `/media` puslapius. Raktas saugomas tik serverio aplinkoje, ne Git ar kliento kode. 2026-10-20 profilis rodo 19 įrašų, o API grąžina 10 paskyrai priklausančių įrašų.
+
+Likę 9 kitų autorių bendri įrašai, patikrinti paskyros profilyje, įtraukti į `server/instagram-collaborations.json`. Jų vieši įterpiniai tikrinami kartu su API kas 5 min.; autorius, įrašo kodas ir medijos adresas validuojami. Medija laikoma Hostinger, peržiūroje nurodomas originalus autorius ir pateikiama originali nuoroda. Patvirtinti 404/410 ir pašalinta medija išimami, o laikinas ribojimas ar prisijungimo ekranas neištrina paskutinės patikrintos kopijos. Bendro įrašo pašalinimas tik iš profilio ne visada panaikina viešą originalą: tokiu atveju nuorodą reikia pašalinti iš šio sąrašo. Nauji savi įrašai gaunami automatiškai; naujas API negrąžinamas bendras įrašas pridedamas į šį sąrašą su tikra paskelbimo data.
+
+Meta App Dashboard ilgo galiojimo raktas galioja 60 dienų. Automatinis rakto pratęsimas dar neįdiegtas; prieš jam baigiant galioti raktą reikia atnaujinti Hostinger aplinkoje.

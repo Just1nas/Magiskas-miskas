@@ -24,7 +24,7 @@ function GalleryPost({post,index,onOpen,duplicate=false}) {
   const {active,visible,reduced,onEnded,onVideoError,onPlaybackBlocked,onManualPlay}=useContext(GalleryContext);
   const video=useRef(null);
   const [muted,setMuted]=useState(true),[failed,setFailed]=useState(false),[playing,setPlaying]=useState(false);
-  const eligible=active===index&&visible;
+  const eligible=!duplicate&&active===index&&visible;
   useEffect(()=>{
     const el=video.current;if(!el)return;
     if(eligible&&!reduced)el.play().catch(()=>{setPlaying(false);onPlaybackBlocked()});
@@ -33,7 +33,7 @@ function GalleryPost({post,index,onOpen,duplicate=false}) {
   },[eligible,reduced,failed]);
   const toggle=()=>{const el=video.current;if(!el)return;if(el.paused){onManualPlay();el.play().catch(()=>onPlaybackBlocked())}else{el.pause();onPlaybackBlocked()}};
   const tabIndex=duplicate?-1:0;
-  return <article className={`instagram-post ${eligible?'is-active':''}`}>
+  return <article className={`instagram-post ${eligible?'is-active':''}`} aria-hidden={duplicate || undefined}>
     <div className="post-image"><PostImage src={asset(post.image)}/>
       {post.video&&!failed&&eligible&&<video ref={video} src={asset(post.video)} poster={asset(post.image)} muted={muted} playsInline preload="metadata" onEnded={onEnded} onError={()=>{setFailed(true);onVideoError(post.id)}} onPlay={()=>setPlaying(true)} onPause={()=>setPlaying(false)} aria-label={post.caption||ui('Magiško Miško vaizdo įrašas','Magiškas Miškas video')}/>}
       <button className="post-open" tabIndex={tabIndex} aria-haspopup="dialog" onClick={onOpen} aria-label={`${ui('Peržiūrėti Instagram įrašą','View Instagram post')}${post.caption?': '+post.caption:''}`}><span className="post-expand"><ArrowIcon direction="out"/></span></button>

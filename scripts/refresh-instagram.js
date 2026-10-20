@@ -15,7 +15,7 @@ export function parsePublicProfile(html) {
   const posts = context.graphql_media.map(item => item?.shortcode_media).filter(post => {
     if (!post || !/^\d+$/.test(post.id) || !/^[\w-]+$/.test(post.shortcode) || post.owner?.username !== ACCOUNT || !Number.isFinite(post.taken_at_timestamp) || seen.has(post.id)) return false;
     seen.add(post.id); return true;
-  }).sort((a,b) => b.taken_at_timestamp - a.taken_at_timestamp).slice(0,5);
+  }).sort((a,b) => b.taken_at_timestamp - a.taken_at_timestamp);
   // Never replace a working feed with a login page, challenge or partial empty response.
   if (!posts.length) throw new Error('No public media returned; keeping the previous gallery.');
   return posts.map(post => ({

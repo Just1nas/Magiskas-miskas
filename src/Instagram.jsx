@@ -72,7 +72,7 @@ export function Instagram() {
           if (!response.ok) throw new Error('Feed unavailable');
           payload = await response.json();
         }
-        const items = normalizePosts(payload, c.instagram.limit);
+        const items = normalizePosts(payload);
         if (!stopped) { setPosts(items); setState('ready'); }
       } catch { if (!stopped) { setState('error'); if (serverCache && !isInstagramFresh(lastChecked)) setPosts([]); } }
       finally { clearTimeout(timeout); if (!stopped) timer = setTimeout(refresh, serverCache ? 60000 : Math.max(60000, c.instagram.refreshMs)); }

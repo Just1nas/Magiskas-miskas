@@ -19,3 +19,9 @@ test('client permits only generated local gallery paths',()=>{
  assert.equal(safeGalleryImage('instagram/123-0123456789ab.jpg'),'instagram/123-0123456789ab.jpg');
  for(const path of ['../private.jpg','instagram/../../private.jpg','//evil.test/a.jpg','data:image/svg+xml,test'])assert.equal(safeGalleryImage(path),'');
 });
+
+test('public source keeps all supplied posts instead of truncating to five',async()=>{
+ const {parsePublicProfile:parseServer}=await import('../server/instagram-source.js');
+ const input=html({username:'magiskas.miskas',graphql_media:Array.from({length:18},(_,i)=>media(String(i+1),1790694906+i))});
+ for(const parse of [parsePublicProfile,parseServer])assert.equal(parse(input).length,18);
+});

@@ -8,7 +8,7 @@ export function Gallery({ children, label, paused=false, autoplay=true, interval
   const items=React.Children.toArray(children), count=items.length;
   const track=useRef(null), settling=useRef(null), current=useRef(0), shifting=useRef(false);
   const [active,setActive]=useState(0), [playing,setPlaying]=useState(autoplay), [loop,setLoop]=useState(false), [moving,setMoving]=useState(false);
-  const [hovered,setHovered]=useState(false), [visible,setVisible]=useState(false), [hidden,setHidden]=useState(document.hidden), [reduced,setReduced]=useState(false);
+  const [hovered,setHovered]=useState(false), [dragging,setDragging]=useState(false), [visible,setVisible]=useState(false), [hidden,setHidden]=useState(document.hidden), [reduced,setReduced]=useState(false);
   const [failed,setFailed]=useState([]), [blocked,setBlocked]=useState(false), [ended,setEnded]=useState(false);
   const multiple=count>1;
   const select=index=>{if(current.current!==index){current.current=index;setActive(index);setBlocked(false);setEnded(false)}};
@@ -44,7 +44,7 @@ export function Gallery({ children, label, paused=false, autoplay=true, interval
     el.scrollTo({left:el.children[index].offsetLeft-el.children[0].offsetLeft,behavior:reduced?'instant':'smooth'});
     clearTimeout(settling.current);settling.current=setTimeout(settle,500);
   };
-  const canAdvance=playing&&!hovered&&!paused&&!hidden&&visible&&!reduced&&!blocked&&!moving;
+  const canAdvance=playing&&!hovered&&!paused&&!hidden&&visible&&!reduced&&!blocked&&!moving&&!dragging;
   const logical=logicalSlide(active,count),post=items[logical]?.props.post;
   const video=post?.video&&!failed.includes(post.id);
   useEffect(()=>{
@@ -61,11 +61,11 @@ export function Gallery({ children, label, paused=false, autoplay=true, interval
   const slides=loop?[...items,...items,...items]:items;
   return <GalleryContext.Provider value={context}><div className={`gallery gallery-loop ${multiple?'':'is-single'} ${visible?'is-visible':''}`} role="region" aria-label={label} aria-roledescription={ui('karuselė','carousel')} style={{'--gallery-count':count}} onMouseEnter={()=>setHovered(true)} onMouseLeave={()=>setHovered(false)}>
     {multiple&&<div className="gallery-controls"><span className="small-note">{caption} <span className="gallery-count">{logical+1} / {count}</span></span><div>
-      <button onClick={()=>{setPlaying(false);move(-1)}} aria-label={ui('Ankstesnis Instagram įrašas','Previous Instagram post')}><ArrowIcon direction="left"/></button>
+      <button onClick={()=>move(-1)} aria-label={ui('Ankstesnis Instagram įrašas','Previous Instagram post')}><ArrowIcon direction="left"/></button>
       {!reduced&&<button className="gallery-play" onClick={()=>setPlaying(!playing)} aria-label={playing?ui('Sustabdyti galeriją','Pause gallery'):ui('Paleisti galeriją','Play gallery')}><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">{playing?<path d="M8 5v14M16 5v14"/>:<path d="m8 5 11 7-11 7Z"/>}</svg></button>}
-      <button onClick={()=>{setPlaying(false);move(1)}} aria-label={ui('Kitas Instagram įrašas','Next Instagram post')}><ArrowIcon direction="right"/></button>
+      <button onClick={()=>move(1)} aria-label={ui('Kitas Instagram įrašas','Next Instagram post')}><ArrowIcon direction="right"/></button>
     </div></div>}
-    <div ref={track} className="gallery-track" tabIndex="0" aria-label={ui('Instagram įrašai','Instagram posts')} onFocusCapture={()=>setPlaying(false)} onPointerDown={()=>setPlaying(false)} onScroll={onScroll} onKeyDown={e=>{if(e.target===e.currentTarget&&['ArrowLeft','ArrowRight'].includes(e.key)){e.preventDefault();setPlaying(false);move(e.key==='ArrowRight'?1:-1)}}}>
+    <div ref={track} className="gallery-track" tabIndex="0" aria-label={ui('Instagram įrašai','Instagram posts')} onFocusCapture={e=>{if(e.target.matches(':focus-visible'))setPlaying(false)}} onPointerDown={()=>setDragging(true)} onPointerUp={()=>setDragging(false)} onPointerCancel={()=>setDragging(false)} onPointerLeave={()=>setDragging(false)} onLostPointerCapture={()=>setDragging(false)} onScroll={onScroll} onKeyDown={e=>{if(e.target===e.currentTarget&&['ArrowLeft','ArrowRight'].includes(e.key)){e.preventDefault();setPlaying(false);move(e.key==='ArrowRight'?1:-1)}}}>
       {slides.map((child,index)=>{const duplicate=loop&&(index<count||index>=count*2);return React.cloneElement(child,{key:`${child.key}-${Math.floor(index/count)}`,index:index%count,duplicate})})}
     </div>
   </div></GalleryContext.Provider>;

@@ -8,9 +8,9 @@ test('external integrations reject unsafe protocols and lookalike domains',()=>{
  assert.equal(safeHttps('https://user:password@bilietai.lt', ['bilietai.lt']), '');
  assert.equal(safeHttps('https://www.bilietai.lt/', ['bilietai.lt']), 'https://www.bilietai.lt/');
 });
-test('feed deduplicates, validates links and dates, sorts newest first, limits to 5',()=>{
+test('feed deduplicates, validates links and dates, sorts newest first and retains every available post',()=>{
  const posts=[post('old','2026-01-01'),post('new'),post('new'),{...post('bad'),permalink:'https://evil.test/'},{...post('date'),timestamp:'never'},...['a','b','c','d','e'].map(x=>post(x,'2026-06-01'))];
- const result=normalizePosts({posts},9);assert.equal(result.length,5);assert.equal(result[0].id,'new');assert.equal(new Set(result.map(x=>x.id)).size,5);assert.ok(result.every(x=>x.id!=='bad'&&x.id!=='date'));
+ const result=normalizePosts({posts});assert.equal(result.length,7);assert.equal(result[0].id,'new');assert.equal(new Set(result.map(x=>x.id)).size,7);assert.ok(result.every(x=>x.id!=='bad'&&x.id!=='date'));
 });
 test('empty feed is valid but invalid payload triggers unavailable state',()=>{
  assert.deepEqual(normalizePosts({posts:[]}),[]);assert.throws(()=>normalizePosts({data:[]}));assert.throws(()=>normalizePosts(null));
@@ -31,4 +31,10 @@ test('embeds accept only Instagram post paths, not profiles or redirects',async(
  assert.equal(instagramEmbed('https://www.instagram.com/magiskas.miskas/reel/Dd4D0m0NxMq/'),'https://www.instagram.com/reel/Dd4D0m0NxMq/embed/');
  assert.equal(instagramEmbed('https://www.instagram.com/p/real_post/'),'https://www.instagram.com/p/real_post/embed/');
  for(const url of ['https://instagram.com/','https://instagram.com/magiskas.miskas/','https://instagram.com.evil.test/p/a/','javascript:alert(1)','https://instagram.com/accounts/login/']) assert.equal(instagramEmbed(url),'');
+});
+
+test('the complete archive is retained even when old content still has a five-post limit',()=>{
+ const posts=Array.from({length:18},(_,i)=>post(String(i),new Date(Date.UTC(2026,9,1+i)).toISOString()));
+ assert.equal(normalizePosts({posts},5).length,18);
+ assert.equal(normalizePosts({posts})[0].id,'17');
 });

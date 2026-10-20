@@ -103,6 +103,7 @@ function Admin() {
   }
   function renderField(value,path,label) {
     const id=path.join('.'), key=path.at(-1);
+    if(id==='instagram.limit')return <p className="field-help" key={id}>Galerijoje rodomi visi šaltinio pateikti įrašai, be skaičiaus ribojimo.</p>;
     if(Array.isArray(value)) return <section key={id}><h2>{label}</h2>{value.map((row,i)=><section className="editor-row" key={i}>
       <div className="row-tools"><span>Įrašas {i+1}</span><button aria-label={`Perkelti įrašą ${i+1} aukščiau`} disabled={i===0||(language==='en'&&key==='transport')} onClick={()=>move(path,i,-1)}><ArrowIcon direction="up" /></button><button aria-label={`Perkelti įrašą ${i+1} žemiau`} disabled={i===value.length-1||(language==='en'&&key==='transport')} onClick={()=>move(path,i,1)}><ArrowIcon direction="down" /></button><button disabled={value.length<=1||(language==='en'&&key==='transport')} onClick={()=>remove(path,i)}>Pašalinti</button></div>
       {Array.isArray(row)?<>{renderField(row[0],[...path,i,0],key==='faq'?'Klausimas':'Pavadinimas')}{renderField(row[1],[...path,i,1],key==='faq'?'Atsakymas':'Tekstas')}{key==='transport'&&language==='lt'&&renderField(row[2]||'',[...path,i,2],'Nuoroda (nebūtina)')}</>:renderField(row,[...path,i],typeof row==='string'?'Bilieto tipas':'Įrašo turinys')}

@@ -195,3 +195,9 @@ Kiekvieno build metu scripts/refresh-ticket-events.js atnaujina src/ticket-event
 ### Atskirų puslapių redagavimas
 
 /gabija/ LT skiltyse „Miško gidas“ ir „Miškografijos skliautai“ redaguojami visi šių puslapių tekstai, laikai ir išorinės nuorodos. Gido plano ir PDF failo adresai taip pat redaguojami; failus įkelti reikia atskirai ir įrašyti jų HTTPS arba /gidas/ adresą. Plano nuoroda taikoma ir didinimo langui. Originali PDF ir paveikslėlyje esantys tekstai savaime nesikeičia. Gyva peržiūra atveria atitinkamą puslapį, juodraščiai ir publikavimas naudoja tą patį site_content dokumentą bei esamas redaktorių teises. Seni dokumentai gauna naujų puslapių numatytuosius tekstus; viešas puslapis išlaiko originalų HTML, jei CMS neveikia. Miško gidas turi LT (/gidas/) ir EN (/en/gidas/) versijas bei kalbos jungiklį, išlaikantį atvertą skiltį. Angliški tekstai redaguojami translations.en.guide per EN skiltį; susitikimų laikai, plano paveikslėlis, nuorodos ir PDF bendri ir keičiami LT skiltyje. Originalus planas ir PDF lietuviški, prie EN atsisiuntimo tai pažymėta. Miškografijos atskiras puslapis lieka lietuviškas.
+
+
+### Instagram galerijos įrašų skaičius
+Galerija rodo visus serverio pateiktus įrašus, pašalina pasikartojančius ID ir sukasi ratu. Ankstesnis `instagram.limit` laukas paliktas turinio suderinamumui, bet įrašų nebekerpa. Perjungimas rodyklėmis ar braukimas neišjungia automatinio judėjimo; pauzės mygtukas, klaviatūros fokusas, atverta peržiūra ir mažesnio judesio pasirinkimas išlieka.
+
+Viešas Instagram profilio įterpinys pateikia tik naujausią profilio dalį (2026-10-20: 6 iš 18 įrašų). Tai nėra visas archyvas. Senų įrašų neišgalvojame ir negrąžiname iš nepatikrinto seno podėlio. Visam archyvui automatiškai gauti reikia prijungti oficialią Instagram API su paskyros savininko autorizacija ir nuskaityti visus jos puslapius.

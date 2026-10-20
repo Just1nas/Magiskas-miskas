@@ -323,3 +323,10 @@ img.hero-photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover
 .instagram .gallery-loop .gallery-track>*{flex:0 0 calc((100% - (min(var(--gallery-count),var(--gallery-columns)) - 1)*20px - 4px)/min(var(--gallery-count),var(--gallery-columns)))}
 @media(max-width:900px){.instagram .gallery-loop .gallery-track{--gallery-columns:2}}
 @media(max-width:640px){.instagram .gallery-loop .gallery-track{--gallery-columns:1}.instagram .gallery-loop .gallery-track>*{flex-basis:84%}}
+
+/* Essential visit information stays prominent directly below the navigation. */
+.park-hours{position:relative;display:flex;justify-content:center;align-items:center;flex-wrap:wrap;gap:12px 24px;min-height:58px;padding:12px 5.5vw;border-bottom:1px solid #fffdf82e;background:linear-gradient(90deg,#fffdf805,#fffdf810,#fffdf805);color:var(--cream);text-align:center}
+.park-hours-label{font-size:10px;letter-spacing:.14em;text-transform:uppercase;opacity:.72}
+.park-hours strong{font:600 16px/1.5 var(--body);letter-spacing:.01em}
+.park-hours-time{font-size:16px;font-weight:600;white-space:nowrap;font-variant-numeric:tabular-nums}
+@media(max-width:640px){.park-hours{gap:3px 14px;padding:10px 6vw}.park-hours-label{flex-basis:100%;font-size:9px}.park-hours strong,.park-hours-time{font-size:13px}}

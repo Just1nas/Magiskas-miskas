@@ -22,3 +22,12 @@ test('English nested arrays validate with the same limits and safety as LT',()=>
 test('language routes preserve section and preview while assets resolve from root',()=>{
  assert.equal(languageUrl('en','?intro=1','#duk'),'/en/?intro=1#duk');assert.equal(languageUrl('lt','','#bilietai'),'/#bilietai');assert.equal(asset('instagram/123-abc.jpg'),'/instagram/123-abc.jpg');assert.equal(asset('https://example.com/a.jpg'),'https://example.com/a.jpg');
 });
+
+test('legacy saved opening hours gain editable days in both languages without losing confirmed times',()=>{
+ const old={hours:'17:30–22:00',translations:{en:{hours:'Opening hours will be announced soon'}}};
+ const doc=mergeEdits(old);
+ assert.equal(doc.openingDays,'Ketvirtadieniais–sekmadieniais');
+ assert.equal(localize(doc,'en').openingDays,'Thursday–Sunday');
+ assert.equal(localize(doc,'en').hours,'17:30–22:00');
+ doc.translations.en.hours='18:00–23:00';assert.equal(localize(validateEdits(doc),'en').hours,'18:00–23:00');
+});

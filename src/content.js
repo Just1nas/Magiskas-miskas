@@ -21,7 +21,7 @@ export const content = {
   },
   tagline: 'Gamtai miegant – bunda magija',
   description: 'Patyrimų ir šviesos spektaklis visokio ūgio vaikams po atviru dangumi.',
-  city: 'Vilnius', date: 'Nuo spalio 10 d.',
+  city: 'Vilnius', date: 'Nuo spalio 10 d.', openingDays: 'Ketvirtadieniais–sekmadieniais',
   season: { mode: 'upcoming', closedMessage: 'Iki susitikimo Magiškame Miške 2027 metais!' },
   socials: { facebook: 'https://www.facebook.com/profile.php?id=61595019476553', tiktok: 'https://www.tiktok.com/@magiskasmiskas' }, contactEmail: '', reviewUrl: '',
   story: 'Kai ruduo užmigdo įprastą pasaulį, miške pradeda busti tai, ko dieną nematome: švytintys grybai, paslaptingi gyventojai, kuždantys medžiai ir istorijos, kurios atsiskleidžia tik tiems, kurie sustoja, įsiklauso ir leidžiasi vedami smalsumo. Čia pats tampi istorijos dalimi – keliauji savo taku, atrandi, palieti, išgirsti, užuodi ir patiri.',
@@ -77,3 +77,6 @@ export const content = {
 Object.assign(content, publishedSnapshot);
 // Older published snapshots predate the English guide; preserve any saved EN edits.
 content.translations.en.guide={...english.guide,...content.translations.en.guide};
+
+// Earlier saved documents predate the prominent opening-days notice.
+content.translations.en.openingDays ??= english.openingDays;

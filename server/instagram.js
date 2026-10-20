@@ -3,6 +3,7 @@ import { join } from 'node:path';
 import { homedir } from 'node:os';
 import { createHash } from 'node:crypto';
 import { parsePublicProfile,safeMediaUrl,parseEmbedVideo } from './instagram-source.js';
+import { readInstagramApi } from './instagram-api.js';
 export const mediaDirectory=process.env.MM_MEDIA_DIR||join(homedir(),'mm-data','instagram');
 const feedPath=join(mediaDirectory,'feed.json');
 export async function readGallery(){return JSON.parse(await readFile(feedPath,'utf8'));}
@@ -23,19 +24,19 @@ export async function refreshGallery(){
   try{
     await mkdir(mediaDirectory,{recursive:true});
     const old=await readGallery().catch(()=>({feed:{posts:[]}}));
-    const source=parsePublicProfile((await download('https://www.instagram.com/magiskas.miskas/embed/')).toString('utf8'));
+    // Once connected, never silently replace the complete archive with six public previews.
+    const source=process.env.INSTAGRAM_ACCESS_TOKEN?await readInstagramApi(process.env.INSTAGRAM_ACCESS_TOKEN):parsePublicProfile((await download('https://www.instagram.com/magiskas.miskas/embed/')).toString('utf8'));
     const posts=[];
     for(const item of source){
-      const {source:imageSource,...metadata}=item;
+      const {source:imageSource,videoSource:apiVideo,...metadata}=item;
       const previous=old.feed.posts.find(post=>post.id===item.id);
       const filename=previous?.media_url?.match(/^instagram\/(\d+-[a-f0-9]{12}\.jpg)$/)?.[1];
-      if(filename && await stat(join(mediaDirectory,filename)).then(()=>true,()=>false)){posts.push({...previous,...metadata});continue;}
+      if(filename && (!apiVideo||previous.video_url) && await stat(join(mediaDirectory,filename)).then(()=>true,()=>false)){posts.push({...previous,...metadata});continue;}
       const url=safeMediaUrl(imageSource);if(!url)throw new Error('Invalid image host');
       const bytes=await download(url);if(bytes[0]!==255||bytes[1]!==216)throw new Error('Invalid JPEG');
       const image=await store(item.id,bytes,'jpg');let video='';
       if(item.media_type==='VIDEO')try{
-        const html=(await download(item.permalink+'embed/')).toString('utf8');
-        const videoSource=parseEmbedVideo(html,new URL(item.permalink).pathname.split('/')[2]);
+        const videoSource=apiVideo||parseEmbedVideo((await download(item.permalink+'embed/')).toString('utf8'),new URL(item.permalink).pathname.split('/')[2]);
         if(videoSource){const mp4=await download(videoSource,40*1024*1024);if(mp4.subarray(4,8).toString()!=='ftyp')throw new Error('Invalid MP4');video=await store(item.id,mp4,'mp4');}
       }catch{/* The current poster remains usable if Instagram does not supply a video. */}
       posts.push({...metadata,media_url:image,thumbnail_url:image,...(video?{video_url:video}:{})});

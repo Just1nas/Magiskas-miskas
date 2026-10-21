@@ -10,7 +10,7 @@ async function body(req,maximum=140000) {
   for await(const part of req) {length+=part.length;if(length>maximum)throw failure(413,'Content too large');parts.push(part);}
   try{return JSON.parse(Buffer.concat(parts).toString());}catch{throw failure(400,'Invalid JSON');}
 }
-export function createApi({db,origin,production=true,readGallery,backupContent,readContentBackup}) {
+export function createApi({db,origin,production=true,readGallery,readTicketEvents,backupContent,readContentBackup}) {
   const respond=(res,status,data)=>{res.writeHead(status,{'Content-Type':'application/json; charset=utf-8','Cache-Control':'no-store','X-Content-Type-Options':'nosniff'});res.end(JSON.stringify(data));};
   async function rate(key,limit,executor=db) {
     const hash=digest(key);
@@ -30,6 +30,7 @@ export function createApi({db,origin,production=true,readGallery,backupContent,r
       if(!['GET','HEAD'].includes(req.method))assertOrigin(req,origin);
       if(await reviews.publicRoute(req,res,path))return;
       if(path==='/api/instagram'&&req.method==='GET') return respond(res,200,[await readGallery()]);
+      if(path==='/api/ticket-events'&&req.method==='GET'&&readTicketEvents) return respond(res,200,await readTicketEvents());
       if(path==='/api/content'&&req.method==='GET') {
         let row;
         try { [[row]]=await db.execute("SELECT content,revision FROM mm_content WHERE slug='main'"); }

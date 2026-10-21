@@ -9,11 +9,14 @@ import { readGallery,refreshGallery,mediaDirectory } from './instagram.js';
 import { createApi } from './api.js';
 import { provisionPasswordSetup } from './setup-passwords.js';
 import { migrateConfirmedEnglish } from './confirmed-english.js';
+import { createTicketSchedule } from './ticket-schedule.js';
+import ticketEvents from '../src/ticket-events.json' with {type:'json'};
 function start(){
 const db=connectDatabase();
 const ready=schema(db).then(()=>bootstrapImport(db)).then(()=>migrateConfirmedEnglish(db,backupContent)).then(()=>provisionPasswordSetup(db)).catch(error=>console.warn('CMS initialization failed:',error.code||error.name));
 const origin=new URL(process.env.SITE_ORIGIN||'https://www.magiskasmiskas.lt').origin;
-const api=createApi({db,origin,readGallery,backupContent,readContentBackup});
+const schedule=createTicketSchedule({initial:ticketEvents});
+const api=createApi({db,origin,readGallery,readTicketEvents:schedule.read,backupContent,readContentBackup});
 const root=resolve(import.meta.dirname,'../dist');
 const mime={'.html':'text/html; charset=utf-8','.js':'text/javascript; charset=utf-8','.css':'text/css; charset=utf-8','.json':'application/json','.txt':'text/plain; charset=utf-8','.xml':'application/xml; charset=utf-8','.png':'image/png','.jpg':'image/jpeg','.svg':'image/svg+xml','.webp':'image/webp','.woff2':'font/woff2','.mp4':'video/mp4','.pdf':'application/pdf','.ico':'image/x-icon'};
 const server=http.createServer(async(req,res)=>{
@@ -48,6 +51,7 @@ const server=http.createServer(async(req,res)=>{
 server.requestTimeout=30000;server.headersTimeout=15000;
 const refresh=()=>refreshGallery().catch(()=>console.warn('Instagram refresh unavailable; retained last verified feed.'));
 refresh();const galleryTimer=setInterval(refresh,300000);galleryTimer.unref();
+schedule.refresh();const ticketTimer=setInterval(schedule.refresh,300000);ticketTimer.unref();
 server.listen(Number(process.env.PORT||3000),'0.0.0.0');
 for(const signal of ['SIGTERM','SIGINT'])process.on(signal,()=>server.close(()=>db.end().finally(()=>process.exit(0))));
 

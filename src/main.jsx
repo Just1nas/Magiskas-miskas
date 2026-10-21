@@ -6,6 +6,7 @@ import { createRoot } from 'react-dom/client';
 import { content as c } from './content';
 import { safeHttps } from './integrations';
 import { Instagram } from './Instagram';
+import { Reviews } from './Reviews';
 import { SocialLink } from './SocialLink';
 import { HeroVideo } from './HeroVideo';
 import { MagicAtmosphere } from './MagicAtmosphere';
@@ -126,6 +127,7 @@ function App() {
     <Journey /><section className="forest-guide-link" aria-labelledby="forest-guide-heading"><div><span className="eyebrow">{ui("Jau Miške?","Already in the forest?")}</span><h2 id="forest-guide-heading">{ui("Tavo Miško gidas","Your forest guide")}</h2><p>{ui("Atrask vietas, susitikimų laikus ir Miško pasakojimus.","Explore the places, meeting times and forest stories.")}</p></div><a className="forest-guide-button" href={guideUrl(locale)}>{ui("Atverti Miško gidą","Open the forest guide")} <ArrowIcon direction="out" /></a></section><Tickets />
     <section id="informacija" className="section practical"><div className="section-heading"><span className="eyebrow">{c.copy.practicalLabel}</span><h2 style={{whiteSpace:"pre-line"}}>{c.copy.practicalTitle}</h2></div><dl>{[[c.copy.whenLabel, `${c.date.replace(/\.$/, '')}. ${c.openingDays}, ${c.hours.trim().replace(/\.$/, '')}.`], [c.copy.whereLabel, `${c.venue}. ${c.address}.`], [c.copy.durationLabel, c.duration], ...c.practical].map(([key, value]) => <div key={key}><dt>{key}</dt><dd>{value}</dd></div>)}</dl><div className="practical-cta"><TicketLink /></div></section>
     <Arrival /><Faq /><Partners />
+    <Reviews />
     <section id="pabaiga" className="final section"><Brand watermark /><span className="eyebrow">{c.tagline}</span><h2>{closed ? c.season.closedMessage : <>{c.final.first}<br /><span>{c.final.second}</span></>}</h2><TicketLink /><p>{c.city} · {c.date}</p></section>
   </main><footer><a className="brand" href="#pradzia"><Brand /></a><div className="footer-links"><SocialLink network="instagram" href={c.instagram.profileUrl} /><SocialLink network="facebook" href={c.socials.facebook} /><SocialLink network="tiktok" href={c.socials.tiktok} />{c.contactEmail && <a href={`mailto:${c.contactEmail}`}>{c.copy.contact} <ArrowIcon direction="out" /></a>}<a href="tel:+37069906696" aria-label={ui("Skambinti +370 699 06696","Call +370 699 06696")}>+370 699 06696</a>{safeHttps(c.reviewUrl) && <External href={c.reviewUrl}>{c.copy.review} <ArrowIcon direction="out" /></External>}</div><p>© {new Date().getFullYear()} {c.name}</p><a className="text-link" href="#pradzia">{c.copy.backTop} <ArrowIcon direction="up" /></a>{localPreview && params.get('intro') === '1' && introDone && <button className="intro-replay" onClick={() => { window.history.replaceState(null,"",window.location.pathname+window.location.search); window.scrollTo({top:0,behavior:"instant"}); setIntroDone(false); }}>{ui('Pakartoti įžangą','Replay introduction')} <ArrowIcon direction="replay" /></button>}</footer><div className="mobile-ticket"><TicketLink /></div></div>;
 }

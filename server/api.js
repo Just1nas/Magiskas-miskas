@@ -1,22 +1,24 @@
 import { digest, token, validToken, equalToken, assertOrigin, sessionCookie, readSession } from './security.js';
+import { createReviews } from './reviews.js';
 import { parseContent } from './database.js';
 import { validateEdits } from '../src/editable-content.js';
 import { hashPassword,verifyPassword } from './passwords.js';
 const failure=(status,message)=>Object.assign(new Error(message),{status});
-async function body(req) {
+async function body(req,maximum=140000) {
   if(!String(req.headers['content-type']||'').startsWith('application/json')) throw failure(415,'JSON required');
   let length=0;const parts=[];
-  for await(const part of req) {length+=part.length;if(length>140000)throw failure(413,'Content too large');parts.push(part);}
+  for await(const part of req) {length+=part.length;if(length>maximum)throw failure(413,'Content too large');parts.push(part);}
   try{return JSON.parse(Buffer.concat(parts).toString());}catch{throw failure(400,'Invalid JSON');}
 }
 export function createApi({db,origin,production=true,readGallery,backupContent,readContentBackup}) {
   const respond=(res,status,data)=>{res.writeHead(status,{'Content-Type':'application/json; charset=utf-8','Cache-Control':'no-store','X-Content-Type-Options':'nosniff'});res.end(JSON.stringify(data));};
-  async function rate(key,limit) {
+  async function rate(key,limit,executor=db) {
     const hash=digest(key);
-    await db.execute('INSERT INTO mm_rates(bucket,hits,expires_at) VALUES(?,1,DATE_ADD(UTC_TIMESTAMP(),INTERVAL 1 HOUR)) ON DUPLICATE KEY UPDATE hits=IF(expires_at<=UTC_TIMESTAMP(),1,hits+1),expires_at=IF(expires_at<=UTC_TIMESTAMP(),DATE_ADD(UTC_TIMESTAMP(),INTERVAL 1 HOUR),expires_at)',[hash]);
-    const [[row]]=await db.execute('SELECT hits FROM mm_rates WHERE bucket=?',[hash]);
+    await executor.execute('INSERT INTO mm_rates(bucket,hits,expires_at) VALUES(?,1,DATE_ADD(UTC_TIMESTAMP(),INTERVAL 1 HOUR)) ON DUPLICATE KEY UPDATE hits=IF(expires_at<=UTC_TIMESTAMP(),1,hits+1),expires_at=IF(expires_at<=UTC_TIMESTAMP(),DATE_ADD(UTC_TIMESTAMP(),INTERVAL 1 HOUR),expires_at)',[hash]);
+    const [[row]]=await executor.execute('SELECT hits FROM mm_rates WHERE bucket=?',[hash]);
     if(row.hits>limit)throw failure(429,'Bandykite vėliau.');
   }
+  const reviews=createReviews({db,body,rate,respond,production});
   async function session(req) {
     const raw=readSession(req,production);if(!raw)return null;
     const [[row]]=await db.execute('SELECT s.email,s.csrf,e.user_id FROM mm_sessions s JOIN mm_editors e ON s.email=e.email AND e.active=TRUE WHERE s.token_hash=? AND s.expires_at>UTC_TIMESTAMP()',[digest(raw)]);
@@ -26,6 +28,7 @@ export function createApi({db,origin,production=true,readGallery,backupContent,r
     try {
       const path=new URL(req.url,origin).pathname;
       if(!['GET','HEAD'].includes(req.method))assertOrigin(req,origin);
+      if(await reviews.publicRoute(req,res,path))return;
       if(path==='/api/instagram'&&req.method==='GET') return respond(res,200,[await readGallery()]);
       if(path==='/api/content'&&req.method==='GET') {
         let row;
@@ -67,6 +70,7 @@ export function createApi({db,origin,production=true,readGallery,backupContent,r
       if(path==='/api/auth/session'&&req.method==='GET') return respond(res,200,current?{user:{id:current.user_id,email:current.email},csrf:current.csrf}: {user:null});
       if(!current)throw failure(401,'Prisijunkite iš naujo.');
       if(req.method!=='GET'&&!equalToken(req.headers['x-csrf-token'],current.csrf))throw failure(403,'Invalid CSRF token');
+      if(await reviews.adminRoute(req,res,path,current))return;
       if(path==='/api/auth/logout'&&req.method==='POST') {
         await db.execute('DELETE FROM mm_sessions WHERE token_hash=?',[current.hash]);res.setHeader('Set-Cookie',sessionCookie('',production,true));return respond(res,200,{ok:true});
       }

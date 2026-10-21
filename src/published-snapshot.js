@@ -1,4 +1,4 @@
-// Verified published CMS revision 24. Public content only; editor identities are excluded.
+// Verified public CMS fallback, with confirmed English visit information.
 export const publishedSnapshot = {
   "guide": {
     "text1": "Miško gidas · Magiškas Miškas",
@@ -157,8 +157,8 @@ export const publishedSnapshot = {
       "city": "Vilnius",
       "date": "From 10 October",
       "venue": "Vilnius University Botanical Garden, Vingis section",
-      "duration": "Duration to be confirmed",
-      "hours": "Opening hours will be announced soon",
+      "duration": "1–2 hours",
+      "hours": "17:30 - 22:00",
       "pause": "The moment you enter, the forest knows — you have returned…",
       "story": "As autumn lulls the everyday world to sleep, the forest awakens with things unseen by day: glowing mushrooms, mysterious inhabitants, whispering trees and stories revealed only to those who pause, listen and follow their curiosity. Here, you become part of the story — following your own path, discovering, touching, listening, breathing it all in.",
       "tickets": {
@@ -211,21 +211,21 @@ export const publishedSnapshot = {
         ],
         [
           "Accessibility",
-          "Details about path surfaces, pushchairs and mobility access will be confirmed before the event."
+          "The Botanical Garden entrance has a steep slope. If this is difficult for you, use the entrance on the other side of the garden, marked OUT on the map."
         ]
       ],
       "transport": [
         [
           "By car",
-          "Plan your route to M. K. Čiurlionio g. 110, Vilnius. Exact entrance details will be announced before the event."
-        ],
-        [
-          "Parking",
-          "Parking locations and any restrictions will be confirmed. Please follow the signs on site."
+          "Parking in Vingis Park is limited, so we recommend coming without a car."
         ],
         [
           "Public transport",
-          "Check current routes and timetables in the JUDU journey planner."
+          "The nearest stops on the Čiurlionio Street side are Vingio parkas and Vinco Pietario. On the Žvėrynas side, use Liubarto tiltas, Kęstučio or Latvių. Check current routes and timetables in the JUDU journey planner."
+        ],
+        [
+          "By bicycle or scooter",
+          "You can cycle or ride a scooter to Vingis Park, but please leave bicycles and scooters outside the Botanical Garden."
         ]
       ],
       "ticketTypes": [
@@ -249,11 +249,11 @@ export const publishedSnapshot = {
         ],
         [
           "How long is the walk?",
-          "The recommended visit duration will be confirmed before the event."
+          "1–2 hours."
         ],
         [
           "Can I bring a pushchair?",
-          "Path surface and accessibility details are being confirmed and will be announced before ticket sales begin."
+          "The Botanical Garden entrance has a steep slope. If this is difficult for you, use the entrance on the other side of the garden, marked OUT on the map."
         ],
         [
           "How do I buy tickets?",
@@ -261,7 +261,7 @@ export const publishedSnapshot = {
         ],
         [
           "What happens if it rains?",
-          "Come prepared for an outdoor walk. Rules for adverse weather and ticket exchanges will be published with the tickets."
+          "Magiškas Miškas welcomes visitors on rainy evenings too. Wear suitable clothing and footwear, as the event takes place outdoors."
         ],
         [
           "Do I need to select an arrival time?",

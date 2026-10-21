@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /gabija/
+
+Sitemap: https://www.magiskasmiskas.lt/sitemap.xml

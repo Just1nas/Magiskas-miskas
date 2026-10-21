@@ -8,13 +8,14 @@ import { backupContent,readContentBackup } from './backups.js';
 import { readGallery,refreshGallery,mediaDirectory } from './instagram.js';
 import { createApi } from './api.js';
 import { provisionPasswordSetup } from './setup-passwords.js';
+import { migrateConfirmedEnglish } from './confirmed-english.js';
 function start(){
 const db=connectDatabase();
-const ready=schema(db).then(()=>bootstrapImport(db)).then(()=>provisionPasswordSetup(db)).catch(error=>console.warn('CMS initialization failed:',error.code||error.name));
+const ready=schema(db).then(()=>bootstrapImport(db)).then(()=>migrateConfirmedEnglish(db,backupContent)).then(()=>provisionPasswordSetup(db)).catch(error=>console.warn('CMS initialization failed:',error.code||error.name));
 const origin=new URL(process.env.SITE_ORIGIN||'https://www.magiskasmiskas.lt').origin;
 const api=createApi({db,origin,readGallery,backupContent,readContentBackup});
 const root=resolve(import.meta.dirname,'../dist');
-const mime={'.html':'text/html; charset=utf-8','.js':'text/javascript; charset=utf-8','.css':'text/css; charset=utf-8','.json':'application/json','.png':'image/png','.jpg':'image/jpeg','.svg':'image/svg+xml','.webp':'image/webp','.woff2':'font/woff2','.mp4':'video/mp4','.pdf':'application/pdf','.ico':'image/x-icon'};
+const mime={'.html':'text/html; charset=utf-8','.js':'text/javascript; charset=utf-8','.css':'text/css; charset=utf-8','.json':'application/json','.txt':'text/plain; charset=utf-8','.xml':'application/xml; charset=utf-8','.png':'image/png','.jpg':'image/jpeg','.svg':'image/svg+xml','.webp':'image/webp','.woff2':'font/woff2','.mp4':'video/mp4','.pdf':'application/pdf','.ico':'image/x-icon'};
 const server=http.createServer(async(req,res)=>{
   if(req.url.startsWith('/api/')){await ready;return api(req,res);}
   try {

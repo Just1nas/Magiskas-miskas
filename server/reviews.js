@@ -1,4 +1,5 @@
 import { token,digest,validToken } from './security.js';
+import { containsReviewProfanity } from './review-language.js';
 const error=(status,message)=>Object.assign(new Error(message),{status});
 const idPattern=/^[1-9]\d{0,19}$/;
 export function validateReview(input){
@@ -9,6 +10,7 @@ export function validateReview(input){
  if(!name||name.length>40||/[<>\u0000-\u001f\u007f]/.test(name))throw error(400,'Įrašyk vardą (iki 40 simbolių).');
  if(text.length<5||text.length>800||/[\u0000-\u0008\u000b\u000c\u000e-\u001f\u007f]/.test(text))throw error(400,'Atsiliepimui skirk nuo 5 iki 800 simbolių.');
  if(/https?:\/\/|www\.|\b[\p{L}\d][\p{L}\d.-]*\.(?:lt|com|net|org|ru|xyz|io|info|eu)\b/iu.test(name+' '+text))throw error(400,'Atsiliepimą parašyk be reklaminių nuorodų.');
+ if(containsReviewProfanity(name)||containsReviewProfanity(text))throw Object.assign(error(400,'Atsiliepimas nepaskelbtas. Pašalink keiksmažodžius iš vardo ar teksto ir bandyk dar kartą.'),{code:'REVIEW_PROFANITY'});
  return {name,text};
 }
 function dto(row,mine=false){return {id:String(row.id),name:row.display_name,text:row.review_text,createdAt:new Date(row.created_at).toISOString(),mine};}

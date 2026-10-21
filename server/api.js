@@ -98,6 +98,6 @@ export function createApi({db,origin,production=true,readGallery,backupContent,r
         return respond(res,200,{revision:input.revision+1});
       }
       throw failure(404,'Not found');
-    }catch(error){respond(res,error.status||503,{error:error.status?error.message:'Paslauga laikinai nepasiekiama.'});}
+    }catch(error){respond(res,error.status||503,{error:error.status?error.message:'Paslauga laikinai nepasiekiama.',...(error.code==='REVIEW_PROFANITY'?{code:error.code}:{})});}
   };
 }

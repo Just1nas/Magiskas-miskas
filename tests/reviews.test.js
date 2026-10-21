@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import {Readable} from 'node:stream';
 import {createApi} from '../server/api.js';
 import {validateReview} from '../server/reviews.js';
+import {containsReviewProfanity} from '../server/review-language.js';
 import {token,digest} from '../server/security.js';
 const origin='https://www.magiskasmiskas.lt', visitor=token(), csrf=token(),session=token();
 function fixture(){
@@ -62,4 +63,21 @@ test('only author can withdraw; editor moderation requires session AND CSRF and 
 test('reviews reject unsafe links and oversized input but retain Lithuanian punctuation and plain text',()=>{
  for(const bad of [{name:'',text:'Puikiai!'},{name:'x',text:'www.spam.lt'},{name:'x',text:'https://spam.test'},{name:'x',text:'x'.repeat(801)}])assert.throws(()=>validateReview(bad));
  assert.deepEqual(validateReview({name:'  Živilė  ',text:'  Labai gražu! „Ačiū“, Miške.  '}),{name:'Živilė',text:'Labai gražu! „Ačiū“, Miške.'});
+});
+test('profanity is rejected before insertion in either field; a corrected review can use the same form',async()=>{
+ const f=fixture();const form=await f.call('/api/reviews/form');
+ for(const fields of [{name:'Blet',text:'Nepatiko renginys.'},{name:'Lankytojas',text:'Tai buvo šūdas.'},{name:'Lankytojas',text:'What the f.u.c.k.'}]){
+  const rejected=await f.call('/api/reviews','POST',{...input(form.body.token),...fields});
+  assert.equal(rejected.status,400);assert.equal(rejected.body.code,'REVIEW_PROFANITY');assert.equal(f.rows.size,0);
+ }
+ assert.equal((await f.call('/api/reviews')).body.total,0);
+ assert.equal((await f.call('/api/reviews','POST',{...input(form.body.token),text:'Man nepatiko: bilietai per brangūs, o eilė ilga.'})).status,201);
+});
+test('language filter handles common Lithuanian, English and Russian forms and simple masking',()=>{
+ for(const word of ['BLET','blėęėt','b.l.e.t','b l e t','b\u200blet','bl3t','kurva','bybis','šūdas','šūdą','šūdinas','pizda','n@hui','fuck','f u c k','f*uck','fuuuck','shitty','bullshit','asshole','блять','сука','хуй','пиздец']){
+  assert.equal(containsReviewProfanity('Žodis: '+word+'!'),true,word);
+ }
+ for(const text of ['Živilė','Benediktas','Dickens','Scunthorpe','Nuostabūs šviesų takai.','Sudėtinga rasti įėjimą.','Šitą spektaklį rekomenduoju.','Sužavėjo ši kūdra ir grybas shiitake.','Nepatiko. Per brangu ir per ilga eilė!','Klasika, pasaka ir fotografija.','Ačiū už vakarą.','The classic lighting was beautiful.']){
+  assert.equal(containsReviewProfanity(text),false,text);
+ }
 });

@@ -3,7 +3,7 @@ import {ui,locale} from './locale';
 import './reviews.css';
 async function request(path,options={}){
  const response=await fetch('/api/reviews'+path,{credentials:'same-origin',cache:'no-store',...options,headers:{...(options.body?{'Content-Type':'application/json'}:{}),...options.headers}});
- const data=await response.json();if(!response.ok)throw Object.assign(new Error(data.error||ui('Nepavyko susisiekti. Bandyk dar kartą.','Unable to connect. Please try again.')),{status:response.status});return data;
+ const data=await response.json();if(!response.ok)throw Object.assign(new Error(data.error||ui('Nepavyko susisiekti. Bandyk dar kartą.','Unable to connect. Please try again.')),{status:response.status,code:data.code});return data;
 }
 export function Reviews(){
  const [reviews,setReviews]=useState([]),[total,setTotal]=useState(0),[cursor,setCursor]=useState(null),[shown,setShown]=useState(3);
@@ -25,7 +25,7 @@ export function Reviews(){
    setStatus(ui('Ačiū! Tavo atsiliepimas jau matomas visiems.','Thank you! Your review is now visible to everyone.'));
    if(!expanded.current)await load().catch(()=>{});
    setFormToken('');await token().catch(()=>{});
-  }catch(error){setStatus(locale==='en'?'Your review was not posted. Please check the form and try again.':error.message);if(error.status===410)await token().catch(()=>{});}
+  }catch(error){setStatus(error.code==='REVIEW_PROFANITY'?ui('Atsiliepimas nepaskelbtas. Pašalink keiksmažodžius iš vardo ar teksto ir bandyk dar kartą.','Your review was not posted. Please remove profanity from your name or review and try again.'):locale==='en'?'Your review was not posted. Please check the form and try again.':error.message);if(error.status===410)await token().catch(()=>{});}
   finally{setBusy(false);}
  }
  async function more(){
@@ -45,7 +45,7 @@ export function Reviews(){
    <div className="review-trap" aria-hidden="true"><label htmlFor="review-website">Website</label><input id="review-website" value={website} onChange={e=>setWebsite(e.target.value)} autoComplete="off" tabIndex={-1}/></div>
    <div className="review-input-note"><span>{ui('Be registracijos','No registration')}</span><span>{text.length} / 800</span></div>
    <button type="submit" className="review-submit" disabled={busy||!formToken}>{busy?ui('Siunčiama…','Posting…'):ui('Paskelbti atsiliepimą','Post your review')}<svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M5 12h14m-6-6 6 6-6 6"/></svg></button>
-   <p className="review-privacy">{ui('Paskelbus tavo vardas ir atsiliepimas iškart bus matomi viešai. Nesidalink asmens duomenimis ar reklaminėmis nuorodomis.','Your name and review will be public immediately after posting. Please do not share personal details or advertising links.')}</p>
+   <p className="review-privacy">{ui('Paskelbus tavo vardas ir atsiliepimas iškart bus matomi viešai. Rašyk be keiksmažodžių, asmens duomenų ar reklaminių nuorodų.','Your name and review will be public immediately after posting. Please avoid profanity, personal details and advertising links.')}</p>
    {!formToken&&!loading&&<button type="button" className="reviews-reset" onClick={()=>token().catch(()=>setStatus(ui('Formos įkelti nepavyko. Perkrauk puslapį.','Unable to load the form. Please reload the page.')))}>{ui('Įkelti formą iš naujo','Reload the form')}</button>}
    <p className="review-status" role="status">{status}</p>
   </form><div className="reviews-list-wrap"><div className="reviews-list-heading"><span>{ui('Miško aidai','Echoes of the forest')}</span><span>{total.toString().padStart(2,'0')}</span></div>

@@ -14,7 +14,7 @@ export function Reviews(){
  async function load(){const data=await request('');if(!alive.current)return;setReviews(data.reviews);setTotal(data.total);setCursor(data.nextCursor);setFailed(false);}
  useEffect(()=>{
   alive.current=true;async function start(){try{await token();}catch{if(alive.current)setStatus(ui('Formos įkelti nepavyko. Bandyk dar kartą.','Unable to load the form. Please try again.'));}try{await load();}catch{if(alive.current)setFailed(true);}finally{if(alive.current)setLoading(false);}}
-  start();const timer=setInterval(()=>{if(document.visibilityState==='visible'&&!expanded.current)load().catch(()=>{});},30000);
+  start();const timer=setInterval(()=>{if(document.visibilityState==='visible'&&!expanded.current)load().catch(()=>{});},5*60*1000);
   return()=>{alive.current=false;clearInterval(timer);};
  },[]);
  async function publish(event){

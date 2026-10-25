@@ -1,6 +1,6 @@
 import { hostingerCms } from './hostinger-cms.js';
 import { cmsUrl, cmsKey, cmsConfigured } from './cms-config.js';
-import { readInstagramCache, isInstagramFresh } from './instagram-feed.js';
+import { readInstagramCache } from './instagram-feed.js';
 import { ArrowIcon } from './ArrowIcon';
 import { ui, locale } from './locale';
 import { asset } from './locale';
@@ -55,7 +55,7 @@ export function Instagram() {
     const endpoint = c.instagram.endpoint;
     if (!endpoint || !(endpoint === './instagram/feed.json' || endpoint.startsWith('/') && !endpoint.startsWith('//') || safeHttps(endpoint))) return;
     const serverCache = (hostingerCms || cmsConfigured) && ['./instagram/feed.json', '/instagram/feed.json'].includes(endpoint);
-    let stopped = false, timer, controller, lastChecked;
+    let stopped = false, timer, controller;
     async function refresh() {
       controller = new AbortController();
       const timeout = setTimeout(() => controller.abort(), 10000);
@@ -64,8 +64,8 @@ export function Instagram() {
         let payload;
         if (serverCache) {
           const result = await readInstagramCache(cmsUrl, cmsKey, controller.signal);
-          lastChecked = result.checkedAt;
-          if (!isInstagramFresh(lastChecked)) throw new Error('Feed is stale');
+          // Keep the last verified server gallery visible during upstream outages.
+          // A successful empty feed still removes all posts intentionally.
           payload = result.feed;
         } else {
           const response = await fetch(endpoint === './instagram/feed.json' ? '/instagram/feed.json' : endpoint, { signal: controller.signal, credentials: 'omit', cache: 'no-store' });
@@ -74,7 +74,7 @@ export function Instagram() {
         }
         const items = normalizePosts(payload);
         if (!stopped) { setPosts(items); setState('ready'); }
-      } catch { if (!stopped) { setState('error'); if (serverCache && !isInstagramFresh(lastChecked)) setPosts([]); } }
+      } catch { if (!stopped) setState('error'); }
       finally { clearTimeout(timeout); if (!stopped) timer = setTimeout(refresh, serverCache ? 60000 : Math.max(60000, c.instagram.refreshMs)); }
     }
     refresh();

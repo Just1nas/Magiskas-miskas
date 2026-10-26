@@ -57,7 +57,7 @@ export function Gallery({ children, label, paused=false, autoplay=true, interval
     if(loop)select(index);
     clearTimeout(settling.current);settling.current=setTimeout(settle,160);
   };
-  const context={active:logical,visible:visible&&!hidden&&!paused,reduced,count,onEnded:()=>setEnded(true),onVideoError:id=>setFailed(old=>old.includes(id)?old:[...old,id]),onPlaybackBlocked:()=>setBlocked(true),onManualPlay:()=>setBlocked(false)};
+  const context={active:logical,visible:visible&&!hidden&&!paused,playing,reduced,count,onEnded:()=>setEnded(true),onVideoError:id=>setFailed(old=>old.includes(id)?old:[...old,id]),onPlaybackBlocked:()=>setBlocked(true),onManualPlay:()=>{setBlocked(false);setPlaying(true)}};
   const slides=loop?[...items,...items,...items]:items;
   return <GalleryContext.Provider value={context}><div className={`gallery gallery-loop ${multiple?'':'is-single'} ${visible?'is-visible':''}`} role="region" aria-label={label} aria-roledescription={ui('karuselė','carousel')} style={{'--gallery-count':count}} onMouseEnter={()=>setHovered(true)} onMouseLeave={()=>setHovered(false)}>
     {multiple&&<div className="gallery-controls"><span className="small-note">{caption} <span className="gallery-count">{logical+1} / {count}</span></span><div>

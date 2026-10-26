@@ -1,0 +1,4 @@
+.special-hours{display:flex;flex-wrap:wrap;justify-content:center;gap:4px 24px;width:100%;margin:0;padding:10px 0 2px;border-top:1px solid #fffdf82e;font:400 13px/1.6 var(--body);color:var(--cream)}
+.special-hours strong{font:600 13px/1.6 var(--body)}
+.practical>.special-hours,.ticket-widget>.special-hours{justify-content:flex-start;margin-bottom:24px}
+@media(max-width:640px){.special-hours{flex-direction:column;gap:2px}}

@@ -47,5 +47,10 @@ export async function refreshGallery(){
     // Atomic membership replacement removes deleted posts. Invalid/partial responses never replace the feed.
     const next={feed:{account:'magiskas.miskas',posts},checked_at:new Date().toISOString()};
     await writeFile(feedPath+'.tmp',JSON.stringify(next));await rename(feedPath+'.tmp',feedPath);
+  }catch(error){
+    const known=['Instagram API request failed','Instagram API is not connected','Unexpected Instagram account','Invalid Instagram media response','Invalid Instagram media','Invalid Instagram permalink','Invalid Instagram poster','Invalid Instagram pagination','Instagram archive pagination did not complete','Invalid image host','Invalid JPEG','Media too large'];
+    // Never log upstream messages, request URLs, tokens or response bodies.
+    error.galleryDiagnostic={reason:known.includes(error.message)?error.message:/^Instagram HTTP \d{3}$/.test(error.message)?error.message:'Refresh failed',status:error.instagramStatus,code:error.instagramCode,subcode:error.instagramSubcode,systemCode:['ENOSPC','EACCES','ENOENT','ETIMEDOUT'].includes(error.code)?error.code:undefined};
+    throw error;
   }finally{refreshing=false;}
 }

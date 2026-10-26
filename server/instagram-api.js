@@ -8,8 +8,13 @@ export async function readInstagramApi(accessToken,request=fetch) {
     const url=new URL(`https://graph.instagram.com/v26.0/${path}`);
     for(const [key,value] of Object.entries(params))url.searchParams.set(key,value);
     const response=await request(url,{headers:{Authorization:`Bearer ${accessToken}`},redirect:'error',signal:AbortSignal.timeout(20000)});
-    if(!response.ok)throw new Error('Instagram API request failed');
-    const payload=await response.json();if(payload.error)throw new Error('Instagram API request failed');return payload;
+    const payload=await response.json();
+    if(!response.ok||payload.error)throw Object.assign(new Error('Instagram API request failed'),{
+      instagramStatus:response.status,
+      instagramCode:Number.isInteger(payload.error?.code)?payload.error.code:undefined,
+      instagramSubcode:Number.isInteger(payload.error?.error_subcode)?payload.error.error_subcode:undefined,
+    });
+    return payload;
   };
   const result=await get('me',{fields:'user_id,username'}),account=result.data?.[0]||result;
   if(account.username!==ACCOUNT||!/^\d+$/.test(String(account.user_id)))throw new Error('Unexpected Instagram account');

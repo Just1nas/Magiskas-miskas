@@ -49,7 +49,7 @@ const server=http.createServer(async(req,res)=>{
   }catch{res.writeHead(404,{'Content-Type':'text/plain; charset=utf-8'});res.end('Puslapis nerastas.');}
 });
 server.requestTimeout=30000;server.headersTimeout=15000;
-const refresh=()=>refreshGallery().catch(()=>console.warn('Instagram refresh unavailable; retained last verified feed.'));
+const refresh=()=>refreshGallery().catch(error=>console.warn('Instagram refresh unavailable; retained last verified feed.',JSON.stringify(error.galleryDiagnostic||{})));
 refresh();const galleryTimer=setInterval(refresh,300000);galleryTimer.unref();
 schedule.refresh();const ticketTimer=setInterval(schedule.refresh,300000);ticketTimer.unref();
 server.listen(Number(process.env.PORT||3000),'0.0.0.0');

@@ -2,6 +2,12 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readInstagramApi} from '../server/instagram-api.js';
 const media=id=>({id:String(id),timestamp:'2026-10-20T12:00:00Z',media_type:'IMAGE',media_url:'https://scontent.cdninstagram.com/photo.jpg',permalink:`https://www.instagram.com/p/post${id}/`});
+test('API failure exposes numeric diagnostics without upstream messages or credentials',async()=>{
+ await assert.rejects(()=>readInstagramApi('test-secret',async()=>({ok:false,status:400,json:async()=>({error:{code:190,error_subcode:463,message:'private upstream text test-secret'}})})),error=>{
+  assert.equal(error.instagramCode,190);assert.equal(error.instagramSubcode,463);assert.equal(error.instagramStatus,400);
+  assert.equal(error.message,'Instagram API request failed');assert.equal(JSON.stringify(error).includes('test-secret'),false);return true;
+ });
+});
 const mock=responses=>async(url,options)=>{
  assert.equal(url.hostname,'graph.instagram.com');assert.equal(options.headers.Authorization,'Bearer test-token');assert.equal(url.searchParams.has('access_token'),false);assert.equal(options.redirect,'error');
  const payload=responses.shift();return {ok:true,json:async()=>payload};

@@ -1,10 +1,9 @@
-import { SpecialHours } from "./SpecialHours";
+import {useTicketEvents} from './useTicketEvents';
 import { ui, locale } from './locale';
 import React, { useEffect, useRef, useState } from 'react';
 import { content as c } from './content';
 import './ticketLayout.css';
-import ticketEvents from './ticket-events.json';
-import { selectTicketEvent, availableTicketEvents, TICKET_SERIES_URL } from './ticketSelection';
+import { TICKET_SERIES_URL } from './ticketSelection';
 import { ticketTheme, ticketBase, ticketFont, ticketCustomStyles, transparentTicketTheme, transparentTicketStyles } from './ticketTheme';
 
 const SCRIPT_URL = 'https://www.bilietai.lt/_widgets/widget.iife.js';
@@ -29,22 +28,7 @@ function loadScript() {
 
 export function TicketWidget({ widgetId, transparent = false }) {
   const host = useRef(null);
-  const [events,setEvents]=useState(()=>availableTicketEvents(ticketEvents));
-  const [eventId, setEventId] = useState(() => selectTicketEvent(ticketEvents)?.id ?? null);
-  useEffect(() => {
-    let source=ticketEvents,stopped=false,pending=false;
-    const controller=new AbortController();
-    const apply = () => {if(stopped)return;const next=availableTicketEvents(source);setEvents(next);setEventId(previous=>next.some(event=>event.id===previous)?previous:next[0]?.id??null);};
-    const refresh=async()=>{if(pending||stopped)return;pending=true;try{
-      const response=await fetch('/api/ticket-events',{cache:'no-store',signal:AbortSignal.any([controller.signal,AbortSignal.timeout(15000)])});
-      if(!response.ok)throw Error('Schedule unavailable');const data=await response.json();
-      if(!Array.isArray(data.events)||!data.events.every(e=>e&&/^[A-Z0-9]{10}$/.test(e.id)&&typeof e.status==='string'&&Number.isFinite(Date.parse(e.eventStartAt))&&Number.isFinite(Date.parse(e.eventEndAt))))throw Error('Invalid schedule');
-      source=data.events;
-    }catch{ /* Keep verified dates on a temporary failure. */ }finally{pending=false;apply();}};
-    refresh();const timer=setInterval(apply,30000),updates=setInterval(refresh,300000);
-    window.addEventListener('focus',refresh);
-    return () => {stopped=true;controller.abort();clearInterval(timer);clearInterval(updates);window.removeEventListener('focus',refresh);};
-  }, []);
+  const {events,eventId,setEventId}=useTicketEvents();
   const [state, setState] = useState('loading');
   useEffect(() => {
     if (!eventId || !host.current) return;
@@ -82,7 +66,6 @@ export function TicketWidget({ widgetId, transparent = false }) {
   }, [eventId, widgetId, transparent]);
   if (!eventId) return <p role="status">{ui('Šiuo metu daugiau paskelbtų renginių nėra.','There are no more scheduled events at the moment.')} <a href={TICKET_SERIES_URL} target="_blank" rel="noopener noreferrer">{ui('Tikrinti datas Bilietai.lt','Check dates on Bilietai.lt')}</a></p>;
   return <div className="ticket-widget">
-    <SpecialHours />
     <div className="ticket-date-choice"><label htmlFor="ticket-visit-date">{ui('Apsilankymo diena','Visit date')}</label><select id="ticket-visit-date" value={eventId} onChange={e=>setEventId(e.target.value)}>{events.map(event=><option key={event.id} value={event.id}>{new Intl.DateTimeFormat(locale==='en'?'en-GB':'lt-LT',{timeZone:'Europe/Vilnius',weekday:'long',month:'long',day:'numeric'}).format(new Date(event.eventStartAt))}</option>)}</select><p>{ui('Pasirink atvykimo laiką, tada prie bilieto rūšies spausk + arba −.','Choose an arrival time, then use + or − beside each ticket type.')}</p></div>
     <details className="ticket-checkout-help"><summary>{ui('Kaip tęsti pirkimą?','How do I continue?')}</summary><p>{ui('Pasirinkęs kiekius spausk „Rinktis bilietus“, tada „Įdėti į krepšelį“. Prieš apmokėjimą Bilietai.lt suvestinėje patikrink dieną, laiką, bilietus ir galutinę sumą su mokesčiais.','After selecting quantities, choose tickets and add them to the basket. Before paying, check the date, time, tickets and total including fees in the Bilietai.lt order summary.')}</p></details>
     {state !== 'ready' && <p className="widget-status" role="status">{state === 'loading' ? ui('Kraunamas bilietų pasirinkimas…','Loading ticket selection…') : ui('Bilietų pasirinkimas neįsikrovė. Atidaryk renginį Bilietai.lt žemiau esančia nuoroda.','Ticket selection could not load. Use the link below to open the event on Bilietai.lt.')}</p>}

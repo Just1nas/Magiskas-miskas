@@ -1,6 +1,8 @@
+import {TicketHours} from './TicketHours';
 import { ArrowIcon } from './ArrowIcon';
 import { ui, locale, languageUrl, guideUrl } from './locale';
 import { SpecialHours } from "./SpecialHours";
+import { IlgesPreview, CiurlionisPreview } from "./AutumnPreview";
 import { Partners } from './Partners';
 import React, { useEffect, useState, useCallback } from 'react';
 import { createRoot } from 'react-dom/client';
@@ -62,7 +64,7 @@ function Journey() {
       </div>
       <div className="journey-stage">
         {c.journey.map((zone, i) => <article key={zone.id} id={zone.id} role="tabpanel" aria-labelledby={`tab-${zone.id}`} tabIndex="0" hidden={active !== i} className="journey-scene">
-          <div className="scene-content"><span className="eyebrow">{zone.cue}</span><h3>{zone.title}</h3><p>{zone.text}</p><span className="small-note">{zone.detail}</span></div>
+          <div className="scene-content"><span className="eyebrow">{zone.cue}</span><h3>{zone.title}</h3><p>{zone.text}</p><span className="small-note">{zone.detail}</span>{zone.id==="prisiminimu-kudra"&&<a className="text-link" href="#ciurlionis">{ui("Kai paveikslai atgyja","When paintings come alive")} ↗</a>}</div>
           <img className="scene-symbol" src="/brand/symbol.png" alt="" aria-hidden="true" />
         </article>)}
         <div className="journey-controls"><span className="small-note">{c.copy.journeyNext}</span><div><button aria-label={ui('Ankstesnė erdvė','Previous space')} onClick={() => choose(active - 1)}><ArrowIcon direction="left" /></button><button aria-label={ui('Kita erdvė','Next space')} onClick={() => choose(active + 1)}><ArrowIcon direction="right" /></button></div></div>
@@ -86,7 +88,7 @@ function Tickets() {
   }, []);
   if (closed) return <section id="bilietai" className="section tickets"><h2>{c.season.closedMessage}</h2><p>{c.copy.closedIntro}</p></section>;
   if (c.tickets.widgetId) return <section id="bilietai" className="section tickets tickets-integrated">
-    <div className="section-heading"><span className="eyebrow">{c.copy.ticketsLabel}</span><h2 style={{whiteSpace:"pre-line"}}>{c.copy.ticketsTitle}</h2><p>{c.copy.ticketsIntro}</p></div>
+    <div className="ticket-intro-grid"><div className="section-heading"><span className="eyebrow">{c.copy.ticketsLabel}</span><h2 style={{whiteSpace:"pre-line"}}>{c.copy.ticketsTitle}</h2><p>{c.copy.ticketsIntro}</p></div><TicketHours /></div>
     <div id="ticket-selection" className="ticket-widget-panel">{load && <TicketWidget widgetId={c.tickets.widgetId} transparent />}</div>
     <External className="text-link ticket-direct" href={ticketUrl}>{c.copy.ticketsDirect} <ArrowIcon direction="out" /></External>
   </section>;
@@ -122,11 +124,11 @@ function App() {
     <section className="park-hours" aria-label={ui('Darbo laikas','Opening hours')}>{closed ? <strong>{c.season.closedMessage}</strong> : <><span className="park-hours-label">{ui('Darbo laikas','Opening hours')}</span><strong>{c.openingDays}</strong><span className="park-hours-time">{c.hours.trim()}</span><SpecialHours /></>}</section>
     <section id="pradzia" className={`hero hero-${background} ${trailerPreview ? 'has-trailer' : ''}`}>{background === 'photo' && <img className="hero-photo" src="/images/forest-night.webp" alt="" aria-hidden="true" fetchPriority="high" />}<MagicAtmosphere /><Brand watermark /><div className="hero-meta eyebrow"><span>{c.copy.heroLabel}</span><span>{c.city} / {c.copy.heroLocation}</span></div><div className="hero-title"><span className="eyebrow">{c.tagline}</span><h1 aria-label={introPreview ? `${c.copy.heroFirst} ${c.copy.heroSecond}` : undefined}><span aria-hidden={introPreview || undefined}>{introPreview && !introDone ? [...c.copy.heroFirst].map((letter,i)=><span className="intro-letter" key={i}>{letter === ' ' ? '\u00a0' : letter}</span>) : c.copy.heroFirst}</span><span aria-hidden={introPreview || undefined}>{introPreview && !introDone ? [...c.copy.heroSecond].map((letter,i)=><span className="intro-letter" key={i}>{letter === ' ' ? '\u00a0' : letter}</span>) : c.copy.heroSecond}</span></h1></div><div className="hero-bottom"><p>{c.description}</p><div className="hero-date"><span>{c.city}</span><span className="small-note">{closed ? c.season.closedMessage : c.date}</span></div><a className="enter-link" href="#slenkstis">{c.copy.enter} <span aria-hidden="true"><ArrowIcon direction="down" /></span></a></div><div className="hero-ticket"><TicketLink />{trailerPreview && <button className="hero-watch" onClick={() => setVideoOpen(true)} aria-haspopup="dialog"><span className="hero-play" aria-hidden="true">▶</span><span>{ui('Pajusk magiją','Feel the magic')}<small>{ui('Žiūrėti filmą · 1 min.','Watch the film · 1 min.')}</small></span></button>}</div></section>
     {videoOpen && <HeroVideo onClose={() => setVideoOpen(false)} />}
-    <section id="slenkstis" className="pause section"><Brand watermark /><span className="eyebrow">{c.copy.pauseLabel}</span><h2>{c.pause}</h2><p className="pause-story">{c.story}</p><span className="pause-bottom eyebrow">{c.copy.pauseBottom}</span></section>
+    <IlgesPreview /><section id="slenkstis" className="pause section"><Brand watermark /><span className="eyebrow">{c.copy.pauseLabel}</span><h2>{c.pause}</h2><p className="pause-story">{c.story}</p><span className="pause-bottom eyebrow">{c.copy.pauseBottom}</span></section>
     <Instagram />
     <section className="section overview" aria-labelledby="trumpai"><div><h2 id="trumpai" style={{whiteSpace:"pre-line"}}>{c.copy.overviewTitle}</h2></div><dl>{[[c.copy.experienceLabel, c.copy.experience], [c.copy.durationLabel, c.duration], [c.copy.audienceLabel, c.copy.audience], [c.copy.venueLabel, c.venue]].map(([label, value]) => <div key={label}><dt>{label}</dt><dd>{value}</dd></div>)}</dl></section>
-    <Journey /><section className="forest-guide-link" aria-labelledby="forest-guide-heading"><div><span className="eyebrow">{ui("Jau Miške?","Already in the forest?")}</span><h2 id="forest-guide-heading">{ui("Tavo Miško gidas","Your forest guide")}</h2><p>{ui("Atrask vietas, susitikimų laikus ir Miško pasakojimus.","Explore the places, meeting times and forest stories.")}</p></div><a className="forest-guide-button" href={guideUrl(locale)}>{ui("Atverti Miško gidą","Open the forest guide")} <ArrowIcon direction="out" /></a></section><Tickets />
-    <section id="informacija" className="section practical"><div className="section-heading"><span className="eyebrow">{c.copy.practicalLabel}</span><h2 style={{whiteSpace:"pre-line"}}>{c.copy.practicalTitle}</h2></div><dl>{[[c.copy.whenLabel, `${c.date.replace(/\.$/, '')}. ${c.openingDays}, ${c.hours.trim().replace(/\.$/, '')}.`], [c.copy.whereLabel, `${c.venue}. ${c.address}.`], [c.copy.durationLabel, c.duration], ...c.practical].map(([key, value]) => <div key={key}><dt>{key}</dt><dd>{value}</dd></div>)}</dl><SpecialHours /><div className="practical-cta"><TicketLink /></div></section>
+    <Journey /><CiurlionisPreview /><section className="forest-guide-link" aria-labelledby="forest-guide-heading"><div><span className="eyebrow">{ui("Jau Miške?","Already in the forest?")}</span><h2 id="forest-guide-heading">{ui("Tavo Miško gidas","Your forest guide")}</h2><p>{ui("Atrask vietas, susitikimų laikus ir Miško pasakojimus.","Explore the places, meeting times and forest stories.")}</p></div><a className="forest-guide-button" href={guideUrl(locale)}>{ui("Atverti Miško gidą","Open the forest guide")} <ArrowIcon direction="out" /></a></section><Tickets />
+    <section id="informacija" className="section practical"><div className="section-heading"><span className="eyebrow">{c.copy.practicalLabel}</span><h2 style={{whiteSpace:"pre-line"}}>{c.copy.practicalTitle}</h2></div><dl>{[[c.copy.whenLabel, `${c.date.replace(/\.$/, '')}. ${c.openingDays}, ${c.hours.trim().replace(/\.$/, '')}.`], [c.copy.whereLabel, `${c.venue}. ${c.address}.`], [c.copy.durationLabel, c.duration], ...c.practical].map(([key, value]) => <div key={key}><dt>{key}</dt><dd>{value}</dd></div>)}</dl></section>
     <Arrival /><Faq /><Partners />
     <Reviews />
     <section id="pabaiga" className="final section"><Brand watermark /><span className="eyebrow">{c.tagline}</span><h2>{closed ? c.season.closedMessage : <>{c.final.first}<br /><span>{c.final.second}</span></>}</h2><TicketLink /><p>{c.city} · {c.date}</p></section>

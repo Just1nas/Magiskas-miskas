@@ -1,0 +1,53 @@
+#ilges.ilges-preview,.ciurlionis-preview{position:relative;padding-top:70px;padding-bottom:70px;border-top:1px solid #fffdf825}
+#ilges.ilges-preview{background:radial-gradient(ellipse at 15% 40%,#a47c4020,transparent 65%)}
+.ilges-top,.ilges-layout,.art-intro,.art-bottom{display:flex;justify-content:space-between;gap:40px}.ilges-top{align-items:center;margin-bottom:38px}.ilges-tag{font-size:12px;border:1px solid #fffdf840;padding:8px 14px;border-radius:30px}.ilges-layout>div{width:50%}#ilges.ilges-preview h2,.ciurlionis-preview h2{font-family:Magical;font-size:clamp(48px,6.8vw,100px);line-height:1.05;font-weight:400;margin:0 0 22px}#ilges.ilges-preview h2 span,.ciurlionis-preview h2 span{color:#d0c4ac}.ilges-copy>p,.art-intro p{font-size:16px;line-height:1.8;max-width:510px}.ilges-dates{display:flex;gap:40px;margin:28px 0}.ilges-dates>div{display:flex;align-items:center;gap:14px}.ilges-dates strong{font-size:38px;font-weight:400;letter-spacing:-2px}.ilges-dates span{font-size:11px;line-height:1.8;letter-spacing:.05em}.ilges-copy .button{padding:14px 24px}.ilges-more{margin-top:35px;border-top:1px solid #fffdf830}.ilges-more summary{cursor:pointer;display:flex;justify-content:space-between;padding:20px 0;font-size:13px}.ilges-more>div{max-width:760px;margin:auto;line-height:1.9;font-size:15px}.ilges-more p{margin-bottom:18px}.art-intro>div{width:50%}.art-times{display:flex;flex-wrap:wrap;gap:18px;margin-top:15px;font-size:23px;font-variant-numeric:tabular-nums}.art-stage{margin:40px 0 0}.art-open{position:relative;display:block;width:100%;border:0;background:#080c1470;padding:24px;cursor:zoom-in}.art-open img{display:block;width:100%;height:500px;object-fit:contain;animation:art-reveal .65s ease}.art-enlarge{display:block;text-align:right;font-size:11px;color:#fffdf8b0;margin-top:15px}.art-stage figcaption{display:flex;align-items:center;justify-content:space-between;gap:15px;padding:20px 0;border-bottom:1px solid #fffdf830}.art-stage figcaption>span{font-size:10px;letter-spacing:.1em}.art-stage figcaption strong{font-family:Magical;font-size:30px;font-weight:400}.art-picks{display:grid;grid-template-columns:repeat(5,1fr);gap:15px;margin-top:22px}.art-picks button{border:1px solid transparent;background:transparent;padding:10px;color:#fffdf8;cursor:pointer;opacity:.6;transition:opacity .2s,border-color .2s}.art-picks button[aria-pressed=true],.art-picks button:hover{opacity:1;border-color:#fffdf860}.art-picks img{width:100%;height:95px;object-fit:contain}.art-picks span{display:block;font-size:11px;margin-top:12px}.art-bottom{margin-top:35px;align-items:center}.art-bottom p{font-size:14px;line-height:1.8}.art-bottom a{font-size:10px;line-height:1.8;max-width:270px;color:#fffdf8aa}.art-bottom a strong{font-weight:400;color:#fffdf8}.art-dialog{background:#111820;color:#fffdf8;border:1px solid #fffdf830;padding:30px;max-width:94vw;max-height:94vh}.art-dialog::backdrop{background:#050911ec}.art-dialog>img{display:block;max-width:80vw;max-height:72vh;object-fit:contain}.art-dialog>div{display:flex;justify-content:space-between;align-items:center;gap:20px;padding-top:15px}.art-dialog button{background:transparent;border:0;color:inherit;font-size:28px;cursor:pointer;padding:8px}.art-close{position:absolute;top:0;right:0}.art-dialog:focus{outline:none}@keyframes art-reveal{from{opacity:.2;transform:translateY(5px)}to{opacity:1;transform:none}}
+@media(max-width:700px){#ilges.ilges-preview,.ciurlionis-preview{padding-top:40px;padding-bottom:40px}.ilges-top,.ilges-layout,.art-intro,.art-bottom{flex-direction:column;gap:20px}.ilges-top{align-items:flex-start}.ilges-layout>div,.art-intro>div{width:100%}.ilges-dates{gap:25px}.art-open{padding:12px}.art-open img{height:350px}.art-stage figcaption>span:first-child{display:none}.art-picks{gap:4px}.art-picks button{padding:5px}.art-picks img{height:62px}.art-picks span{font-size:9px}.art-bottom{align-items:flex-start}.art-times{font-size:21px;gap:15px}.art-dialog{padding:24px 10px}.art-dialog>img{max-width:85vw}}
+@media(prefers-reduced-motion:reduce){.art-open img{animation:none}.art-picks button{transition:none}}
+
+/* A warm, distinct interlude for the special autumn programme. */
+#ilges.ilges-preview{isolation:isolate;overflow:hidden;margin-block:28px;background:linear-gradient(125deg,#251e1b 0%,#34271f 48%,#181d22 100%);border-top:1px solid #cda67366;border-bottom:1px solid #cda67340;padding-top:64px;padding-bottom:54px;box-shadow:0 24px 70px #00000025}
+#ilges.ilges-preview::before{content:"";position:absolute;z-index:-1;pointer-events:none;inset:0;background:radial-gradient(ellipse at 12% 78%,#c08a3e30,transparent 50%),radial-gradient(ellipse at 85% 15%,#d7a76418,transparent 48%)}
+#ilges.ilges-preview .eyebrow{color:#e2c49c;letter-spacing:.13em}
+.ilges-top{margin-bottom:32px}
+.ilges-tag{border-color:#e2c49c50;background:#e2c49c0c;color:#f1ddc1}
+#ilges.ilges-preview h2 span{color:#e4c28c;text-shadow:0 0 48px #d2a05b25}
+.ilges-copy>p{color:#f4e8da;margin-top:0}
+.ilges-dates{gap:0;border-block:1px solid #e2c49c35;padding:22px 0;margin:26px 0}
+.ilges-dates>div{flex:1;gap:12px}
+.ilges-dates>div+div{padding-left:24px;border-left:1px solid #e2c49c35}
+.ilges-dates strong{color:#edcd9e;font-size:42px}
+.ilges-dates span{color:#f4e8da}
+.ilges-more{border-color:#e2c49c35}
+.ilges-more summary{color:#f1ddc1}
+.ilges-more>div{color:#f4e8da}
+@media(max-width:700px){#ilges.ilges-preview{margin-block:18px;padding-top:36px;padding-bottom:30px}.ilges-top{gap:16px;margin-bottom:28px}.ilges-dates strong{font-size:36px}.ilges-dates>div{gap:10px}.ilges-dates>div+div{padding-left:16px}.ilges-dates span{font-size:10px}#ilges.ilges-preview h2{font-size:clamp(48px,12vw,70px)}}
+/* Photographic Ilgės preview: original event photograph, blended with CSS. */
+#ilges.ilges-preview{background:#0b1220}
+#ilges.ilges-preview::before{background:radial-gradient(ellipse at 12% 70%,#a76b2220,transparent 55%)}
+#ilges .ilges-layout{display:grid;grid-template-columns:1fr 1.15fr;gap:18px 48px;position:relative}
+#ilges .ilges-layout>div{width:auto}
+#ilges .ilges-layout>div:first-child{grid-column:1;grid-row:1;z-index:1}
+#ilges .ilges-copy{grid-column:1;grid-row:2;z-index:1}
+#ilges .ilges-photo{grid-column:2;grid-row:1 / 3;align-self:stretch;min-height:480px;position:relative;margin:-30px -5.5vw -20px -65px;pointer-events:none;mask-image:linear-gradient(to right,transparent,#000 18%),linear-gradient(to bottom,transparent,#000 12%,#000 85%,transparent);mask-composite:intersect}
+#ilges .ilges-photo img{width:100%;height:100%;position:absolute;object-fit:cover;object-position:54% center}
+#ilges .ilges-more{position:relative}
+@media(max-width:700px){#ilges .ilges-layout{grid-template-columns:1fr;gap:16px}#ilges .ilges-layout>div:first-child{grid-column:1;grid-row:1}#ilges .ilges-photo{grid-column:1;grid-row:2;min-height:300px;margin:-16px -6vw -26px;mask-image:linear-gradient(to bottom,transparent,#000 14%,#000 78%,transparent);mask-composite:add}#ilges .ilges-photo img{object-position:center center}#ilges .ilges-copy{grid-column:1;grid-row:3}#ilges .ilges-copy>p{position:relative}#ilges .ilges-top{margin-bottom:25px}}
+#ilges .ilges-photo img{opacity:.62}
+/* Let the continuous site background show through the Ilgės interlude. */
+#ilges.ilges-preview{background:rgba(11,18,32,.42);box-shadow:none;border-top-color:#cda67330;border-bottom-color:#cda67325}
+#ilges.ilges-preview::before{opacity:.45}
+#ilges .ilges-photo img{opacity:.45}
+/* Balanced transparency after visual review. */
+#ilges.ilges-preview{background:rgba(11,18,32,.60)}
+#ilges .ilges-photo img{opacity:.55}
+.ticket-hours{width:100%;margin:24px 0 32px;padding:22px 0;border-block:1px solid #fffdf830}.ticket-hours dl{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0 34px;margin:15px 0}.ticket-hours dl>div{display:flex;justify-content:space-between;gap:12px;padding:13px 0;border-bottom:1px solid #fffdf815;font-size:13px}.ticket-hours dd{font-variant-numeric:tabular-nums;color:#e4c28c;white-space:nowrap}.ticket-hours>p{font-size:11px;color:#fffdf8aa}@media(max-width:900px){.ticket-hours dl{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:550px){.ticket-hours dl{grid-template-columns:1fr}}
+.ticket-hours{padding-inline:5.5vw}
+@media(max-width:700px){.ticket-hours{padding-inline:6vw}}
+#bilietai .ticket-intro-grid{display:grid;grid-template-columns:1fr 1fr;gap:7vw;padding:0 5.5vw 34px;align-items:center;width:100%}
+#bilietai .ticket-intro-grid .section-heading{padding:0;margin:0;display:block}
+#bilietai .ticket-intro-grid h2{margin:22px 0}
+#bilietai .ticket-intro-grid .section-heading>p{max-width:390px}
+#bilietai .ticket-intro-grid .ticket-hours{padding:0;margin:0;border:0}
+#bilietai .ticket-intro-grid .ticket-hours dl{grid-template-columns:1fr;margin:18px 0}
+#bilietai .ticket-intro-grid .ticket-hours dl>div{padding:15px 0;font-size:14px}
+@media(max-width:700px){#bilietai .ticket-intro-grid{grid-template-columns:1fr;gap:30px;padding-inline:6vw}#bilietai .ticket-intro-grid h2{margin:18px 0}#bilietai .ticket-intro-grid .ticket-hours dl>div{font-size:13px;padding:12px 0}}

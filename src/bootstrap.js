@@ -4,7 +4,13 @@ import './styles.css';
 import { content } from './content.js';
 import { validateEdits } from './editable-content.js';
 import { cmsUrl, cmsKey, cmsConfigured } from './cms-config.js';
-if (hostingerCms || cmsConfigured) {
+let initialPublicContent;
+try {
+  const initial=document.getElementById('public-content');
+  if(initial) initialPublicContent=validateEdits(JSON.parse(initial.textContent));
+} catch { /* Fall back to the existing CMS request. */ }
+if(initialPublicContent) Object.assign(content,initialPublicContent);
+if (!initialPublicContent && (hostingerCms || cmsConfigured)) {
   try {
     const response = hostingerCms ? null : await fetch(`${cmsUrl}/rest/v1/site_content?slug=eq.main&select=content`, {
       headers: { apikey: cmsKey }, signal: AbortSignal.timeout(5000), cache: 'no-store',

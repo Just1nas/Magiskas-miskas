@@ -1,6 +1,6 @@
 import http from 'node:http';
 import { createReadStream } from 'node:fs';
-import { stat, realpath } from 'node:fs/promises';
+import { stat, realpath, readFile } from 'node:fs/promises';
 import { resolve, sep } from 'node:path';
 import { bootstrapImport } from './bootstrap-import.js';
 import { connectDatabase, schema } from './database.js';
@@ -11,12 +11,14 @@ import { provisionPasswordSetup } from './setup-passwords.js';
 import { migrateConfirmedEnglish } from './confirmed-english.js';
 import { createTicketSchedule } from './ticket-schedule.js';
 import ticketEvents from '../src/ticket-events.json' with {type:'json'};
+import { createPublicContentReader, renderHomepage, renderSitemap } from './seo.js';
 function start(){
 const db=connectDatabase();
 const ready=schema(db).then(()=>bootstrapImport(db)).then(()=>migrateConfirmedEnglish(db,backupContent)).then(()=>provisionPasswordSetup(db)).catch(error=>console.warn('CMS initialization failed:',error.code||error.name));
 const origin=new URL(process.env.SITE_ORIGIN||'https://www.magiskasmiskas.lt').origin;
 const schedule=createTicketSchedule({initial:ticketEvents});
 const api=createApi({db,origin,readGallery,readTicketEvents:schedule.read,backupContent,readContentBackup});
+const readPublicContent=createPublicContentReader(db,readContentBackup);
 const root=resolve(import.meta.dirname,'../dist');
 const mime={'.html':'text/html; charset=utf-8','.js':'text/javascript; charset=utf-8','.css':'text/css; charset=utf-8','.json':'application/json','.txt':'text/plain; charset=utf-8','.xml':'application/xml; charset=utf-8','.png':'image/png','.jpg':'image/jpeg','.svg':'image/svg+xml','.webp':'image/webp','.woff2':'font/woff2','.mp4':'video/mp4','.pdf':'application/pdf','.ico':'image/x-icon'};
 const server=http.createServer(async(req,res)=>{
@@ -35,6 +37,15 @@ const server=http.createServer(async(req,res)=>{
     const ext=file.slice(file.lastIndexOf('.'));
     res.setHeader('Content-Type',mime[ext]||'application/octet-stream');res.setHeader('X-Content-Type-Options','nosniff');res.setHeader('Referrer-Policy','strict-origin-when-cross-origin');
     res.setHeader('Cache-Control',ext==='.html'?'no-cache':path.startsWith('/assets/')?'public,max-age=31536000,immutable':'public,max-age=3600');
+    const home=actual===resolve(root,'index.html')||actual===resolve(root,'en/index.html');
+    if(home||actual===resolve(root,'sitemap.xml')) {
+      const snapshot=await readPublicContent();
+      const source=await readFile(actual,'utf8');
+      const output=home?renderHomepage(source,snapshot,actual===resolve(root,'en/index.html')?'en':'lt',origin):renderSitemap(source,snapshot.updatedAt);
+      res.setHeader('Cache-Control','no-cache');
+      res.setHeader('Content-Length',Buffer.byteLength(output));
+      return res.end(req.method==='HEAD'?undefined:output);
+    }
     let start=0,end=info.size-1;
     if(req.headers.range){
       const m=/^bytes=(\d+)-(\d*)$/.exec(req.headers.range);

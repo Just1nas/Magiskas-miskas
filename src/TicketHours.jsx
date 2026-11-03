@@ -14,7 +14,6 @@ const openingHours = [
 export function TicketHours() {
   return <div className="ticket-hours">
     <span className="eyebrow">{ui('Apsilankymo datos ir darbo laikas', 'Visit dates and opening hours')}</span>
-    <p>{ui('Magiškas Miškas veiks:', 'Magiškas Miškas will be open:')}</p>
     <dl>{openingHours.map(([day, opens, closes]) => <div key={day}>
       <dt>{ui(`Lapkričio ${day} d.`, `${day} November`)}</dt>
       <dd>{opens}–{closes}</dd>

@@ -29,6 +29,7 @@ export const ticketCustomStyles = `
 .widget-embed .event .basis-auto.grow + div{width:100%!important;max-width:none!important}
 .widget-embed .event .basis-auto.grow + div .hidden[class~="sm:block"]{display:block!important;position:static!important}
 .widget-embed .event .sticky.bottom-0.left-0{display:none!important}
+.widget-embed:has(.event) #bottom-sticky .sticky:has([data-cy="buy-tickets-mobile-button"]){display:none!important}
 .widget-embed:has(.event) button:has([class~="i-plg:arrow-left"]),
 .widget-embed .event .relative.mt-4:has([data-cy="event-series-link"]){display:none!important}
 .widget-embed .event :is([data-cy="increment-button"],[data-cy="decrement-button"]){min-width:44px;min-height:44px}

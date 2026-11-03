@@ -21,6 +21,19 @@ const fontRoot = 'https://raw.githubusercontent.com/Just1nas/Magiskas-miskas/5f2
 // The vendor rejects literal angle brackets in customStyles (HTTP 400).
 // Keep provider labels, prices, fees and checkout behavior; only adjust presentation.
 export const ticketCustomStyles = `
+/* Current vendor layout no longer has the .ticket-selection wrapper. */
+.widget-embed .event .flex.justify-center:has(img),
+.widget-embed .event .basis-auto.grow,
+.widget-embed .event ~ *{display:none!important}
+.widget-embed .event .flex.flex-col:has(.basis-auto.grow){display:block!important}
+.widget-embed .event .basis-auto.grow + div{width:100%!important;max-width:none!important}
+.widget-embed .event .basis-auto.grow + div .hidden[class~="sm:block"]{display:block!important;position:static!important}
+.widget-embed .event .sticky.bottom-0.left-0{display:none!important}
+.widget-embed:has(.event) button:has([class~="i-plg:arrow-left"]),
+.widget-embed .event .relative.mt-4:has([data-cy="event-series-link"]){display:none!important}
+.widget-embed .event :is([data-cy="increment-button"],[data-cy="decrement-button"]){min-width:44px;min-height:44px}
+.widget-embed .event [data-cy="sector-button"],.widget-embed .event [data-cy="add-to-basket-button"]{min-height:48px}
+.widget-embed .event [data-cy="ticket-summary"]{background:#0b1429;padding:12px 16px;margin-inline:0}
 .widget-embed:has(.ticket-selection) .event .flex.justify-center,.widget-embed:has(.ticket-selection) .event .basis-auto.grow,.widget-embed:has(.ticket-selection) .event ~ *,.widget-embed:has(.ticket-selection) .widget-layout .wrapper:not(:has(.event)){display:none!important}
 .widget-embed:has(.ticket-selection) .ticket-selection{max-width:none!important;width:100%!important}
 .widget-embed:has(.ticket-selection) .ticket-selection .white-rounded-block{display:block!important;position:static!important}

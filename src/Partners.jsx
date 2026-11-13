@@ -4,7 +4,7 @@ import './partners.css';
 
 // Original supplied assets; crop only their transparent canvas in CSS.
 const groups = [
-  { title: ui('Organizuoja','Organised by'), logos: [
+  { title: ui('Organizavo','Organised by'), logos: [
     ['kaukiu-akademija', 'Kaukių akademija', 2177, 917, 0, 0, 2177, 917],
   ]},
   { title: ui('Partneriai','Partners'), logos: [
@@ -43,7 +43,7 @@ const websites = {
 
 export function Partners() {
   return <section id="partneriai" className="section partners" aria-labelledby="partners-title">
-    <h2 id="partners-title">{ui('Magiją kuriame kartu.','Together, we create magic.')}</h2>
+    <h2 id="partners-title">{ui('2026 m. magiją kūrė','The people behind the magic of 2026')}</h2>
     {groups.map(({title,logos},i)=><div className={`partner-group${i===0?' is-organizer':''}`} key={title}>
       <h3>{title}</h3>
       <ul className="partner-logos">{logos.map(([file,name,w,h,x,y,right,bottom])=>{

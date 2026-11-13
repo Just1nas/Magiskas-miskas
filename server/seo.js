@@ -2,10 +2,10 @@ import { content as bundled } from '../src/content.js';
 import { localize } from '../src/locale.js';
 import { validateEdits } from '../src/editable-content.js';
 import { safeHttps } from '../src/integrations.js';
-import { specialHours } from '../src/special-hours.js';
+import { seasonCopy } from '../src/season-copy.js';
 
 // Date of the last substantive public-copy release, not the build/request date.
-export const COPY_UPDATED = '2026-11-03T12:00:00+02:00';
+export const COPY_UPDATED = '2026-11-13T11:00:00+02:00';
 const escape = value => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const json = value => JSON.stringify(value).replace(/</g, '\\u003c').replace(/\u2028/g,'\\u2028').replace(/\u2029/g,'\\u2029');
 const link = (url,label) => `<a href="${escape(url)}">${escape(label)}</a>`;
@@ -32,20 +32,14 @@ export function createPublicContentReader(db, readBackup) {
 }
 
 export function initialContent(document, language) {
-  const c=localize(document,language), en=language==='en';
-  const section=(id,title,body)=>`<section id="${id}" class="section"><h2>${escape(title)}</h2>${body}</section>`;
+  const c=localize(document,language), en=language==='en', season=seasonCopy(language);
   const paragraphs=values=>values.filter(Boolean).map(t=>`<p>${escape(t)}</p>`).join('');
-  const pairs=values=>`<dl>${values.map(([k,v])=>`<div><dt>${escape(k)}</dt><dd>${escape(v)}</dd></div>`).join('')}</dl>`;
-  const hours = [[3,'17:30–22:00'],[4,'17:30–22:00'],[5,'16:30–21:00'],[6,'16:30–22:00'],[7,'16:30–22:00'],[8,'16:30–21:00']];
   return `<div class="initial-content"><main>
-  <section class="section" id="pradzia"><h1>${escape(c.copy.heroFirst)} ${escape(c.copy.heroSecond)}</h1>${paragraphs([c.tagline,c.description,c.city,c.season.mode==='closed'?c.season.closedMessage:c.date])}</section>
-  <nav aria-label="${en?'Page sections':'Puslapio skiltys'}">${link('#slenkstis',en?'About':'Apie patyrimą')} · ${link('#kontaktai',en?'Contact':'Kontaktai')} · ${link('#duk',en?'Visitor information and ticket conditions':'Lankymosi ir bilietų informacija')}</nav>
-  ${section('slenkstis',c.pause,paragraphs([c.story]))}
-  ${section('kelione',c.copy.journeyTitle,c.journey.map(z=>`<article><h3>${escape(z.title)}</h3>${paragraphs([z.text,z.detail])}</article>`).join(''))}
-  ${section('informacija',c.copy.practicalTitle,pairs([[c.copy.whereLabel,`${c.venue}. ${c.address}`],[c.copy.durationLabel,c.duration],...c.practical]))}
-  ${section('bilietai',c.copy.ticketsTitle,paragraphs([c.season.mode==='closed'?c.season.closedMessage:specialHours(language)?.open||c.openingDays])+ (c.season.mode==='closed'?'':pairs(hours.map(([day,time])=>[en?`${day} November`:`Lapkričio ${day} d.`,time])))+link(safeHttps(c.tickets.url,['bilietai.lt'])||'https://www.bilietai.lt/',c.copy.buy))}
-  ${section('atvykimas',c.copy.arrivalTitle,c.transport.map(([title,text,url])=>`<h3>${escape(title)}</h3>${paragraphs([text])}${safeHttps(url)?link(url,c.copy.planTrip):''}`).join(''))}
-  ${section('duk',c.copy.navFaq,c.faq.map(([q,a])=>`<details><summary>${escape(q)}</summary><p>${escape(a)}</p></details>`).join(''))}
+  <section class="section" id="pradzia"><h1>${escape(c.copy.heroFirst)} ${escape(c.copy.heroSecond)}</h1>${paragraphs([season.heading,season.thanks,season.returning])}${link('#atsiliepimai',season.review)}</section>
+  <nav aria-label="${en?'Page sections':'Puslapio skiltys'}">${link('#instagram','Instagram')} · ${link('#prisiminimai',season.archive)} · ${link('#atsiliepimai',en?'Reviews':'Atsiliepimai')} · ${link('#kontaktai',en?'Contact':'Kontaktai')}</nav>
+  <section class="section" id="instagram"><h2>${escape(c.copy.instagramTitle)}</h2>${link(safeHttps(c.instagram.profileUrl)||'#kontaktai','Instagram')}</section>
+  <section class="section" id="prisiminimai"><h2>${escape(season.archive)}</h2><details><summary>${escape(season.archive)}</summary><p>${escape(season.archiveNote)}</p>${c.journey.map(z=>`<article><h3>${escape(z.title)}</h3>${paragraphs([z.text,z.detail])}</article>`).join('')}${link(en?'/en/gidas/':'/gidas/',en?'2026 forest guide':'2026 m. Miško gidas')}</details></section>
+  <section class="section" id="atsiliepimai"><h2>${escape(season.review)}</h2><p>${en?'Visitor reviews and the review form are available when JavaScript is enabled.':'Lankytojų atsiliepimai ir jų forma pasiekiami įjungus JavaScript.'}</p></section>
   </main><footer id="kontaktai">${c.contactEmail?link(`mailto:${c.contactEmail}`,c.contactEmail):''} ${link('tel:+37069906696','+370 699 06696')} ${[c.instagram.profileUrl,c.socials.facebook,c.socials.tiktok].filter(value=>safeHttps(value)).map(url=>link(url,new URL(url).hostname)).join(' · ')}</footer></div>`;
 }
 
@@ -54,7 +48,7 @@ export function structuredData(document, language, origin) {
   return {'@context':'https://schema.org','@graph':[
     {'@type':'Organization','@id':origin+'/#organization',name:document.name,url:origin+'/',logo:origin+'/favicon.png',telephone:'+37069906696',...(document.contactEmail?{email:document.contactEmail}:{}),sameAs:[document.instagram.profileUrl,document.socials.facebook,document.socials.tiktok].filter(value=>safeHttps(value))},
     {'@type':'WebSite','@id':origin+'/#website',url:origin+'/',name:document.name,inLanguage:['lt','en'],publisher:{'@id':origin+'/#organization'}},
-    {'@type':'WebPage','@id':url+'#webpage',url,name:c.name,description:c.description,inLanguage:language,isPartOf:{'@id':origin+'/#website'},about:{'@id':origin+'/#organization'}}
+    {'@type':'WebPage','@id':url+'#webpage',url,name:c.name,description:seasonCopy(language).description,inLanguage:language,isPartOf:{'@id':origin+'/#website'},about:{'@id':origin+'/#organization'}}
   ]};
 }
 

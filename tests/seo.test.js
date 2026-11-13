@@ -6,10 +6,14 @@ test('both languages have exactly one H1, current copy, contacts and sections',(
  for(const lang of ['lt','en']){
   const html=initialContent(content,lang);
   assert.equal((html.match(/<h1>/g)||[]).length,1);
-  for(const marker of ['tel:+37069906696','mailto:','#slenkstis','#kontaktai','#duk','id="bilietai"']) assert.ok(html.includes(marker),marker);
-  assert.ok(html.length>3000);
+  for(const marker of ['tel:+37069906696','mailto:','#prisiminimai','#kontaktai','#atsiliepimai','id="instagram"']) assert.ok(html.includes(marker),marker);
+  assert.ok(html.length>2000);
+  assert.ok(html.includes('2027'));
+  assert.ok(!html.includes('bilietai.lt'));
+  assert.ok(!html.includes('17:30'));
+  assert.ok(!html.includes('id="atvykimas"'));
  }
- assert.ok(initialContent(content,'en').includes('Visit')||initialContent(content,'en').includes('November'));
+ assert.ok(initialContent(content,'en').includes('Visit')||initialContent(content,'en').includes('autumn 2027'));
 });
 test('CMS text cannot inject HTML or escape JSON script blocks',()=>{
  const doc=structuredClone(content);doc.description='</script><script>alert(1)</script>';doc.story='<img onerror="alert(1)">';
@@ -29,8 +33,8 @@ test('structured data describes the same public contacts and all social profiles
 });
 test('lastmod is stable across requests and advances only with source updates',()=>{
  const xml='<url><loc>https://www.magiskasmiskas.lt/</loc></url>';
- assert.equal(renderSitemap(xml,'2026-11-04T10:00:00Z'),renderSitemap(xml,'2026-11-04T10:00:00Z'));
- assert.match(renderSitemap(xml,'2026-11-04T10:00:00Z'),/<lastmod>2026-11-04T10:00:00.000Z<\/lastmod>/);
+ assert.equal(renderSitemap(xml,'2026-11-14T10:00:00Z'),renderSitemap(xml,'2026-11-14T10:00:00Z'));
+ assert.match(renderSitemap(xml,'2026-11-14T10:00:00Z'),/<lastmod>2026-11-14T10:00:00.000Z<\/lastmod>/);
  assert.equal((renderSitemap(renderSitemap(xml,null),null).match(/<lastmod>/g)||[]).length,1);
 });
 test('database failure retains public content and does not leak errors',async()=>{

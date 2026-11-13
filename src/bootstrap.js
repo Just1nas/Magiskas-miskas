@@ -1,3 +1,4 @@
+import { seasonCopy } from './season-copy.js';
 import { hostingerCms, loadHostingerContent } from './hostinger-cms.js';
 import { locale, localize } from './locale.js';
 import './styles.css';
@@ -27,10 +28,11 @@ if (!content.appearance.motion) {
   style.textContent = '*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}';
   document.head.appendChild(style);
 }
-document.title = content.name;
-document.querySelector('meta[name=description]')?.setAttribute('content',content.description);
-document.querySelector('meta[property="og:description"]')?.setAttribute('content',content.description);
-document.querySelector('meta[property="og:title"]')?.setAttribute('content',`${content.name} · ${content.tagline}`);
+const seasonal=seasonCopy(locale);
+document.title = seasonal.title;
+document.querySelector('meta[name=description]')?.setAttribute('content',seasonal.description);
+document.querySelector('meta[property="og:description"]')?.setAttribute('content',seasonal.description);
+document.querySelector('meta[property="og:title"]')?.setAttribute('content',seasonal.title);
 const site = await import('./main.jsx');
 if(window.parent!==window&&new URLSearchParams(location.search).get('adminPreview')==='1'){
   window.addEventListener('message',event=>{
